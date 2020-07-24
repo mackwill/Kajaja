@@ -25,8 +25,19 @@ CREATE TABLE listings(
   isTrade BOOLEAN DEFAULT FALSE,
   price INTEGER,
   youtube_link VARCHAR(255),
-  boosted BOOLEAN DEFAULT FALSE
+  boosted BOOLEAN DEFAULT FALSE,
+  creation_date DATE DEFAULT CURRENT_TIMESTAMP,
+  postal_code VARCHAR(255)
 );
+
+CREATE TABLE listing_pictures(
+  id SERIAL PRIMARY KEY NOT NULL,
+  listing_id INTEGER REFERENCES listings(id) ON DELETE CASCADE,
+  picture_1 VARCHAR(255) DEFAULT 'https://via.placeholder.com/100x100',
+  picture_2 VARCHAR(255) DEFAULT 'https://via.placeholder.com/100x100',
+  picture_3 VARCHAR(255) DEFAULT 'https://via.placeholder.com/100x100',
+  picture_4 VARCHAR(255) DEFAULT 'https://via.placeholder.com/100x100',
+)
 
 CREATE TABLE user_favourites(
   id SERIAL PRIMARY KEY NOT NULL,
@@ -71,12 +82,12 @@ VALUES
 ('Ruth', 'ruth@gmail.com', 'password'),
 ('Joey', 'joey@gmail.com', 'password');
 
-INSERT INTO listings(category, owner_id, description, isTrade, price)
+INSERT INTO listings(category, owner_id, description, isTrade, price, postal_code)
 VALUES
-('furniture', 1, 'Great sofa','f', 12000),
-('car', 2, 'Great car','f', 1200000),
-('furniture', 3, 'Greater sofa vs Greater bedframe','t',0),
-('car', 4, 'Greater car','f', 1000000);
+('furniture', 1, 'Great sofa','f', 12000, 'h2j3w2'),
+('car', 2, 'Great car','f', 1200000, 'h2j3w2'),
+('furniture', 3, 'Greater sofa vs Greater bedframe','t',0, 'h2j3w2'),
+('car', 4, 'Greater car','f', 1000000, 'h2j3w2');
 
 INSERT INTO user_favourites(user_id, listing_id)
 VALUES
