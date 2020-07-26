@@ -1,7 +1,23 @@
 // @import "../node_modules/bulma/sass/components/navbar.sass";
 
-$navbar-height: 3.25rem;
+$navbar-background-color: #36d6e7;
+$navbar-item-color: #ffffff;
+$navbar-burger-color: #ffffff;
 
 .navbar {
-  min-height: $navbar-height;
+  background-color: $navbar-background-color;
+
+  p {
+    color: $navbar-item-color;
+    font-weight: bold;
+  }
+
+  .navbar-burger {
+    color: $navbar-burger-color;
+  }
+
+  .buttons .button {
+    background-color: $navbar-background-color;
+    color: $navbar-item-color;
+  }
 }
