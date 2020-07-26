@@ -1,8 +1,9 @@
-// @import "../node_modules/bulma/sass/components/navbar.sass";
+@import "node_modules/bulma/sass/utilities/initial-variables.sass";
 
 $navbar-background-color: #36d6e7;
 $navbar-item-color: #ffffff;
 $navbar-burger-color: #ffffff;
+$navbar-breakpoint: $tablet;
 
 .navbar {
   background-color: $navbar-background-color;
