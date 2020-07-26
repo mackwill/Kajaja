@@ -82,12 +82,32 @@ CREATE TABLE user_message(
 );
 
 INSERT INTO
-  users(name, email, password)
+  users(name, email, password, phone_number)
 VALUES
-  ('Vincent', 'vincent@gmail.com', 'password'),
-  ('Will', 'will@gmail.com', 'password'),
-  ('Ruth', 'ruth@gmail.com', 'password'),
-  ('Joey', 'joey@gmail.com', 'password');
+  (
+    'Vincent',
+    'vincent@gmail.com',
+    'password',
+    '111-222-3333'
+  ),
+  (
+    'Will',
+    'will@gmail.com',
+    'password',
+    '123-456-7890'
+  ),
+  (
+    'Ruth',
+    'ruth@gmail.com',
+    'password',
+    '666-666-6666'
+  ),
+  (
+    'Joey',
+    'joey@gmail.com',
+    'password',
+    '345-534-6542'
+  );
 
 INSERT INTO
   listings(
