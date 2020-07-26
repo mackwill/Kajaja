@@ -17,7 +17,7 @@ CREATE TABLE users(
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  join_date TIMESTAMP,
+  join_date TIMESTAMP DEFAULT now(),
   profile_pic_url VARCHAR(255) DEFAULT 'https://via.placeholder.com/100x100',
   phone_number VARCHAR(255)
 );
@@ -32,7 +32,7 @@ CREATE TABLE listings(
   price INTEGER,
   youtube_link VARCHAR(255),
   boosted BOOLEAN DEFAULT FALSE,
-  creation_date TIMESTAMP,
+  creation_date TIMESTAMP DEFAULT now(),
   postal_code VARCHAR(255)
 );
 
@@ -78,7 +78,7 @@ CREATE TABLE user_message(
   id SERIAL PRIMARY KEY NOT NULL,
   thread_id INTEGER REFERENCES message_thread(id) ON DELETE CASCADE,
   content TEXT,
-  send_date TIMESTAMP
+  send_date TIMESTAMP DEFAULT now()
 );
 
 INSERT INTO
