@@ -43,7 +43,7 @@
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
     <section id="all-listings">
       <% listings.forEach(listing => { %>
-      <a class="listing-link" href="#">
+      <a class="listing-link" href="/api/widgets/listings/<%=listing.id%>">
         <article class="listing">
           <div class="listing-photo">
             <img src="https://via.placeholder.com/100x100" />

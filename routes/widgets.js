@@ -10,15 +10,24 @@ const router = express.Router();
 // const renderListings = require("../public/scripts/listings-render");
 
 module.exports = (db) => {
-  // let templateVars = {};
-  router.get("/listings", (req, res) => {
-    // let query = `SELECT * FROM listings`;
-    // console.log(`SELECT * FROM listings`);
+  router.get("/listings/:id", (req, res) => {
+    console.log("res.params", res.params.id);
     db.query(`SELECT * FROM listings;`)
       .then((data) => {
         const widgets = data.rows;
         console.log(widgets);
-        // renderListings.renderListings(data.rows);
+        res.render("listings", { listings: data.rows });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
+  router.get("/listings", (req, res) => {
+    db.query(`SELECT * FROM listings;`)
+      .then((data) => {
+        const widgets = data.rows;
+        console.log(widgets);
         res.render("listings", { listings: data.rows });
       })
       .catch((err) => {
