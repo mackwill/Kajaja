@@ -1,11 +1,10 @@
 
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="/">KaJaJa</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
+      <% if(!user){ %>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
@@ -17,9 +16,34 @@
           <li class="nav-item">
             <a class="nav-link" href="/api/widgets/create-listing">Categories</a>
           </li>
-
         </ul>
-          <a class="btn btn-outline-primary mr-2 my-2 my-sm-0" href="/api/users/login">Login</a>
-          <a class="btn btn-outline-success my-2 my-sm-0" href="/api/users/registration">SignUp</a>
+        <a class="btn btn-outline-primary mr-2 my-2 my-sm-0" href="/api/users/login">Login</a>
+        <a class="btn btn-outline-success my-2 my-sm-0" href="/api/users/registration">SignUp</a>
       </div>
+
+      <% }else{ %>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/widgets/create-listing">Post Ad</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/widgets/create-listing">My favourites</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/widgets/create-listing">My messages</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/widgets/create-listing">My listings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/widgets/create-listing">My account</a>
+          </li>
+        </ul>
+          <a class="btn btn-outline-success my-2 my-sm-0" href="/api/users/logout">Logout</a>
+      </div>
+      <%}%>
     </nav>

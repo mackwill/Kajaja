@@ -9,14 +9,30 @@ const express = require("express");
 const router = express.Router();
 const database = require("../database");
 
+
 module.exports = (db) => {
+
   router.get("/listings/:id", (req, res) => {
+    const templateVars = {}
     const values = [req.params.id];
     db.query(`SELECT * FROM listings WHERE id = $1;`, values)
       .then((data) => {
-        const widgets = data.rows;
-        console.log(widgets);
-        res.render("single_listing", { listing: data.rows[0] });
+        templateVars.listing = data.rows[0]
+
+        if(req.session.userId){
+           database.getUserWithId(req.session.userId)
+          .then(user => {
+            templateVars.user = user
+            res.render("single_listing", templateVars);
+          })
+          .catch((e) => {
+            templateVars.user = null
+            res.render("single_listing", templateVars);
+          })
+        }else{
+        templateVars.user = null
+        res.render("single_listing", templateVars);
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -24,11 +40,25 @@ module.exports = (db) => {
   });
 
   router.get("/listings", (req, res) => {
-    database
-      .getListings(req.query)
+    const templateVars = {}
+    database.getListings(req.query)
       .then((data) => {
-        console.log("data:", data);
-        res.render("listings", { listings: data });
+        templateVars.listings = data
+
+        if(req.session.userId){
+          database.getUserWithId(req.session.userId)
+         .then(user => {
+           templateVars.user = user
+           res.render("listings", templateVars);
+         })
+         .catch((e) => {
+           templateVars.user = null
+           res.render("listings", templateVars);
+         })
+       }else{
+       templateVars.user = null
+        res.render("listings", templateVars);
+       }
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -36,7 +66,21 @@ module.exports = (db) => {
   });
 
   router.get("/create-listing", (req, res) => {
-    res.render("create_listing_page");
+    if(!req.session.userId){
+      req.session.message = 'You need to be logged in to post an ad'
+      res.redirect('/api/users/login')
+    }else{
+    const templateVars = {}
+    database.getUserWithId(req.session.userId)
+         .then(user => {
+           templateVars.user = user
+           res.render("create_listing_page", templateVars);
+         })
+         .catch((e) => {
+          templateVars.user = null
+          res.render("create_listing_page", templateVars);
+         })
+    }
   });
 
   router.post("/create-listing", (req, res) => {
@@ -52,16 +96,6 @@ module.exports = (db) => {
       .catch((e) => res.render("create_listing_page"));
   });
 
-  router.post("/create-listing", (req, res) => {
-    const listing = req.body;
-    listing.owner_id = req.session.userId;
-    database
-      .createNewListing(listing)
-      .then((listing) => {
-        res.redirect(`/api/widgets/listings/${listing.id}`);
-      })
-      .catch((e) => res.render("create_listing_page"));
-  });
 
   return router;
 };

@@ -10,15 +10,25 @@ const router  = express.Router();
 const bcrypt = require('bcrypt')
 const database = require('../database')
 
+
 module.exports = (db) => {
   //Get login form
   router.get("/login", (req, res) => {
-    res.render("login_page");
+
+    const templateVars = {user:null, message:null}
+    if(req.session.message){
+      templateVars.message = req.session.message
+    }
+    res.render("login_page", templateVars);
   });
 
   //Get registration form
   router.get("/registration", (req, res) => {
-    res.render("registration_page");
+    // if(req.session.userId){
+    //   res.redirect('/')
+    // }
+    const templateVars = {user:null}
+    res.render("registration_page", templateVars);
   });
 
   // Create a new user
@@ -66,7 +76,6 @@ module.exports = (db) => {
           res.send({error: "error"});
           return;
         }
-        console.log('connected as:', user.name)
         req.session.userId = user.id;
         res.redirect('/')
       })
@@ -75,9 +84,9 @@ module.exports = (db) => {
 
 
   //Logout a user
-  router.post('/logout', (req, res) => {
+  router.get('/logout', (req, res) => {
     req.session.userId = null;
-    res.redirect('/');
+    res.redirect('/api/users/login');
   });
 
   const chrono = function(number) {
@@ -100,11 +109,22 @@ module.exports = (db) => {
 
   //Get a profile page for specific user
   router.get('/:id', (req, res) => {
-    console.log(req.params.id)
-    database.getPublicInfoUserById(req.params.id)
+    const templateVars = {}
+   database.getPublicInfoUserById(req.params.id)
     .then(data => {
+
+      if(req.session.userId){
+        database.getUserWithId(req.session.userId)
+        .then(user => {
+          templateVars.user = user
+        })
+        .catch((e) => templateVars.user = null)
+      }
+
       data.unix = chrono(new Date - data[0].join_date.getTime())
-      res.render("profile_page", {data:data})
+      templateVars.data = data
+
+      res.render("profile_page", templateVars)
     })
     .catch((e) => res.render("profile_page"))
   })

@@ -19,6 +19,9 @@ db.connect();
 
 module.exports = db;
 
+const database = require('./database')
+
+
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -63,7 +66,22 @@ app.use("/api/messages", messageRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
-  res.render("index");
+  const templateVars = {}
+  if(req.session.userId){
+    return database.getUserWithId(req.session.userId)
+    .then(user => {
+      templateVars.user = user
+      res.render("index", templateVars);
+    })
+    .catch((e) => {
+      templateVars.user = null
+      res.render("index", templateVars);
+    })
+  }else{
+  templateVars.user = null
+  }
+  console.log(templateVars)
+  res.render("index", templateVars);
 });
 
 app.listen(PORT, () => {
