@@ -7,18 +7,26 @@
 
 const express = require("express");
 const router = express.Router();
-// const renderListings = require("../public/scripts/listings-render");
 
 module.exports = (db) => {
-  // let templateVars = {};
+  router.get("/listings/:id", (req, res) => {
+    const values = [req.params.id];
+    db.query(`SELECT * FROM listings WHERE id = $1;`, values)
+      .then((data) => {
+        const widgets = data.rows;
+        console.log(widgets);
+        res.render("single_listing", { listing: data.rows[0] });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
   router.get("/listings", (req, res) => {
-    // let query = `SELECT * FROM listings`;
-    // console.log(`SELECT * FROM listings`);
     db.query(`SELECT * FROM listings;`)
       .then((data) => {
         const widgets = data.rows;
         console.log(widgets);
-        // renderListings.renderListings(data.rows);
         res.render("listings", { listings: data.rows });
       })
       .catch((err) => {
