@@ -24,12 +24,11 @@ module.exports = (db) => {
   });
 
   router.get("/listings", (req, res) => {
-    db.query(`SELECT * FROM listings;`)
-      .then((data) => {
-        const widgets = data.rows;
-        console.log(widgets);
-        res.render("listings", { listings: data.rows });
-      })
+    database.getListings(req.query)
+    .then(data => {
+      console.log('data:',data)
+        res.render("listings", { listings: data });
+    })
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });

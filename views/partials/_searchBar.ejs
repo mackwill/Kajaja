@@ -27,50 +27,18 @@
   </head>
 
   <body>
+    <form id="search" method="GET" action="/api/widgets/listings">
+
     <div class="columns is-vcentered mt-0" id="search-container">
       <div class="column is-6">
         <div class="control">
-          <input class="input" type="text" placeholder="Text input" />
+          <input class="input" type="text" placeholder="Text input" name="q"/>
         </div>
       </div>
       <div class="column">
-        <div class="dropdown" id="category-dropdown">
-          <div class="dropdown-trigger">
-            <button
-              class="button"
-              aria-haspopup="true"
-              aria-controls="dropdown-menu"
-            >
-              <span>Categories</span>
-              <span class="icon is-small">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </button>
-          </div>
-          <div class="dropdown-menu" id="dropdown-menu" role="menu">
-            <div class="dropdown-content">
-              <a class="dropdown-item">
-                Arts & Crafts
-              </a>
-              <a href="#" class="dropdown-item">
-                Books
-              </a>
-              <a class="dropdown-item">
-                Bicyicles
-              </a>
-              <a class="dropdown-item">
-                Elecronics
-              </a>
-              <a class="dropdown-item">
-                Furniture
-              </a>
-            </div>
-          </div>
-        </div>
-        <form method="GET" action="/api/widgets/listings">
           <button class="button">Search</button>
-        </form>
       </div>
     </div>
+  </form>
   </body>
 </html>
