@@ -41,6 +41,8 @@ module.exports = (db) => {
   router.post('/create-listing', (req, res) => {
     const listing = req.body
     listing.owner_id = req.session.userId
+    console.log('Im here:', listing)
+
     database.createNewListing(listing)
     .then(listing => {
       res.redirect(`/api/widgets/listings/${listing.id}`)
