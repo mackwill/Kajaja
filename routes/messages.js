@@ -5,11 +5,11 @@ const helper = require("../helper");
 module.exports = (db) => {
   router.get("/mymessages", (req, res) => {
     const user = req.session.userId;
+    console.log("user: ", user);
     db.query(
       `SELECT * FROM message_thread
       JOIN listings ON listing_id = listings.id
       JOIN user_message ON thread_id = message_thread.id
-
       WHERE
         owner_id = $1
         OR sender_id = $1
@@ -25,6 +25,30 @@ module.exports = (db) => {
         res.render("all_messages", {
           messages: helper.filterMessagesByUser(data.rows),
         });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
+  router.get("/:id", (req, res) => {
+    const user = req.session.userId;
+    const messageThread = req.params.id;
+    console.log("thread id: ", messageThread);
+    db.query(
+      `SELECT * FROM user_message
+      JOIN message_thread on thread_id = message_thread.id
+      JOIN listings ON listing_id = listings.id
+      WHERE
+        thread_id = $1
+      ORDER BY
+        send_date
+    ;`,
+      [messageThread]
+    )
+      .then((data) => {
+        console.log("messages per thread:", data.rows);
+        res.render("single_message_page", { messages: data.rows });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });

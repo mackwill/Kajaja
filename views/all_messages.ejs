@@ -39,7 +39,7 @@
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
     <section id="all-messages">
       <% messages.forEach(message => { %>
-      <a class="message-link" href="/api/messages/<%=message.id%>">
+      <a class="message-link" href="/api/messages/<%=message.thread_id%>">
         <article class="message">
           <!-- <div class="listing-photo">
             <img src="https://via.placeholder.com/100x100" />
