@@ -7,7 +7,7 @@
 
 const express = require("express");
 const router = express.Router();
-const database = require('../database')
+const database = require("../database");
 
 module.exports = (db) => {
   router.get("/listings/:id", (req, res) => {
@@ -35,20 +35,20 @@ module.exports = (db) => {
       });
   });
 
-  router.get('/create-listing', (req, res) => {
-    res.render('create_listing_page')
-  })
+  router.get("/create-listing", (req, res) => {
+    res.render("create_listing_page");
+  });
 
-  router.post('/create-listing', (req, res) => {
-    const listing = req.body
-    listing.owner_id = req.session.userId
-    database.createNewListing(listing)
-    .then(listing => {
-      res.redirect(`/api/widgets/listings/${listing.id}`)
-    })
-    .catch((e) => res.render('create_listing_page'))
-  })
-
+  router.post("/create-listing", (req, res) => {
+    const listing = req.body;
+    listing.owner_id = req.session.userId;
+    database
+      .createNewListing(listing)
+      .then((listing) => {
+        res.redirect(`/api/widgets/listings/${listing.id}`);
+      })
+      .catch((e) => res.render("create_listing_page"));
+  });
 
   return router;
 };

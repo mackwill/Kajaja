@@ -4,25 +4,25 @@ VALUES
   (
     'Vincent',
     'vincent@gmail.com',
-    'password',
+    '$2b$12$PWxZ0w7uC/t8c0Gg4nbgLueDudJKndzrN8rHanNTHAtr7iGw8AP72',
     '111-222-3333'
   ),
   (
     'Will',
     'will@gmail.com',
-    'password',
+    '$2b$12$PWxZ0w7uC/t8c0Gg4nbgLueDudJKndzrN8rHanNTHAtr7iGw8AP72',
     '123-456-7890'
   ),
   (
     'Ruth',
     'ruth@gmail.com',
-    'password',
+    '$2b$12$PWxZ0w7uC/t8c0Gg4nbgLueDudJKndzrN8rHanNTHAtr7iGw8AP72',
     '666-666-6666'
   ),
   (
     'Joey',
     'joey@gmail.com',
-    'password',
+    '$2b$12$PWxZ0w7uC/t8c0Gg4nbgLueDudJKndzrN8rHanNTHAtr7iGw8AP72',
     '345-534-6542'
   );
 
