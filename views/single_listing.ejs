@@ -58,6 +58,19 @@
           <h5>Description:</h5>
           <p><%= listing.description %></p>
         </div>
+        <form method="POST" action="/messages">
+          <div class="form-group">
+            <label for="message-to-seller">Message To Seller</label>
+            <input
+              name="message-to-seller"
+              type="text"
+              class="form-control"
+              id="message-to-seller"
+              placeholder="Enter your message here."
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
       </div>
     </div>
 
