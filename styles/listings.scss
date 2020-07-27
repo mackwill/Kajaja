@@ -1,0 +1,10 @@
+.listing-link {
+  text-decoration: none;
+}
+.listing {
+  display: flex;
+  .listing-header {
+    display: flex;
+    justify-content: space-between;
+  }
+}
