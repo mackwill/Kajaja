@@ -29,10 +29,84 @@
       type="text/javascript"
       src="/scripts/category_responsive.js"
     ></script>
-  </head>
+    <style>
 
+.top-stripe{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.top-stripe img{
+  border-radius:50px;
+  margin-top:-3em;
+  border:1px solid black;
+}
+.middle-stripe{
+  display:flex;
+  text-align:center;
+}
+.middle-stripe div{
+  width:100%;
+}
+.lower-stripe{
+  display:flex;
+}
+.lower-stripe div{
+  width:100%;
+  margin-top:2em;
+  text-align:center;
+  border-bottom:1px solid grey;
+}
+.lower-stripe div:hover{
+  background-color:grey;
+  cursor:pointer;
+}
+
+    </style>
+  </head>
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
-    <h1>THIS IS THE PROFILE PAGE</h1>
+
+    <div class="main">
+      <div class="banner"><img width="100%" src="https://via.placeholder.com/500x75/808080"></div>
+      <div class="top-stripe">
+        <img src="<%= data[0].profile_pic_url %>">
+        <h2><%= data[0].name %><h2>
+      </div>
+      <div class="middle-stripe">
+        <div><span>--</span><br>Avg Reply</div>
+        <div><span>--</span><br>Reply Rate</div>
+        <div><span><%= data.unix %></span><br>On Kijiji since</div>
+      </div>
+      <div class="lower-stripe">
+        <div class="isActive">Listings</div>
+        <div>Reviews</div>
+      </div>
+    </div>
+    <section id="all-listings">
+      <% data.forEach(listing => { %>
+      <a class="listing-link" href="#">
+        <article class="listing">
+          <div class="listing-photo">
+            <img src="https://via.placeholder.com/100x100" />
+          </div>
+          <div class="listing-content container-fluid">
+            <div class="listing-header">
+              <div class="listing-header-left">
+                <h3><%= listing.title %></h3>
+              </div>
+              <div class="listing-header-right">
+                <h3><%= listing.price %></h3>
+              </div>
+            </div>
+            <div class="listing-content">
+              <%= listing.description %>
+            </div>
+          </div>
+        </article>
+      </a>
+      <% }) %>
+    </section>
+
   </body>
 </html>

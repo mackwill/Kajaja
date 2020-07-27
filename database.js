@@ -21,6 +21,7 @@ const getUserWithId = function(id) {
 exports.getUserWithId = getUserWithId;
 
 const addUser =  function(user) {
+  console.log(user)
   const { name, email, password } = user
   return db.query(`
     INSERT INTO users (name, email, password)
@@ -41,3 +42,16 @@ const updateUserPasswordByUserId = function(userId, newPassword){
   .catch((e) => null)
 }
 exports.updateUserPasswordByUserId = updateUserPasswordByUserId
+
+
+const getPublicInfoUserById = function(userId){
+  return db.query(`
+    SELECT users.name, users.email, users.join_date, users.profile_pic_url, users.phone_number, listings.*
+    FROM users
+    LEFT JOIN listings ON users.id = owner_id
+    WHERE users.id = $1
+  `, [userId])
+  .then(res => res.rows)
+  .catch((e) => null)
+}
+exports.getPublicInfoUserById = getPublicInfoUserById

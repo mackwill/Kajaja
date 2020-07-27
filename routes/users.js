@@ -25,9 +25,10 @@ module.exports = (db) => {
   router.post('/', (req, res) => {
     const user = req.body;
     user.password = bcrypt.hashSync(user.password, 12);
+    console.log(user)
     database.getUserWithEmail(user.email)
-    .then(user => {
-      if(user){
+    .then(existingUser => {
+      if(existingUser){
         res.send('Sorry user already exist')
       }else{
         database.addUser(user)
@@ -37,7 +38,7 @@ module.exports = (db) => {
             return;
           }
           req.session.userId = user.id;
-          res.send("🤗");
+          res.redirect('/')
         })
         .catch(e => res.send(e));
       }
@@ -78,6 +79,35 @@ module.exports = (db) => {
     req.session.userId = null;
     res.redirect('/');
   });
+
+  const chrono = function(number) {
+    let result = '';
+    if (number / (60 * 60 * 24 * 356 * 1000) >= 1) {
+      result = `${Math.floor(number / (60 * 60 * 24 * 365 * 1000))} years ago`;
+    } else if (number / (60 * 60 * 24 * 30 * 1000) >= 1) {
+      result = `${Math.floor(number / (60 * 60 * 24 * 30 * 1000))} months ago`;
+    } else if (number / (60 * 60 * 24 * 30 * 1000) >= 1) {
+      result = `${Math.floor(number / (60 * 60 * 24 * 1000))} days ago`;
+    } else if (number / (60 * 60 * 1000) >= 1) {
+      result = `${Math.floor(number / (60 * 60 * 1000))} hours ago`;
+    } else if (number / (60 * 1000) >= 1) {
+      result = `${Math.floor(number / (60 * 1000))} minutes ago`;
+    } else {
+      result = `few seconds ago`;
+    }
+    return result;
+  };
+
+  //Get a profile page for specific user
+  router.get('/:id', (req, res) => {
+    console.log(req.params.id)
+    database.getPublicInfoUserById(req.params.id)
+    .then(data => {
+      data.unix = chrono(new Date - data[0].join_date.getTime())
+      res.render("profile_page", {data:data})
+    })
+    .catch((e) => res.render("profile_page"))
+  })
 
   return router;
 };
