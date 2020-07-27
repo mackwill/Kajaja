@@ -66,3 +66,20 @@ const createNewListing = function(listing){
   .catch((e) => null)
 }
 exports.createNewListing = createNewListing
+
+
+const getListings = function(data){
+  return db.query(`
+    SELECT * FROM listings
+    WHERE (setweight(to_tsvector(title), 'A') ||
+    setweight(to_tsvector(category), 'B') ||
+    setweight(to_tsvector(coalesce(description, '')), 'C'))
+    @@ to_tsquery($1)
+    ORDER BY ts_rank((setweight(to_tsvector(title), 'A') ||
+    setweight(to_tsvector(category), 'B') ||
+    setweight(to_tsvector(coalesce(description, '')), 'B')), to_tsquery($1)) DESC
+  `, [data.q])
+  .then(res => res.rows)
+  .catch((e) => null)
+}
+exports.getListings = getListings

@@ -1,75 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Home Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css"
-    />
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/navbar.css" type="text/css" />
 
-    <script
-      defer
-      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
-    ></script>
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-    <script type="text/javascript" src="/scripts/navbar_responsive.js"></script>
-  </head>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">KaJaJa</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-          <p>KaJaJa</p>
-        </a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/widgets/create-listing">Post Ad</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/widgets/create-listing">Categories</a>
+          </li>
 
-        <a
-          role="button"
-          class="navbar-burger burger"
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbarBasicExample"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-
-      <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-          <a class="navbar-item">
-            Home
-          </a>
-
-          <a class="navbar-item" href="/api/widgets/create-listing">
-            Post Ad
-          </a>
-
-          <a class="navbar-item">
-            About
-          </a>
-        </div>
-
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="buttons">
-              <a class="button" href="/api/users/registration">
-                <strong>Sign up</strong>
-              </a>
-              <a class="button is-light" href="/api/users/login">
-                Log in
-              </a>
-            </div>
-          </div>
-        </div>
+        </ul>
+          <a class="btn btn-outline-primary mr-2 my-2 my-sm-0" href="/api/users/login">Login</a>
+          <a class="btn btn-outline-success my-2 my-sm-0" href="/api/users/registration">SignUp</a>
       </div>
     </nav>
-  </body>
-</html>

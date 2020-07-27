@@ -24,11 +24,11 @@ module.exports = (db) => {
   });
 
   router.get("/listings", (req, res) => {
-    db.query(`SELECT * FROM listings;`)
+    database
+      .getListings(req.query)
       .then((data) => {
-        const widgets = data.rows;
-        console.log(widgets);
-        res.render("listings", { listings: data.rows });
+        console.log("data:", data);
+        res.render("listings", { listings: data });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -37,6 +37,19 @@ module.exports = (db) => {
 
   router.get("/create-listing", (req, res) => {
     res.render("create_listing_page");
+  });
+
+  router.post("/create-listing", (req, res) => {
+    const listing = req.body;
+    listing.owner_id = req.session.userId;
+    console.log("Im here:", listing);
+
+    database
+      .createNewListing(listing)
+      .then((listing) => {
+        res.redirect(`/api/widgets/listings/${listing.id}`);
+      })
+      .catch((e) => res.render("create_listing_page"));
   });
 
   router.post("/create-listing", (req, res) => {
