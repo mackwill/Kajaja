@@ -33,7 +33,8 @@ CREATE TABLE listings(
   youtube_link VARCHAR(255),
   boosted BOOLEAN DEFAULT FALSE,
   creation_date TIMESTAMP DEFAULT now(),
-  postal_code VARCHAR(255)
+  postal_code VARCHAR(255),
+  sold BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE listing_pictures(
@@ -119,7 +120,8 @@ INSERT INTO
     price,
     youtube_link,
     boosted,
-    postal_code
+    postal_code,
+    sold
   )
 VALUES
   (
@@ -131,7 +133,8 @@ VALUES
     350,
     'FALSE',
     'FALSE',
-    'H2G2Z8'
+    'H2G2Z8',
+    'TRUE'
   ),
   (
     'Dinner Table',
@@ -142,7 +145,8 @@ VALUES
     200,
     'FALSE',
     'TRUE',
-    'H2V2N2'
+    'H2V2N2',
+    'FALSE'
   ),
   (
     'Queen size mattress',
@@ -153,7 +157,8 @@ VALUES
     30,
     'FALSE',
     'FALSE',
-    'H2V2N2'
+    'H2V2N2',
+    'FALSE'
   ),
   (
     'Harry Potter book collection',
@@ -164,7 +169,8 @@ VALUES
     50,
     'FALSE',
     'TRUE',
-    'H2E2B1'
+    'H2E2B1',
+    'FALSE'
   ),
   (
     'Like new computer desk',
@@ -175,7 +181,8 @@ VALUES
     110,
     'FALSE',
     'FALSE',
-    'H2X3R4'
+    'H2X3R4',
+    'FALSE'
   ),
   (
     'iPhone 7 128GB',
@@ -186,7 +193,8 @@ VALUES
     390,
     'FALSE',
     'TRUE',
-    'H2V4A2'
+    'H2V4A2',
+    'FALSE'
   ),
   (
     'Fish vase for sale',
@@ -197,7 +205,8 @@ VALUES
     0,
     'FALSE',
     'FALSE',
-    'H2V4A2'
+    'H2V4A2',
+    'FALSE'
   ),
   (
     'Opus bike for trade',
@@ -208,7 +217,8 @@ VALUES
     0,
     'FALSE',
     'TRUE',
-    'H2V4A2'
+    'H2V4A2',
+    'FALSE'
   );
 
 INSERT INTO
@@ -239,6 +249,7 @@ VALUES
     'Hi Will, how much would you pay for my bike. I am Vincent.'
   ),
   (1, 'I would pay 280$. I am Will.'),
+  (1, 'Sold.'),
   (
     2,
     'I would like to buy your dinner table, Will. I am Ruth.'
