@@ -18,6 +18,7 @@ module.exports = (db) => {
     const templateVars = {user:null, message:null}
     if(req.session.message){
       templateVars.message = req.session.message
+      req.session.message = null
     }
     res.render("login_page", templateVars);
   });
@@ -109,24 +110,25 @@ module.exports = (db) => {
 
   //Get a profile page for specific user
   router.get('/:id', (req, res) => {
-    const templateVars = {}
+    const templateVars = {user: null}
    database.getPublicInfoUserById(req.params.id)
     .then(data => {
+      data.unix = chrono(new Date - data[0].join_date.getTime())
+      templateVars.data = data
 
       if(req.session.userId){
         database.getUserWithId(req.session.userId)
         .then(user => {
           templateVars.user = user
+          res.render("profile_page", templateVars)
         })
-        .catch((e) => templateVars.user = null)
+        .catch((e) => {
+          res.render("profile_page", templateVars)
+        })
       }
-
-      data.unix = chrono(new Date - data[0].join_date.getTime())
-      templateVars.data = data
-
       res.render("profile_page", templateVars)
     })
-    .catch((e) => res.render("profile_page"))
+    .catch((e) => res.redirect("/"))
   })
 
   return router;
