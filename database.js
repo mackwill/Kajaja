@@ -55,3 +55,14 @@ const getPublicInfoUserById = function(userId){
   .catch((e) => null)
 }
 exports.getPublicInfoUserById = getPublicInfoUserById
+
+const createNewListing = function(listing){
+  const {title, category, owner_id, description, isTrade, price, postal_code} = listing
+  return db.query(`
+    INSERT INTO listings (title, category, owner_id, description, isTrade, price, postal_code)
+    VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
+  `,[title, category, owner_id, description, isTrade, Number(price), postal_code])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.createNewListing = createNewListing

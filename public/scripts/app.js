@@ -8,6 +8,7 @@
 //     }
 //   });
 
+<<<<<<< HEAD
 //   // $.ajax({
 //   //   method: "GET",
 //   //   url: "/api/widgets/listings",
@@ -15,6 +16,15 @@
 //   //   console.log("data:", data);
 //   //   listings.forEach((listing) => {
 //   //     $("#all-listings").prepend(createSingleListing(listing));
+=======
+  // $.ajax({
+  //   method: "GET",
+  //   url: "/api/widgets/listings",
+  // }).done((data) => {
+  //   console.log("data:", data);
+  //   listings.forEach((listing) => {
+  //     $("#all-listings").prepend(createSingleListing(listing));
+>>>>>>> master
 //   //   });
 //   // });
 // });
