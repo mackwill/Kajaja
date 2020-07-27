@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/navbar.css" type="text/css" />
     <link rel="stylesheet" href="/styles/searchBar.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/listings.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/singleListing.css" type="text/css" />
 
     <script
       defer
@@ -41,31 +41,26 @@
 
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
-    <section id="all-listings">
-      <h1>THIS IS THE SINGLE LISTING PAGE</h1>
-      <% listings.forEach(listing => { %>
-      <a class="listing-link" href="#">
-        <article class="listing">
-          <div class="listing-photo">
-            <img src="https://via.placeholder.com/100x100" />
+    <div class="card">
+      <div class="card-body">
+        <div class="listing-header">
+          <div class="listing-header-left card-title">
+            <h3><%= listing.title %></h3>
           </div>
-          <div class="listing-content container-fluid">
-            <div class="listing-header">
-              <div class="listing-header-left">
-                <h3><%= listing.title %></h3>
-              </div>
-              <div class="listing-header-right">
-                <h3><%= listing.price %></h3>
-              </div>
-            </div>
-            <div class="listing-content">
-              <%= listing.description %>
-            </div>
+          <div class="listing-header-right">
+            <h3>$<%= listing.price %></h3>
           </div>
-        </article>
-      </a>
-      <% }) %>
-    </section>
+        </div>
+        <div class="listing-photo">
+          <img src="https://via.placeholder.com/100x100" />
+        </div>
+        <div class="listing-content">
+          <h5>Descr</h5>
+          <p><%= listing.description %></p>
+        </div>
+      </div>
+    </div>
+
     <script
       src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
       integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
