@@ -12,7 +12,7 @@ module.exports = (db) => {
   router.get("/listings", (req, res) => {
     // let query = `SELECT * FROM listings`;
     // console.log(`SELECT * FROM listings`);
-    db.query(`SELECT * FROM listings`)
+    db.query(`SELECT * FROM listings;`)
       .then((data) => {
         const widgets = data.rows;
         console.log(widgets);
