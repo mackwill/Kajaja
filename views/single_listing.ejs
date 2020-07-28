@@ -113,7 +113,7 @@
 
  <!-- Listing card-->
 
- <div class="card mb-3">
+ <div class="card">
    <div class="row no-gutters">
      <div class="col-sm-4">
        <img src="https://via.placeholder.com/100x100" class="card-img" alt="...">
@@ -134,7 +134,7 @@
 
    <!-- Contact card -->
 
-   <div class="card mb-3 mt-3 col-md-6">
+   <div class="card col-md-6">
     <form method="POST" action="/api/messages">
       <div class="form-group">
         <h3><label for="message-to-seller">Contact Kajaja User</label></h3>
@@ -152,7 +152,7 @@
 
     <!-- Sellers card -->
 
-   <div class="card mb-3 mt-3 col-md-6">
+   <div class="card col-md-6">
       <div class="card-body">
         <h5 class="card-title text-center"><a href="/api/users/<%= listing.owner_id %>"><%= listing.name %></a></h5>
         <p class="card-text"><i class="fa fa-calendar mr-3" aria-hidden="true"></i>
