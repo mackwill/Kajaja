@@ -73,8 +73,8 @@ module.exports = (db) => {
     ;`,
         [messageThread, message[0]]
       )
-      .then(() => {
-        res.render("index");
+      .then((data) => {
+        return data.rows;
       });
   });
 
