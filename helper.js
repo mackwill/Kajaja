@@ -12,3 +12,4 @@ const filterMessagesByUser = function (messages) {
 };
 
 exports.filterMessagesByUser = filterMessagesByUser;
+

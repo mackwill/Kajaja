@@ -138,3 +138,15 @@ const updateUserById = function(user, changes){
   .catch((e) => null)
 }
 exports.updateUserById = updateUserById
+
+
+const getUserByResetToken = function(token){
+  const newToken = new Date(token).toISOString()
+  return db.query(`
+    SELECT * FROM users
+    WHERE join_date = $1
+  `, [newToken])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.getUserByResetToken = getUserByResetToken

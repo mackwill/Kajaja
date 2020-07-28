@@ -28,3 +28,9 @@
 // //   //   //   });
 // //   //   // });
 // });
+// $(() => {
+//   $(document).on('click', '#notificationSwitch', function(e){
+
+//     console.log($('#notificationSwitch').val())
+//   })
+// })

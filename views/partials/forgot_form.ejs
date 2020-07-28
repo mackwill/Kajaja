@@ -1,9 +1,15 @@
-<form class="col-6" role="form" action="/forgot-password" method="post">
-  <br style="clear:both">
-  <div class="form-group">
-    <input type="email" class="form-control" id="email" name="email" required>
-  </div>
-  <div class="text-center">
-    <button type="submit" id="submit" name="submit" class="btn btn-primary pull-right btn-submit">RESET</button>
-  </div>
-</form>
+<div class="container mt-2">
+  <div class="card" style="border:none;">
+    <article class="card-body mx-auto" style="max-width: 600px;">
+      <form class="row" role="form" action="/api/mailer/forgot-password" method="post">
+        <div class="form-group col-8">
+          <input type="email" class="form-control" id="email" name="email" required>
+          <small id="emailHelp" class="form-text text-muted">Enter your email here to receive a reset code.</small>
+        </div>
+        <div class="text-center col-4">
+          <button type="submit" id="submit" name="submit" class="btn btn-primary pull-right btn-submit">RESET</button>
+        </div>
+      </form>
+    </article>
+  </div> <!-- card.// -->
+</div>
