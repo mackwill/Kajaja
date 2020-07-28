@@ -48,10 +48,33 @@ module.exports = (db) => {
     )
       .then((data) => {
         console.log("messages per thread:", data.rows);
-        res.render("single_message_page", { messages: data.rows });
+        res.render("single_message_page", {
+          messages: data.rows,
+          threadId: messageThread,
+        });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
+      });
+  });
+
+  router.post("/:id", (req, res) => {
+    const user = req.session.userId;
+    const messageThread = req.params.id;
+    console.log("here too ", messageThread);
+    console.log("body: ", req.body);
+    const message = Object.values(req.body);
+    return db
+      .query(
+        `
+      INSERT INTO user_message (thread_id, content)
+      VALUES ($1, $2)
+      RETURNING *
+    ;`,
+        [messageThread, message[0]]
+      )
+      .then(() => {
+        res.render("index");
       });
   });
 
@@ -59,6 +82,7 @@ module.exports = (db) => {
     const headerArr = req.headers.referer.split("/");
     const listingId = headerArr[headerArr.length - 1];
     const message = Object.values(req.body);
+    console.log("listingID", listingId);
     console.log("message: ", message);
     const user = req.session.userId;
     console.log("user: ", user);

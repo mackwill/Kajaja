@@ -37,7 +37,7 @@
 
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
-    <section id="all-messages">
+    <section id="message-thread">
       <% messages.forEach(message => { %>
       <article class="message">
         <!-- <div class="listing-photo">
@@ -57,11 +57,31 @@
           </div>
         </div>
       </article>
+
       <% }) %>
     </section>
+    <form method="POST" action="/api/messages/<%= threadId %>">
+      <div class="form-group">
+        <label for="message-respond">Respond To Conversation</label>
+        <input
+          name="message-respond"
+          type="text"
+          class="form-control"
+          id="message-respond"
+          placeholder="Enter your message here."
+        />
+      </div>
+      <button
+        id="respond-to-conversation"
+        type="submit"
+        class="btn btn-primary"
+      >
+        Submit
+      </button>
+    </form>
     <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
       crossorigin="anonymous"
     ></script>
     <script

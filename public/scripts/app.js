@@ -1,12 +1,18 @@
-// // const e = require("express");
-
-// $(() => {
-//   $(document).on("click", "#send-seller-message", function (e) {
-//     e.preventDefault();
-//     $.ajax({
-//       method: "POST",
-
-//     })
+$(document).ready(() => {
+  $(document).on("click", "#respond-to-conversation", function (e) {
+    const splitURL = window.location.href.split("/");
+    const messageThread = splitURL[splitURL.length - 1];
+    console.log("messageThread", messageThread);
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    const formData = $(this).parent().serialize();
+    console.log("formData: ", formData);
+    $.post(`/api/messages/${messageThread}`, formData).then(() => {
+      $("section").load("#message-thread");
+      // });
+    });
+  });
+});
 
 // //   });
 // //   //   $.ajax({
@@ -27,4 +33,3 @@
 // //   //     $("#all-listings").prepend(createSingleListing(listing));
 // //   //   //   });
 // //   //   // });
-// });
