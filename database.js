@@ -83,3 +83,16 @@ const getListings = function(data){
   .catch((e) => null)
 }
 exports.getListings = getListings
+
+
+const getFavouritesListings = function(userId){
+  return db.query(`
+    SELECT * FROM user_favourites
+    JOIN users ON users.id = user_id
+    JOIN listings ON listings.id = listing_id
+    WHERE users.id = $1
+  `, [userId])
+  .then(res => res.rows)
+  .catch((e) => null)
+}
+exports.getFavouritesListings = getFavouritesListings

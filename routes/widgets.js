@@ -96,6 +96,19 @@ module.exports = (db) => {
       .catch((e) => res.render("create_listing_page"));
   });
 
+  router.get('/favourites', (req, res) => {
+    const templateVars = {}
+    templateVars.user = req.session.userId
+
+    database.getFavouritesListings(req.session.userId)
+      .then((data) => {
+        templateVars.listings = data
+        res.render("favourites_page", templateVars);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  })
 
   return router;
 };

@@ -131,5 +131,17 @@ module.exports = (db) => {
     .catch((e) => res.redirect("/"))
   })
 
+  router.get('/account', (req, res) => {
+    // const templateVars = {user:null}
+    // database.getUserWithId(req.session.userId)
+    // .then(user => {
+    //   templateVars.user = user
+    //   res.render("account_page", templateVars)
+    // })
+    // .catch((e) => {
+    //   res.render("account_page", templateVars)
+    // })
+  })
+
   return router;
 };
