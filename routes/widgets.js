@@ -41,8 +41,11 @@ module.exports = (db) => {
         if(req.session.userId){
            database.getUserWithId(req.session.userId)
           .then(user => {
+            if(!req.session.history){
+              req.session.history = []
+            }
+            req.session.history.push(Number(req.params.id))
             templateVars.user = user
-            console.log(templateVars)
             res.render("single_listing", templateVars);
           })
           .catch((e) => {

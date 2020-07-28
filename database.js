@@ -162,3 +162,14 @@ const getSingleListing = function(id){
   .catch((e) => null)
 }
 exports.getSingleListing = getSingleListing
+
+const getRecentlyViewedListings = function(arrayOfId){
+  const finalArr = arrayOfId.splice(0,2)
+  return db.query(`
+    SELECT * FROM listings
+    WHERE (id IN($1, $2))
+  `, finalArr)
+  .then(res => res.rows)
+  .catch((e) => null)
+}
+exports.getRecentlyViewedListings = getRecentlyViewedListings
