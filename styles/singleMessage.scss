@@ -1,0 +1,50 @@
+#message-listing-title {
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+}
+#message-thread {
+  .container {
+    border: 1px solid lightgray;
+    height: 30rem;
+    overflow-y: scroll;
+    padding: 2rem;
+    border-radius: 0.25rem;
+    background-color: #ffffff;
+    margin: auto;
+  }
+
+  .card {
+    width: 90%;
+    margin-bottom: 1rem;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    background-color: inherit;
+    padding: 1rem;
+    margin-bottom: 0;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .header-right > * {
+    margin-left: 0.25rem;
+  }
+
+  .message-content {
+    padding: 1rem;
+  }
+}
+
+#message-respond-container {
+  margin: auto;
+  margin-top: 1rem;
+}
