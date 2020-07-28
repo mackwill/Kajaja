@@ -5,20 +5,19 @@
  * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
  */
 
-const express = require('express');
-const router  = express.Router();
-const bcrypt = require('bcrypt')
-const database = require('../database')
-
+const express = require("express");
+const router = express.Router();
+const bcrypt = require("bcrypt");
+const database = require("../database");
+const helpers = require("../helper");
 
 module.exports = (db) => {
   //Get login form
   router.get("/login", (req, res) => {
-
-    const templateVars = {user:null, message:null}
-    if(req.session.message){
-      templateVars.message = req.session.message
-      req.session.message = null
+    const templateVars = { user: null, message: null };
+    if (req.session.message) {
+      templateVars.message = req.session.message;
+      req.session.message = null;
     }
     res.render("login_page", templateVars);
   });
@@ -28,110 +27,91 @@ module.exports = (db) => {
     // if(req.session.userId){
     //   res.redirect('/')
     // }
-    const templateVars = {user:null}
+    const templateVars = { user: null };
     res.render("registration_page", templateVars);
   });
 
   // Create a new user
-  router.post('/', (req, res) => {
+  router.post("/", (req, res) => {
     const user = req.body;
     user.password = bcrypt.hashSync(user.password, 12);
-    console.log(user)
-    database.getUserWithEmail(user.email)
-    .then(existingUser => {
-      if(existingUser){
-        res.send('Sorry user already exist')
-      }else{
-        database.addUser(user)
-        .then(user => {
-          if (!user) {
-            res.send({error: "error"});
-            return;
-          }
-          req.session.userId = user.id;
-          res.redirect('/')
-        })
-        .catch(e => res.send(e));
+    console.log(user);
+    database.getUserWithEmail(user.email).then((existingUser) => {
+      if (existingUser) {
+        res.send("Sorry user already exist");
+      } else {
+        database
+          .addUser(user)
+          .then((user) => {
+            if (!user) {
+              res.send({ error: "error" });
+              return;
+            }
+            req.session.userId = user.id;
+            res.redirect("/");
+          })
+          .catch((e) => res.send(e));
       }
     });
-    })
-
+  });
 
   //Login helper
-  const login =  function(email, password) {
-    return database.getUserWithEmail(email)
-    .then(user => {
+  const login = function (email, password) {
+    return database.getUserWithEmail(email).then((user) => {
       if (bcrypt.compareSync(password, user.password)) {
         return user;
       }
       return null;
     });
-  }
+  };
   exports.login = login;
 
-  router.post('/login', (req, res) => {
-    const {email, password} = req.body;
+  router.post("/login", (req, res) => {
+    const { email, password } = req.body;
     login(email, password)
-      .then(user => {
+      .then((user) => {
         if (!user) {
-          res.send({error: "error"});
+          res.send({ error: "error" });
           return;
         }
         req.session.userId = user.id;
-        res.redirect('/')
+        res.redirect("/");
       })
-      .catch(e => res.send(e));
+      .catch((e) => res.send(e));
   });
-
 
   //Logout a user
-  router.get('/logout', (req, res) => {
+  router.get("/logout", (req, res) => {
     req.session.userId = null;
-    res.redirect('/api/users/login');
+    res.redirect("/api/users/login");
   });
 
-  const chrono = function(number) {
-    let result = '';
-    if (number / (60 * 60 * 24 * 356 * 1000) >= 1) {
-      result = `${Math.floor(number / (60 * 60 * 24 * 365 * 1000))} years ago`;
-    } else if (number / (60 * 60 * 24 * 30 * 1000) >= 1) {
-      result = `${Math.floor(number / (60 * 60 * 24 * 30 * 1000))} months ago`;
-    } else if (number / (60 * 60 * 24 * 30 * 1000) >= 1) {
-      result = `${Math.floor(number / (60 * 60 * 24 * 1000))} days ago`;
-    } else if (number / (60 * 60 * 1000) >= 1) {
-      result = `${Math.floor(number / (60 * 60 * 1000))} hours ago`;
-    } else if (number / (60 * 1000) >= 1) {
-      result = `${Math.floor(number / (60 * 1000))} minutes ago`;
-    } else {
-      result = `few seconds ago`;
-    }
-    return result;
-  };
-
   //Get a profile page for specific user
-  router.get('/:id', (req, res) => {
-    const templateVars = {user: null}
-   database.getPublicInfoUserById(req.params.id)
-    .then(data => {
-      data.unix = chrono(new Date - data[0].join_date.getTime())
-      templateVars.data = data
+  router.get("/:id", (req, res) => {
+    const templateVars = { user: null };
+    database
+      .getPublicInfoUserById(req.params.id)
+      .then((data) => {
+        data.unix = helpers.chrono(new Date() - data[0].join_date.getTime());
+        templateVars.data = data;
 
-      if(req.session.userId){
-        database.getUserWithId(req.session.userId)
-        .then(user => {
-          templateVars.user = user
-          res.render("profile_page", templateVars)
-        })
-        .catch((e) => {
-          res.render("profile_page", templateVars)
-        })
-      }
-      res.render("profile_page", templateVars)
-    })
-    .catch((e) => res.redirect("/"))
-  })
+        if (req.session.userId) {
+          database
+            .getUserWithId(req.session.userId)
+            .then((user) => {
+              templateVars.user = user;
+              res.render("profile_page", templateVars);
+            })
+            .catch((e) => {
+              res.render("profile_page", templateVars);
+            });
+        }
+        res.render("profile_page", templateVars);
+      })
+      .catch((e) => res.redirect("/"));
+  });
 
-  router.get('/account', (req, res) => {
+  router.get("/account", (req, res) => {
     // const templateVars = {user:null}
     // database.getUserWithId(req.session.userId)
     // .then(user => {
@@ -141,7 +121,7 @@ module.exports = (db) => {
     // .catch((e) => {
     //   res.render("account_page", templateVars)
     // })
-  })
+  });
 
   return router;
 };

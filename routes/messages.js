@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const database = require("../database");
-const helper = require("../helper");
+const helpers = require("../helper");
 module.exports = (db) => {
   router.get("/", (req, res) => {
     const templateVars = {};
@@ -14,15 +14,13 @@ module.exports = (db) => {
       WHERE
         owner_id = $1
         OR sender_id = $1
-      GROUP BY
-        message_thread.id,
-        listings.id,
-        user_message.id
+      ORDER BY send_date DESC;
     ;`,
       [user]
     )
       .then((data) => {
-        templateVars.messages = helper.filterMessagesByUser(data.rows);
+        console.log("data rows for /messages: ", data.rows);
+        templateVars.messages = helpers.filterMessagesByUser(data.rows);
 
         if (req.session.userId) {
           database
@@ -63,8 +61,10 @@ module.exports = (db) => {
       [messageThread]
     )
       .then((data) => {
-        templateVars.messages = data.rows;
+        templateVars.messages = helpers.timeSinceSent(data.rows);
         templateVars.threadId = messageThread;
+        templateVars.title = data.rows[0].title;
+        console.log(templateVars.messages);
 
         if (req.session.userId) {
           database

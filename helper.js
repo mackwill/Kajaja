@@ -8,40 +8,39 @@ const filterMessagesByUser = function (messages) {
       messagesByListing.push(message);
     }
   });
+  console.log("messagesByListing", messagesByListing);
   return messagesByListing;
 };
 
 exports.filterMessagesByUser = filterMessagesByUser;
 
-// const createMessage = (message) => {
-//   return `
-//   <a class="message-link" href="/api/messages/<%=message.thread_id%>">
-//     <article class="message">
-//       <div class="listing-photo">
-//         <img src="https://via.placeholder.com/100x100" />
-//       </div>
-//       <div class="message-content container-fluid">
-//         <div class="message-header">
-//           <div class="message-header-left">
-//             <h3><%= message.title %></h3>
-//           </div>
-//           <div class="message-header-right">
-//             <h3>$<%= message.price %></h3>
-//           </div>
-//         </div>
-//         <div class="message-content">
-//           <%= message.content %>
-//         </div>
-//       </div>
-//     </article>
-//   </a>
-// `;
-// };
+const chrono = function (number) {
+  let result = "";
+  if (number / (60 * 60 * 24 * 356 * 1000) >= 1) {
+    result = `${Math.floor(number / (60 * 60 * 24 * 365 * 1000))} years ago`;
+  } else if (number / (60 * 60 * 24 * 30 * 1000) >= 1) {
+    result = `${Math.floor(number / (60 * 60 * 24 * 30 * 1000))} months ago`;
+  } else if (number / (60 * 60 * 24 * 30 * 1000) >= 1) {
+    result = `${Math.floor(number / (60 * 60 * 24 * 1000))} days ago`;
+  } else if (number / (60 * 60 * 1000) >= 1) {
+    result = `${Math.floor(number / (60 * 60 * 1000))} hours ago`;
+  } else if (number / (60 * 1000) >= 1) {
+    result = `${Math.floor(number / (60 * 1000))} minutes ago`;
+  } else {
+    result = `a few seconds ago`;
+  }
+  return result;
+};
 
-// const renderMessages = (messages) => {
-//   messages.forEach((message) => {
-//     $("#all-messages").preped(createMessage(message));
-//   });
-// };
+exports.chrono = chrono;
 
-// exports.renderMessages = renderMessages;
+const timeSinceSent = (messages) => {
+  const updatedMessages = [];
+  messages.forEach((message) => {
+    message.sent = chrono(new Date() - message.send_date);
+    updatedMessages.push(message);
+  });
+  return updatedMessages;
+};
+
+exports.timeSinceSent = timeSinceSent;

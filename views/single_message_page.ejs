@@ -37,7 +37,11 @@
 
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
+
     <section id="message-thread">
+      <div id="message-listing-title">
+        <h2>Message Thread: <%= title %></h2>
+      </div>
       <% messages.forEach(message => { %>
       <article class="message">
         <!-- <div class="listing-photo">
@@ -49,7 +53,7 @@
               <h3><%= message.name %></h3>
             </div>
             <div class="message-header-right">
-              <h3>$<%= message.price %></h3>
+              <h3><%= message.sent %></h3>
             </div>
           </div>
           <div class="message-content">
