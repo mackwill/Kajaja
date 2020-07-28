@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+    <!-- <BOOTSTRAP> -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+      <!-- <BOOTSTRAP> -->
+
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+    <script
+      src=“https://code.jquery.com/jquery-3.5.1.js”
+      integrity=“sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=”
+      crossorigin=“anonymous”
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="module" src="/kajaja/public/scripts/uploadImages.js"></script>
+    <style>
+      .hidden{display:none;}
+    </style>
+  </head>
+
+  <body>
+    <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
+    <article class="card-body mx-auto" style="max-width: 600px;">
+      <h4 class="card-title mt-3 text-center">Add images to your ad</h4>
+      <form method="POST" action="/api/widgets/add-images">
+
+        <div class="form-group">
+          <label for="exampleFormControlFile1">Example file input</label>
+          <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1">
+        </div>
+
+        <button type="submit" class="btn btn-primary p-3">Save this image to my ad</button>
+      </form>
+    </article>
+
+
+    <script type="text/javascript">
+    const input = document.querySelector('input')
+    input.addEventListener('click', previewFile())
+        function previewFile() {
+          const preview = document.querySelector('img');
+          const file = document.querySelector('input[type=file]').files[0];
+          const reader = new FileReader();
+
+          reader.addEventListener("load", function () {
+            // convert image file to base64 string
+            preview.src = reader.result;
+          }, false);
+
+          if (file) {
+            reader.readAsDataURL(file);
+          }
+        }
+    </script>
+
+  </body>
+</html>

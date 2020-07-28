@@ -110,7 +110,7 @@ module.exports = (db) => {
 
   //Get a profile page for specific user
   router.get('/:id', (req, res) => {
-    const templateVars = {user: null}
+    const templateVars = {user: null, activeProfilePage: false}
    database.getPublicInfoUserById(req.params.id)
     .then(data => {
       data.unix = chrono(new Date - data[0].join_date.getTime())
@@ -119,6 +119,9 @@ module.exports = (db) => {
       if(req.session.userId){
         database.getUserWithId(req.session.userId)
         .then(user => {
+          if(user.id === req.session.userId){
+            templateVars.activeProfilePage = true
+          }
           templateVars.user = user
           res.render("profile_page", templateVars)
         })
@@ -131,16 +134,16 @@ module.exports = (db) => {
     .catch((e) => res.redirect("/"))
   })
 
-  router.get('/account', (req, res) => {
-    // const templateVars = {user:null}
-    // database.getUserWithId(req.session.userId)
-    // .then(user => {
-    //   templateVars.user = user
-    //   res.render("account_page", templateVars)
-    // })
-    // .catch((e) => {
-    //   res.render("account_page", templateVars)
-    // })
+  router.get('/my-account', (req, res) => {
+    const templateVars = {user:null}
+    database.getUserWithId(req.session.userId)
+    .then(user => {
+      templateVars.user = user
+      res.render("account_page", templateVars)
+    })
+    .catch((e) => {
+      res.render("account_page", templateVars)
+    })
   })
 
   return router;

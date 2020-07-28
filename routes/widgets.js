@@ -91,10 +91,22 @@ module.exports = (db) => {
     database
       .createNewListing(listing)
       .then((listing) => {
-        res.redirect(`/api/widgets/listings/${listing.id}`);
+        req.session.listingId = listing.id
+        res.redirect('/api/widgets/add-images')
       })
       .catch((e) => res.render("create_listing_page"));
   });
+
+  router.get('/add-images', (req, res) => {
+    const templateVars = {user: req.session.userId}
+    res.render('add_images_page', templateVars)
+  })
+
+  router.post('/add-images', (req, res) => {
+    console.log(req.body)
+    //res.redirect(`/api/widgets/listings/${listing.id}`);
+    res.send({good:'good'})
+  })
 
   router.get('/favourites', (req, res) => {
     const templateVars = {}

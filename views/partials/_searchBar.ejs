@@ -27,18 +27,26 @@
   </head>
 
   <body>
-    <form id="search" method="GET" action="/api/widgets/listings">
-
-    <div class="columns is-vcentered mt-0" id="search-container">
-      <div class="column is-6">
-        <div class="control">
-          <input class="input" type="text" placeholder="Text input" name="q"/>
+    <form id="search" method="GET" action="/api/widgets/listings" class="m-3">
+      <div class="form-row row">
+        <div class="form-group col-md-6">
+          <input type="text" class="form-control" id="search_query" name='q' placeholder="search for">
         </div>
-      </div>
-      <div class="column">
-          <button class="button">Search</button>
+        <div class="form-group col-md-4">
+          <select id="search_category" class="form-control" name='category'>
+            <option selected>Categories...</option>
+            <option value="car">Car</option>
+            <option value="furniture">Furniture</option>
+            <option value="books">Book</option>
+            <option value="electronics">Electronic</option>
+          </select>
+        </div>
+        <div class="form-group col-md-2">
+          <button type="submit" class="btn btn-primary">Search</button>
       </div>
     </div>
   </form>
+
+
   </body>
 </html>
