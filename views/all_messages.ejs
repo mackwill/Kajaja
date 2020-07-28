@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/navbar.css" type="text/css" />
     <link rel="stylesheet" href="/styles/searchBar.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/listings.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/allMessages.css" type="text/css" />
 
     <script
       defer
@@ -37,30 +37,32 @@
 
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
-    <section id="all-messages">
-      <% messages.forEach(message => { %>
-      <a class="message-link" href="/api/messages/<%=message.thread_id%>">
-        <article class="message">
-          <!-- <div class="listing-photo">
-            <img src="https://via.placeholder.com/100x100" />
-          </div> -->
-          <div class="message-content container-fluid">
-            <div class="message-header">
-              <div class="message-header-left">
-                <h3><%= message.title %></h3>
+    <div class="container">
+      <section id="all-messages">
+        <% messages.forEach(message => { %>
+        <a class="message-link" href="/api/messages/<%=message.thread_id%>">
+          <div class="card message">
+            <!-- <div class="listing-photo col-2">
+              <img src="https://via.placeholder.com/100x100" />
+            </div> -->
+            <div class="message-content container">
+              <div class="header">
+                <div class="card-title message-header-left">
+                  <h3><%= message.title %></h3>
+                </div>
+                <div class="message-header-right">
+                  <h3><%= message.sent %></h3>
+                </div>
               </div>
-              <div class="message-header-right">
-                <h3>$<%= message.price %></h3>
+              <div class="message-content">
+                <p><%= message.content %></p>
               </div>
-            </div>
-            <div class="message-content">
-              <%= message.content %>
             </div>
           </div>
-        </article>
-      </a>
-      <% }) %>
-    </section>
+        </a>
+        <% }) %>
+      </section>
+    </div>
     <script
       src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
       integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

@@ -20,7 +20,9 @@ module.exports = (db) => {
     )
       .then((data) => {
         console.log("data rows for /messages: ", data.rows);
-        templateVars.messages = helpers.filterMessagesByUser(data.rows);
+        templateVars.messages = helpers.timeSinceSent(
+          helpers.filterMessagesByUser(data.rows)
+        );
 
         if (req.session.userId) {
           database
