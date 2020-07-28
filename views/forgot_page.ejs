@@ -3,12 +3,12 @@
   <head>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <title>URL - TinyApp Example</title>
   </head>
-<body class="text-center">
-  <h2>FORGOT YOUR PASSWORD?</h2>
-  <p>Enter the email you signed up with and we'll let you reset it.</p>
+<body>
+
+  <h4>FORGOT YOUR PASSWORD?</h4>
   <%- include('partials/forgot_form') %>
+
   <% if(message) {%>
     <div class="alert alert-warning" role="alert">
       <%= message %>

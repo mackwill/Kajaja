@@ -39,11 +39,17 @@
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
 
     <style>
-      .category-square {
-        display: flex;
+      img:hover {
+        opacity: 0.6;
+        cursor: pointer;
       }
-      .category-square img {
-        margin: 1em 1em;
+      .scrolling-wrapper {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+      }
+      .scrolling-wrapper .card {
+        display: inline-block;
       }
     </style>
   </head>
@@ -52,30 +58,116 @@
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
 
     <div>
+      <h1>Random Links about stuff</h1>
+
+      <div class="scrolling-wrapper ml-3 mr-3" style="width: 100vw;">
+        <div class="card m-3" style="width: 18rem;">
+          <img src="images/how_to_kajaja.png" class="img-fluid" />
+        </div>
+        <div class="card m-3" style="width: 18rem;">
+          <img src="images/kajaja_covid.png" class="img-fluid" />
+        </div>
+        <div class="card m-3" style="width: 18rem;">
+          <img src="images/local_economy.png" class="img-fluid" />
+        </div>
+      </div>
+
+      <div>
+        <h1>Recently Seen/ Recommended for you</h1>
+        <div class="row mr-3 ml-3">
+          <div class="card col-3">
+            <img
+              src="https://cdn.chinadialogue.net/content/uploads/2020/05/20080228/picture-of-a-stack-of-books-with-some-harry-potter-glasses-768x512.jpg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">Item title</h5>
+              <p class="card-text">$Price.</p>
+              <a href="#" class="btn btn-primary">See item</a>
+            </div>
+          </div>
+          <div class="card col-3">
+            <img
+              src="https://cdn.chinadialogue.net/content/uploads/2020/05/20080228/picture-of-a-stack-of-books-with-some-harry-potter-glasses-768x512.jpg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">Item title</h5>
+              <p class="card-text">$Price.</p>
+              <a href="#" class="btn btn-primary">See item</a>
+            </div>
+          </div>
+          <div class="card col-3">
+            <img
+              src="https://cdn.chinadialogue.net/content/uploads/2020/05/20080228/picture-of-a-stack-of-books-with-some-harry-potter-glasses-768x512.jpg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">Item title</h5>
+              <p class="card-text">$Price.</p>
+              <a href="#" class="btn btn-primary">See item</a>
+            </div>
+          </div>
+          <div class="card col-3">
+            <img
+              src="https://cdn.chinadialogue.net/content/uploads/2020/05/20080228/picture-of-a-stack-of-books-with-some-harry-potter-glasses-768x512.jpg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">Item title</h5>
+              <p class="card-text">$Price.</p>
+              <a href="#" class="btn btn-primary">See item</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <h1>Popular Categories</h1>
-      <div class="category-square">
-        <img src="https://via.placeholder.com/150" width="100%" />
-        <img src="https://via.placeholder.com/150" width="100%" />
+      <div class="row ml-3 mr-3">
+        <img
+          src="https://cdn.chinadialogue.net/content/uploads/2020/05/20080228/picture-of-a-stack-of-books-with-some-harry-potter-glasses-768x512.jpg"
+          class="col-lg-3 col-6 mt-2"
+        />
+        <img
+          src="https://www.caasco.com/-/media/CAA-Magazine-Content/Articles/Auto-Advice/2019/5-things-to-know-when-you-shop-for-a-used-car/usedcars-thumb.jpg"
+          width="100%"
+          class="col-lg-3 col-6 mt-2"
+        />
+        <img
+          src="https://www.canadasbossleatherfurniture.com/wp-content/uploads/2015/12/Screen-Shot-2015-12-11-at-11.38.31-AM-300x225.jpg"
+          width="100%"
+          class="col-lg-3 col-6 mt-2"
+        />
+        <img
+          src="https://www.online-tech-tips.com/wp-content/uploads/2019/12/electronic-gadgets.jpeg"
+          width="100%"
+          class="col-lg-3 col-6 mt-2"
+        />
       </div>
-      <div class="category-square">
-        <img src="https://via.placeholder.com/150" width="100%" />
-        <img src="https://via.placeholder.com/150" width="100%" />
-      </div>
-    </div>
-    <div>
-      <h1>Recommended For You</h1>
-      <div class="category-square">
-        <img src="https://via.placeholder.com/200" width="100%" />
-        <img src="https://via.placeholder.com/200" width="100%" />
-        <img src="https://via.placeholder.com/200" width="100%" />
-      </div>
-    </div>
-    <div>
-      <h1>Recently Seen</h1>
-      <div class="category-square">
-        <img src="https://via.placeholder.com/200" width="100%" />
-        <img src="https://via.placeholder.com/200" width="100%" />
-        <img src="https://via.placeholder.com/200" width="100%" />
+      <div class="row ml-3 mr-3">
+        <img
+          src="https://cdn.chinadialogue.net/content/uploads/2020/05/20080228/picture-of-a-stack-of-books-with-some-harry-potter-glasses-768x512.jpg"
+          class="col-lg-3 col-6 mt-2"
+        />
+        <img
+          src="https://www.caasco.com/-/media/CAA-Magazine-Content/Articles/Auto-Advice/2019/5-things-to-know-when-you-shop-for-a-used-car/usedcars-thumb.jpg"
+          width="100%"
+          class="col-lg-3 col-6 mt-2"
+        />
+        <img
+          src="https://www.canadasbossleatherfurniture.com/wp-content/uploads/2015/12/Screen-Shot-2015-12-11-at-11.38.31-AM-300x225.jpg"
+          width="100%"
+          class="col-lg-3 col-6 mt-2"
+        />
+        <img
+          src="https://www.online-tech-tips.com/wp-content/uploads/2019/12/electronic-gadgets.jpeg"
+          width="100%"
+          class="col-lg-3 col-6 mt-2"
+        />
       </div>
     </div>
   </body>

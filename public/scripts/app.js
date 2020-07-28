@@ -36,3 +36,13 @@ $(document).ready(() => {
 // //   //     $("#all-listings").prepend(createSingleListing(listing));
 // //   //   //   });
 // //   //   // });
+<<<<<<< HEAD
+=======
+// });
+// $(() => {
+//   $(document).on('click', '#notificationSwitch', function(e){
+
+//     console.log($('#notificationSwitch').val())
+//   })
+// })
+>>>>>>> 6c514ae1e3cfb799663472c4c040945c976d535d

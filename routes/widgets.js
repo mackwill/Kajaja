@@ -9,20 +9,40 @@ const express = require("express");
 const router = express.Router();
 const database = require("../database");
 
+const chrono = function(number) {
+  let result = '';
+  if (number / (60 * 60 * 24 * 356 * 1000) >= 1) {
+    result = `${Math.floor(number / (60 * 60 * 24 * 365 * 1000))} years ago`;
+  } else if (number / (60 * 60 * 24 * 30 * 1000) >= 1) {
+    result = `${Math.floor(number / (60 * 60 * 24 * 30 * 1000))} months ago`;
+  } else if (number / (60 * 60 * 24 * 30 * 1000) >= 1) {
+    result = `${Math.floor(number / (60 * 60 * 24 * 1000))} days ago`;
+  } else if (number / (60 * 60 * 1000) >= 1) {
+    result = `${Math.floor(number / (60 * 60 * 1000))} hours ago`;
+  } else if (number / (60 * 1000) >= 1) {
+    result = `${Math.floor(number / (60 * 1000))} minutes ago`;
+  } else {
+    result = `few seconds ago`;
+  }
+  return result;
+};
 
 module.exports = (db) => {
 
   router.get("/listings/:id", (req, res) => {
     const templateVars = {}
-    const values = [req.params.id];
-    db.query(`SELECT * FROM listings WHERE id = $1;`, values)
+    database.getSingleListing(req.params.id)
       .then((data) => {
-        templateVars.listing = data.rows[0]
+        templateVars.listing = data
+        templateVars.chrono_listing = chrono(new Date - data.creation_date.getTime())
+        templateVars.chrono_owner = chrono(new Date - data.join_date.getTime())
 
+        templateVars.data = data
         if(req.session.userId){
            database.getUserWithId(req.session.userId)
           .then(user => {
             templateVars.user = user
+            console.log(templateVars)
             res.render("single_listing", templateVars);
           })
           .catch((e) => {
@@ -31,6 +51,7 @@ module.exports = (db) => {
           })
         }else{
         templateVars.user = null
+        console.log(templateVars)
         res.render("single_listing", templateVars);
         }
       })
@@ -91,10 +112,22 @@ module.exports = (db) => {
     database
       .createNewListing(listing)
       .then((listing) => {
-        res.redirect(`/api/widgets/listings/${listing.id}`);
+        req.session.listingId = listing.id
+        res.redirect('/api/widgets/add-images')
       })
       .catch((e) => res.render("create_listing_page"));
   });
+
+  router.get('/add-images', (req, res) => {
+    const templateVars = {user: req.session.userId}
+    res.render('add_images_page', templateVars)
+  })
+
+  router.post('/add-images', (req, res) => {
+    console.log(req.body)
+    //res.redirect(`/api/widgets/listings/${listing.id}`);
+    res.send({good:'good'})
+  })
 
   router.get('/favourites', (req, res) => {
     const templateVars = {}

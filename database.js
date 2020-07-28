@@ -1,4 +1,6 @@
 const db = require('./server')
+const bcrypt = require('bcrypt')
+
 
 const getUserWithEmail = function(email) {
   return db.query(`
@@ -69,16 +71,33 @@ exports.createNewListing = createNewListing
 
 
 const getListings = function(data){
-  return db.query(`
-    SELECT * FROM listings
-    WHERE (setweight(to_tsvector(title), 'A') ||
-    setweight(to_tsvector(category), 'B') ||
-    setweight(to_tsvector(coalesce(description, '')), 'C'))
-    @@ to_tsquery($1)
-    ORDER BY ts_rank((setweight(to_tsvector(title), 'A') ||
-    setweight(to_tsvector(category), 'B') ||
-    setweight(to_tsvector(coalesce(description, '')), 'B')), to_tsquery($1)) DESC
-  `, [data.q])
+  let value = null
+  let finalQuery = null
+  if(data.q){
+    value = data.q
+      let stringQuery = `SELECT * FROM listings
+      WHERE (setweight(to_tsvector(title), 'A') ||
+      setweight(to_tsvector(category), 'B') ||
+      setweight(to_tsvector(coalesce(description, '')), 'C'))
+      @@ to_tsquery($1)
+      `
+      if(data.category !== 'Categories...'){
+        stringQuery += `AND category = '${data.category}'`
+      }
+      let endQuery = `
+      ORDER BY ts_rank((setweight(to_tsvector(title), 'A') ||
+      setweight(to_tsvector(category), 'B') ||
+      setweight(to_tsvector(coalesce(description, '')), 'B')), to_tsquery($1)) DESC
+    `
+    finalQuery = stringQuery.concat(endQuery)
+  }else if(data.category){
+    value = data.category
+    finalQuery = `
+    SELECT * FROM listings WHERE category = $1`
+  }else{
+    finalQuery = `SELECT * FROM listings`
+  }
+  return db.query(finalQuery, [value])
   .then(res => res.rows)
   .catch((e) => null)
 }
@@ -96,3 +115,50 @@ const getFavouritesListings = function(userId){
   .catch((e) => null)
 }
 exports.getFavouritesListings = getFavouritesListings
+
+const updateUserById = function(user, changes){
+  const {name, phone, email} = changes
+  const {id} = user
+  const initQuery = `
+  UPDATE users
+  SET name = $1, phone_number = $2, email = $3
+  `
+  if(changes.newpassword !== ''){
+    initQuery += `, password = ${bcrypt.hashSync(changes.newpassword, 12)}`
+  }
+
+  endQuery = `
+  WHERE id = $4
+  RETURNING *`
+  let finalQuery = initQuery.concat(endQuery)
+
+  console.log(finalQuery)
+  return db.query(finalQuery, [name, phone, email, id])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.updateUserById = updateUserById
+
+
+const getUserByResetToken = function(token){
+  const newToken = new Date(token).toISOString()
+  return db.query(`
+    SELECT * FROM users
+    WHERE join_date = $1
+  `, [newToken])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.getUserByResetToken = getUserByResetToken
+
+
+const getSingleListing = function(id){
+  return db.query(`
+    SELECT listings.*, users.join_date, users.name, users.phone_number, users.email FROM listings
+    JOIN users ON users.id = owner_id
+    WHERE listings.id = $1
+  `, [id])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.getSingleListing = getSingleListing
