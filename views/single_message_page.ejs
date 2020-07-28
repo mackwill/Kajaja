@@ -43,7 +43,7 @@
         <h2>Message Thread: <%= title %></h2>
       </div>
       <% messages.forEach(message => { %>
-      <article class="message">
+      <div class="message">
         <!-- <div class="listing-photo">
             <img src="https://via.placeholder.com/100x100" />
           </div> -->
@@ -60,7 +60,7 @@
             <%= message.content %>
           </div>
         </div>
-      </article>
+      </div>
 
       <% }) %>
     </section>
