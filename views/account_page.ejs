@@ -25,11 +25,16 @@
 
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
-    <h1>THIS IS THE ACCOUNT PAGE</h1>
-    <!-- <div class="card">
+
+    <% if(message) {%>
+      <div class="alert alert-warning" role="alert">
+        <%= message %>
+      </div>
+    <%}%>
+    <div class="card">
       <div class="card-body">
         <h4 class="card-text text-warning"><a href="/urls">Return to Dashboard</a></h4>
-        <form method="POST" action="/user/<%= user.id %>?_method=PUT">
+        <form method="POST" action="/api/users/my-account">
 
           <label for="userName" class="mt-3">Change User Name</label>
           <input type="text" class="form-control" id='account_name' value="<%= user.name %>" name='name'><br>
@@ -57,6 +62,6 @@
         </form>
       </div>
     <div class="card-footer text-muted"></div>
-  </div> -->
+  </div>
   </body>
 </html>

@@ -1,4 +1,6 @@
 const db = require('./server')
+const bcrypt = require('bcrypt')
+
 
 const getUserWithEmail = function(email) {
   return db.query(`
@@ -84,7 +86,6 @@ const getListings = function(data){
   setweight(to_tsvector(coalesce(description, '')), 'B')), to_tsquery($1)) DESC
 `
 let finalQuery = stringQuery.concat(endQuery)
-console.log(finalQuery)
   return db.query(finalQuery, [data.q])
   .then(res => res.rows)
   .catch((e) => null)
@@ -103,3 +104,26 @@ const getFavouritesListings = function(userId){
   .catch((e) => null)
 }
 exports.getFavouritesListings = getFavouritesListings
+
+const updateUserById = function(user, changes){
+  const {name, phone, email} = changes
+  const {id} = user
+  const initQuery = `
+  UPDATE users
+  SET name = $1, phone_number = $2, email = $3
+  `
+  if(changes.newpassword !== ''){
+    initQuery += `, password = ${bcrypt.hashSync(changes.newpassword, 12)}`
+  }
+
+  endQuery = `
+  WHERE id = $4
+  RETURNING *`
+  let finalQuery = initQuery.concat(endQuery)
+
+  console.log(finalQuery)
+  return db.query(finalQuery, [name, phone, email, id])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.updateUserById = updateUserById

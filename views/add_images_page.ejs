@@ -29,7 +29,7 @@
 
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
-    <article class="card-body mx-auto" style="max-width: 600px;">
+    <!-- <article class="card-body mx-auto" style="max-width: 600px;">
       <h4 class="card-title mt-3 text-center">Add images to your ad</h4>
       <form method="POST" action="/api/widgets/add-images">
 
@@ -40,27 +40,11 @@
 
         <button type="submit" class="btn btn-primary p-3">Save this image to my ad</button>
       </form>
+    </article> -->
+    <article>
+      <img width="250" height="250" id="placeholder" src="http://placehold.it/250x250&text='click to upload'">
+      <input class="hidden" type="file" onchange="previewFile()" id="img-upload">
     </article>
-
-
-    <script type="text/javascript">
-    const input = document.querySelector('input')
-    input.addEventListener('click', previewFile())
-        function previewFile() {
-          const preview = document.querySelector('img');
-          const file = document.querySelector('input[type=file]').files[0];
-          const reader = new FileReader();
-
-          reader.addEventListener("load", function () {
-            // convert image file to base64 string
-            preview.src = reader.result;
-          }, false);
-
-          if (file) {
-            reader.readAsDataURL(file);
-          }
-        }
-    </script>
 
   </body>
 </html>

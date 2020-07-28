@@ -90,6 +90,45 @@ module.exports = (db) => {
     res.redirect('/api/users/login');
   });
 
+  router.get('/my-account', (req, res) => {
+    const templateVars = {user:null, message: null}
+    database.getUserWithId(req.session.userId)
+    .then(user => {
+      templateVars.user = user
+      res.render("account_page", templateVars)
+    })
+    .catch((e) => {
+      res.render("account_page", templateVars)
+    })
+  })
+
+  router.post('/my-account', (req, res) => {
+    const templateVars = {user:null, message:null}
+    const changes = req.body
+    database.getUserWithId(req.session.userId)
+    .then(user => {
+      templateVars.user = user
+      if (bcrypt.compareSync(req.body.password, user.password)) {
+        database.updateUserById(user, changes)
+        .then(updatedUser => {
+          templateVars.user = updatedUser
+          templateVars.message ='You have updated your account information successfully'
+          res.render('account_page', templateVars)
+        })
+        .catch((e) => {
+          templateVars.message = "Sorry, there was an issue with your info updating"
+          res.render('account_page', templateVars)
+        })
+      }else{
+        templateVars.message = "Sorry, the password is not valid"
+        res.render('account_page', templateVars)
+      }
+    })
+    .catch((e) => {
+      res.redirect('/')
+    })
+  })
+
   const chrono = function(number) {
     let result = '';
     if (number / (60 * 60 * 24 * 356 * 1000) >= 1) {
@@ -108,9 +147,11 @@ module.exports = (db) => {
     return result;
   };
 
+
   //Get a profile page for specific user
   router.get('/:id', (req, res) => {
     const templateVars = {user: null, activeProfilePage: false}
+
    database.getPublicInfoUserById(req.params.id)
     .then(data => {
       data.unix = chrono(new Date - data[0].join_date.getTime())
@@ -123,6 +164,7 @@ module.exports = (db) => {
             templateVars.activeProfilePage = true
           }
           templateVars.user = user
+          console.log(templateVars.user)
           res.render("profile_page", templateVars)
         })
         .catch((e) => {
@@ -132,18 +174,6 @@ module.exports = (db) => {
       res.render("profile_page", templateVars)
     })
     .catch((e) => res.redirect("/"))
-  })
-
-  router.get('/my-account', (req, res) => {
-    const templateVars = {user:null}
-    database.getUserWithId(req.session.userId)
-    .then(user => {
-      templateVars.user = user
-      res.render("account_page", templateVars)
-    })
-    .catch((e) => {
-      res.render("account_page", templateVars)
-    })
   })
 
   return router;
