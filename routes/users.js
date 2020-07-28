@@ -25,10 +25,11 @@ module.exports = (db) => {
 
   //Get registration form
   router.get("/registration", (req, res) => {
-    // if(req.session.userId){
-    //   res.redirect('/')
-    // }
-    const templateVars = {user:null}
+    const templateVars = {user:null, message:null}
+    if(req.session.message){
+      templateVars.message = req.session.message
+      req.session.message = null
+    }
     res.render("registration_page", templateVars);
   });
 
@@ -40,18 +41,22 @@ module.exports = (db) => {
     database.getUserWithEmail(user.email)
     .then(existingUser => {
       if(existingUser){
-        res.send('Sorry user already exist')
+        req.session.message = 'Sorry User already exists'
+        res.redirect('/api/users/registration')
       }else{
         database.addUser(user)
         .then(user => {
           if (!user) {
-            res.send({error: "error"});
-            return;
+            req.session.message = 'Sorry there was an issue'
+            res.redirect('/api/users/registration')
           }
           req.session.userId = user.id;
           res.redirect('/')
         })
-        .catch(e => res.send(e));
+        .catch(e => {
+          req.session.message = 'Sorry there was an issue'
+          res.redirect('/api/users/registration')
+        })
       }
     });
     })

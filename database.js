@@ -71,22 +71,33 @@ exports.createNewListing = createNewListing
 
 
 const getListings = function(data){
-  let stringQuery = `SELECT * FROM listings
-  WHERE (setweight(to_tsvector(title), 'A') ||
-  setweight(to_tsvector(category), 'B') ||
-  setweight(to_tsvector(coalesce(description, '')), 'C'))
-  @@ to_tsquery($1)
-  `
-  if(data.category !== 'Categories...'){
-    stringQuery += `AND category = '${data.category}'`
+  let value = null
+  let finalQuery = null
+  if(data.q){
+    value = data.q
+      let stringQuery = `SELECT * FROM listings
+      WHERE (setweight(to_tsvector(title), 'A') ||
+      setweight(to_tsvector(category), 'B') ||
+      setweight(to_tsvector(coalesce(description, '')), 'C'))
+      @@ to_tsquery($1)
+      `
+      if(data.category !== 'Categories...'){
+        stringQuery += `AND category = '${data.category}'`
+      }
+      let endQuery = `
+      ORDER BY ts_rank((setweight(to_tsvector(title), 'A') ||
+      setweight(to_tsvector(category), 'B') ||
+      setweight(to_tsvector(coalesce(description, '')), 'B')), to_tsquery($1)) DESC
+    `
+    finalQuery = stringQuery.concat(endQuery)
+  }else if(data.category){
+    value = data.category
+    finalQuery = `
+    SELECT * FROM listings WHERE category = $1`
+  }else{
+    finalQuery = `SELECT * FROM listings`
   }
-  let endQuery = `
-  ORDER BY ts_rank((setweight(to_tsvector(title), 'A') ||
-  setweight(to_tsvector(category), 'B') ||
-  setweight(to_tsvector(coalesce(description, '')), 'B')), to_tsquery($1)) DESC
-`
-let finalQuery = stringQuery.concat(endQuery)
-  return db.query(finalQuery, [data.q])
+  return db.query(finalQuery, [value])
   .then(res => res.rows)
   .catch((e) => null)
 }
