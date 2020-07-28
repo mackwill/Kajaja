@@ -11,6 +11,7 @@ $(document).ready(() => {
       $("#message-thread").load(
         `/api/messages/${messageThread} #message-thread`
       );
+      $("#message-respond").val("");
       // });
     });
   });

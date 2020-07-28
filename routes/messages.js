@@ -74,7 +74,7 @@ module.exports = (db) => {
         [messageThread, message[0]]
       )
       .then((data) => {
-        return data.rows;
+        res.render("index");
       });
   });
 
