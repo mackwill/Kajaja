@@ -40,7 +40,7 @@
     <section id="all-messages">
       <% messages.forEach(message => { %>
       <a class="message-link" href="/api/messages/<%=message.thread_id%>">
-        <article class="message">
+        <div class="card message">
           <!-- <div class="listing-photo">
             <img src="https://via.placeholder.com/100x100" />
           </div> -->
@@ -57,7 +57,7 @@
               <%= message.content %>
             </div>
           </div>
-        </article>
+        </div>
       </a>
       <% }) %>
     </section>
