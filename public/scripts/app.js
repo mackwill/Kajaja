@@ -8,7 +8,9 @@ $(document).ready(() => {
     const formData = $(this).parent().serialize();
     console.log("formData: ", formData);
     $.post(`/api/messages/${messageThread}`, formData).then(() => {
-      $("section").load("#message-thread");
+      $("#message-thread").load(
+        `/api/messages/${messageThread} #message-thread`
+      );
       // });
     });
   });
