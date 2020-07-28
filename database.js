@@ -150,3 +150,15 @@ const getUserByResetToken = function(token){
   .catch((e) => null)
 }
 exports.getUserByResetToken = getUserByResetToken
+
+
+const getSingleListing = function(id){
+  return db.query(`
+    SELECT listings.*, users.join_date, users.name, users.phone_number, users.email FROM listings
+    JOIN users ON users.id = owner_id
+    WHERE listings.id = $1
+  `, [id])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.getSingleListing = getSingleListing

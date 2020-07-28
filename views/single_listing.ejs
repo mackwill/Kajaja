@@ -41,7 +41,7 @@
 
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
-    <div class="card">
+    <!-- <div class="card">
       <div class="card-body">
         <div class="listing-header">
           <div class="listing-header-left card-title">
@@ -72,7 +72,104 @@
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
+    </div> -->
+
+    <!-- Title, price card-->
+<div class="card" style="border:none">
+  <div class="card-body">
+    <h5 class="card-title"><%= listing.title %></h5>
+    <h4 class="card-title">$<%= listing.price %></h4>
+  </div>
+ </div>
+ <!-- Meta data card-->
+
+ <div class="card" style="border:none">
+   <div class="card-body row">
+     <div class="col-2"><h3><i class="fa fa-map-marker m-3" aria-hidden="true"></h3></i>
+ </div>
+  <div class="col-10">
+       <span class="card-text"><small class="text-muted"><%= chrono_listing %></small><br>
+       <span class="card-text"><small class="text-muted"><%= listing.postal_code %></small><br>
+       <span class="card-text"><small class="text-muted"><a href="#">View Map</a></small>
+  </div>
+   </div>
+ </div>
+
+ <!-- Small actions bar card-->
+
+ <!-- <div class="card" style="border:none">
+   <div class="card-body row">
+     <div>
+       <button><i class="fa fa-heart col" aria-hidden="true"></button>
+     </div>
+     <div>
+       <button><i class="fa fa-facebook-square col" aria-hidden="true"></i></button>
+     </div>
+     <div>
+       <button><i class="fa fa-envelope-o col" aria-hidden="true"></i></button>
+     </div>
+   </div>
+ </div> -->
+
+ <!-- Listing card-->
+
+ <div class="card mb-3">
+   <div class="row no-gutters">
+     <div class="col-sm-4">
+       <img src="https://via.placeholder.com/100x100" class="card-img" alt="...">
+     </div>
+     <div class="col-sm-8">
+       <div class="card-body">
+         <h5 class="card-title">Description</h5>
+         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.<%= listing.description %></p>
+         <p class="card-text"><small class="text-muted"><%= chrono_listing %></small></p>
+       </div>
+     </div>
+   </div>
+ </div>
+
+ <!-- Contact & Sellers card -->
+
+ <div class="row">
+
+   <!-- Contact card -->
+
+   <div class="card mb-3 mt-3 col-md-6">
+    <form method="POST" action="/api/messages">
+      <div class="form-group">
+        <h3><label for="message-to-seller">Contact Kajaja User</label></h3>
+       <textarea
+                 name="message-to-seller"
+                 type="text"
+                 class="form-control"
+                 id="message-to-seller"
+                 placeholder="Your Message"
+                 /></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Send message</button>
+     </form>
+   </div>
+
+    <!-- Sellers card -->
+
+   <div class="card mb-3 mt-3 col-md-6">
+      <div class="card-body">
+        <h5 class="card-title text-center"><a href="/api/users/<%= listing.owner_id %>"><%= listing.name %></a></h5>
+        <p class="card-text"><i class="fa fa-calendar mr-3" aria-hidden="true"></i>
+   On Kajaja Since <%= chrono_owner %></p>
+        <p class="card-text"><i class="fa fa-list-alt mr-3" aria-hidden="true"></i>
+          <a href="/api/users/<%= listing.owner_id %>">View other listings</a>
+
+        </p>
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fa fa-phone" aria-hidden="true"></i></div>
+           </div>
+          <a href="tel:<listing.phone_number %>"><input class="form-control" type="text" placeholder="<%= listing.phone_number %>" readonly></a>
+         </div>
+       </div>
     </div>
+ </div>
 
     <script
       src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
