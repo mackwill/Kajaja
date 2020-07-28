@@ -1,24 +1,31 @@
 @import "node_modules/bulma/sass/utilities/initial-variables.sass";
 
-$navbar-background-color: #36d6e7;
+// $navbar-background-color: #36d6e7;
 $navbar-item-color: #ffffff;
 $navbar-burger-color: #ffffff;
 $navbar-breakpoint: $tablet;
 
 .navbar {
-  background-color: $navbar-background-color;
+  // background-color: $navbar-background-color;
 
-  p {
-    color: $navbar-item-color;
+  .navbar-brand {
+    font-size: 2rem;
     font-weight: bold;
+    font-style: italic;
+    align-items: center;
+    color: #02894b !important;
   }
 
-  .navbar-burger {
-    color: $navbar-burger-color;
+  .nav-item {
+    a {
+      color: #02894b !important;
+    }
   }
 
-  .buttons .button {
-    background-color: $navbar-background-color;
-    color: $navbar-item-color;
+  .btn {
+    color: #ffffff;
+  }
+  span {
+    color: #ffffff;
   }
 }
