@@ -36,9 +36,10 @@ module.exports = (db) => {
     const messageThread = req.params.id;
     console.log("thread id: ", messageThread);
     db.query(
-      `SELECT * FROM user_message
+      `SELECT user_message.*, message_thread.*, listings.*, users.name FROM user_message
       JOIN message_thread on thread_id = message_thread.id
       JOIN listings ON listing_id = listings.id
+      JOIN users ON sender_id = users.id
       WHERE
         thread_id = $1
       ORDER BY
@@ -49,6 +50,7 @@ module.exports = (db) => {
       .then((data) => {
         console.log("messages per thread:", data.rows);
         res.render("single_message_page", {
+          userId: user,
           messages: data.rows,
           threadId: messageThread,
         });
@@ -67,11 +69,11 @@ module.exports = (db) => {
     return db
       .query(
         `
-      INSERT INTO user_message (thread_id, content)
-      VALUES ($1, $2)
+      INSERT INTO user_message (thread_id, sender_id, content)
+      VALUES ($1, $2, $3)
       RETURNING *
     ;`,
-        [messageThread, message[0]]
+        [messageThread, user, message[0]]
       )
       .then((data) => {
         res.render("index");

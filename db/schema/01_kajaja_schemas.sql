@@ -73,13 +73,13 @@ CREATE TABLE listing_boosts(
 
 CREATE TABLE message_thread(
   id SERIAL PRIMARY KEY NOT NULL,
-  listing_id INTEGER REFERENCES listings(id) ON DELETE CASCADE,
-  sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+  listing_id INTEGER REFERENCES listings(id) ON DELETE CASCADE
 );
 
 CREATE TABLE user_message(
   id SERIAL PRIMARY KEY NOT NULL,
   thread_id INTEGER REFERENCES message_thread(id) ON DELETE CASCADE,
+  sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   content TEXT,
   send_date TIMESTAMP DEFAULT now()
 );

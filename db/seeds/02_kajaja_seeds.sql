@@ -146,32 +146,34 @@ VALUES
   (2, 4);
 
 INSERT INTO
-  message_thread(listing_id, sender_id)
+  message_thread(listing_id)
 VALUES
-  (1, 2),
-  (2, 3),
-  (3, 1),
-  (4, 2);
+  (1),
+  (2);
 
 INSERT INTO
-  user_message(thread_id, content)
+  user_message(thread_id, sender_id, content)
 VALUES
   (
     1,
+    2,
     'I would like to buy your green Peugeot bike, Vincent. I am Will.'
   ),
   (
     1,
+    1,
     'Hi Will, how much would you pay for my bike. I am Vincent.'
   ),
-  (1, 'I would pay 280$. I am Will.'),
-  (1, 'Sold.'),
+  (1, 2, 'I would pay 280$. I am Will.'),
+  (1, 1, 'Sold.'),
   (
     2,
+    3,
     'I would like to buy your dinner table, Will. I am Ruth.'
   ),
   (
     2,
+    2,
     'Hi Ruth, how much would you pay for my great car. I am Will.'
   ),
-  (2, 'I would pay 100$. I am Ruth.');
+  (2, 3, 'I would pay 100$. I am Ruth.');
