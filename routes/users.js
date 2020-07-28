@@ -10,15 +10,26 @@ const router  = express.Router();
 const bcrypt = require('bcrypt')
 const database = require('../database')
 
+
 module.exports = (db) => {
   //Get login form
   router.get("/login", (req, res) => {
-    res.render("login_page");
+
+    const templateVars = {user:null, message:null}
+    if(req.session.message){
+      templateVars.message = req.session.message
+      req.session.message = null
+    }
+    res.render("login_page", templateVars);
   });
 
   //Get registration form
   router.get("/registration", (req, res) => {
-    res.render("registration_page");
+    // if(req.session.userId){
+    //   res.redirect('/')
+    // }
+    const templateVars = {user:null}
+    res.render("registration_page", templateVars);
   });
 
   // Create a new user
@@ -66,7 +77,6 @@ module.exports = (db) => {
           res.send({error: "error"});
           return;
         }
-        console.log('connected as:', user.name)
         req.session.userId = user.id;
         res.redirect('/')
       })
@@ -75,9 +85,9 @@ module.exports = (db) => {
 
 
   //Logout a user
-  router.post('/logout', (req, res) => {
+  router.get('/logout', (req, res) => {
     req.session.userId = null;
-    res.redirect('/');
+    res.redirect('/api/users/login');
   });
 
   const chrono = function(number) {
@@ -100,13 +110,37 @@ module.exports = (db) => {
 
   //Get a profile page for specific user
   router.get('/:id', (req, res) => {
-    console.log(req.params.id)
-    database.getPublicInfoUserById(req.params.id)
+    const templateVars = {user: null}
+   database.getPublicInfoUserById(req.params.id)
     .then(data => {
       data.unix = chrono(new Date - data[0].join_date.getTime())
-      res.render("profile_page", {data:data})
+      templateVars.data = data
+
+      if(req.session.userId){
+        database.getUserWithId(req.session.userId)
+        .then(user => {
+          templateVars.user = user
+          res.render("profile_page", templateVars)
+        })
+        .catch((e) => {
+          res.render("profile_page", templateVars)
+        })
+      }
+      res.render("profile_page", templateVars)
     })
-    .catch((e) => res.render("profile_page"))
+    .catch((e) => res.redirect("/"))
+  })
+
+  router.get('/account', (req, res) => {
+    // const templateVars = {user:null}
+    // database.getUserWithId(req.session.userId)
+    // .then(user => {
+    //   templateVars.user = user
+    //   res.render("account_page", templateVars)
+    // })
+    // .catch((e) => {
+    //   res.render("account_page", templateVars)
+    // })
   })
 
   return router;
