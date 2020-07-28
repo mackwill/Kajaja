@@ -3,7 +3,8 @@ const router = express.Router();
 const database = require("../database");
 const helper = require("../helper");
 module.exports = (db) => {
-  router.get("/mymessages", (req, res) => {
+  router.get("/", (req, res) => {
+    const templateVars = {};
     const user = req.session.userId;
     console.log("user: ", user);
     db.query(
@@ -21,10 +22,23 @@ module.exports = (db) => {
       [user]
     )
       .then((data) => {
-        console.log("data here: ", helper.filterMessagesByUser(data.rows));
-        res.render("all_messages", {
-          messages: helper.filterMessagesByUser(data.rows),
-        });
+        templateVars.messages = helper.filterMessagesByUser(data.rows);
+
+        if (req.session.userId) {
+          database
+            .getUserWithId(req.session.userId)
+            .then((user) => {
+              templateVars.user = user;
+              res.render("all_messages", templateVars);
+            })
+            .catch((e) => {
+              templateVars.user = null;
+              res.render("all_messages", templateVars);
+            });
+        } else {
+          templateVars.user = null;
+          res.render("all_messages", templateVars);
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -32,6 +46,7 @@ module.exports = (db) => {
   });
 
   router.get("/:id", (req, res) => {
+    const templateVars = {};
     const user = req.session.userId;
     const messageThread = req.params.id;
     console.log("thread id: ", messageThread);
@@ -48,12 +63,24 @@ module.exports = (db) => {
       [messageThread]
     )
       .then((data) => {
-        console.log("messages per thread:", data.rows);
-        res.render("single_message_page", {
-          userId: user,
-          messages: data.rows,
-          threadId: messageThread,
-        });
+        templateVars.messages = data.rows;
+        templateVars.threadId = messageThread;
+
+        if (req.session.userId) {
+          database
+            .getUserWithId(req.session.userId)
+            .then((user) => {
+              templateVars.user = user;
+              res.render("single_message_page", templateVars);
+            })
+            .catch((e) => {
+              templateVars.user = null;
+              res.render("single_message_page", templateVars);
+            });
+        } else {
+          templateVars.user = null;
+          res.render("single_message_page", templateVars);
+        }
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -61,6 +88,7 @@ module.exports = (db) => {
   });
 
   router.post("/:id", (req, res) => {
+    const templateVars = {};
     const user = req.session.userId;
     const messageThread = req.params.id;
     console.log("here too ", messageThread);
@@ -75,19 +103,34 @@ module.exports = (db) => {
     ;`,
         [messageThread, user, message[0]]
       )
-      .then((data) => {
-        res.render("index");
+      .then(() => {
+        if (req.session.userId) {
+          database
+            .getUserWithId(req.session.userId)
+            .then((user) => {
+              templateVars.user = user;
+              res.render("index", templateVars);
+            })
+            .catch((e) => {
+              templateVars.user = null;
+              res.render("index", templateVars);
+            });
+        } else {
+          templateVars.user = null;
+          res.render("index", templateVars);
+        }
       });
   });
 
   router.post("/", (req, res) => {
+    const templatVars = {};
     const headerArr = req.headers.referer.split("/");
     const listingId = headerArr[headerArr.length - 1];
     const message = Object.values(req.body);
     console.log("listingID", listingId);
     console.log("message: ", message);
     const user = req.session.userId;
-    console.log("user: ", user);
+    templatVars.user = user;
     db.query(
       `INSERT INTO message_thread (listing_id, sender_id)
       VALUES ($1, $2)
@@ -106,7 +149,21 @@ module.exports = (db) => {
         `,
           [threadId, message[0]]
         ).then(() => {
-          res.render("index");
+          if (req.session.userId) {
+            database
+              .getUserWithId(req.session.userId)
+              .then((user) => {
+                templateVars.user = user;
+                res.render("index", templateVars);
+              })
+              .catch((e) => {
+                templateVars.user = null;
+                res.render("index", templateVars);
+              });
+          } else {
+            templateVars.user = null;
+            res.render("index", templateVars);
+          }
         });
       })
       .catch((err) => {

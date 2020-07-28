@@ -36,7 +36,7 @@
   </head>
 
   <body>
-    <%- include("partials/_searchBar") %>
+    <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
     <section id="all-messages">
       <% messages.forEach(message => { %>
       <a class="message-link" href="/api/messages/<%=message.thread_id%>">
