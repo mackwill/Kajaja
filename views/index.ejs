@@ -22,9 +22,46 @@
     ></script>
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
 
+    <style>
+        .category-square{
+          display:flex;
+        }
+        .category-square img{
+            margin:1em 1em;
+        }
+    </style>
   </head>
 
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
+
+
+    <div>
+      <h1>Popular Categories</h1>
+      <div class="category-square">
+    <img src="https://via.placeholder.com/150" width="100%">
+    <img src="https://via.placeholder.com/150" width="100%">
+      </div>
+        <div class="category-square">
+    <img src="https://via.placeholder.com/150" width="100%">
+    <img src="https://via.placeholder.com/150" width="100%">
+      </div>
+    </div>
+    <div>
+      <h1>Recommended For You</h1>
+      <div class="category-square">
+    <img src="https://via.placeholder.com/200" width="100%">
+    <img src="https://via.placeholder.com/200" width="100%">
+    <img src="https://via.placeholder.com/200" width="100%">
+      </div>
+    </div>
+    <div>
+      <h1>Recently Seen</h1>
+      <div class="category-square">
+    <img src="https://via.placeholder.com/200" width="100%">
+    <img src="https://via.placeholder.com/200" width="100%">
+    <img src="https://via.placeholder.com/200" width="100%">
+      </div>
+    </div>
   </body>
 </html>
