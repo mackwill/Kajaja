@@ -24,18 +24,11 @@ module.exports = (db) => {
 
   //Get registration form
   router.get("/registration", (req, res) => {
-<<<<<<< HEAD
-    // if(req.session.userId){
-    //   res.redirect('/')
-    // }
-    const templateVars = { user: null };
-=======
-    const templateVars = {user:null, message:null}
-    if(req.session.message){
-      templateVars.message = req.session.message
-      req.session.message = null
+    const templateVars = { user: null, message: null };
+    if (req.session.message) {
+      templateVars.message = req.session.message;
+      req.session.message = null;
     }
->>>>>>> 6c514ae1e3cfb799663472c4c040945c976d535d
     res.render("registration_page", templateVars);
   });
 
@@ -43,45 +36,26 @@ module.exports = (db) => {
   router.post("/", (req, res) => {
     const user = req.body;
     user.password = bcrypt.hashSync(user.password, 12);
-<<<<<<< HEAD
     console.log(user);
     database.getUserWithEmail(user.email).then((existingUser) => {
       if (existingUser) {
-        res.send("Sorry user already exist");
+        req.session.message = "Sorry User already exists";
+        res.redirect("/api/users/registration");
       } else {
         database
           .addUser(user)
           .then((user) => {
             if (!user) {
-              res.send({ error: "error" });
-              return;
+              req.session.message = "Sorry there was an issue";
+              res.redirect("/api/users/registration");
             }
             req.session.userId = user.id;
             res.redirect("/");
           })
-          .catch((e) => res.send(e));
-=======
-    console.log(user)
-    database.getUserWithEmail(user.email)
-    .then(existingUser => {
-      if(existingUser){
-        req.session.message = 'Sorry User already exists'
-        res.redirect('/api/users/registration')
-      }else{
-        database.addUser(user)
-        .then(user => {
-          if (!user) {
-            req.session.message = 'Sorry there was an issue'
-            res.redirect('/api/users/registration')
-          }
-          req.session.userId = user.id;
-          res.redirect('/')
-        })
-        .catch(e => {
-          req.session.message = 'Sorry there was an issue'
-          res.redirect('/api/users/registration')
-        })
->>>>>>> 6c514ae1e3cfb799663472c4c040945c976d535d
+          .catch((e) => {
+            req.session.message = "Sorry there was an issue";
+            res.redirect("/api/users/registration");
+          });
       }
     });
   });
@@ -117,86 +91,52 @@ module.exports = (db) => {
     res.redirect("/api/users/login");
   });
 
-<<<<<<< HEAD
-  //Get a profile page for specific user
-  router.get("/:id", (req, res) => {
-    const templateVars = { user: null };
+  router.get("/my-account", (req, res) => {
+    const templateVars = { user: null, message: null };
     database
-      .getPublicInfoUserById(req.params.id)
-      .then((data) => {
-        data.unix = helpers.chrono(new Date() - data[0].join_date.getTime());
-        templateVars.data = data;
+      .getUserWithId(req.session.userId)
+      .then((user) => {
+        templateVars.user = user;
+        res.render("account_page", templateVars);
+      })
+      .catch((e) => {
+        res.render("account_page", templateVars);
+      });
+  });
 
-        if (req.session.userId) {
+  router.post("/my-account", (req, res) => {
+    const templateVars = { user: null, message: null };
+    const changes = req.body;
+    database
+      .getUserWithId(req.session.userId)
+      .then((user) => {
+        templateVars.user = user;
+        if (bcrypt.compareSync(req.body.password, user.password)) {
           database
-            .getUserWithId(req.session.userId)
-            .then((user) => {
-              templateVars.user = user;
-              res.render("profile_page", templateVars);
+            .updateUserById(user, changes)
+            .then((updatedUser) => {
+              templateVars.user = updatedUser;
+              templateVars.message =
+                "You have updated your account information successfully";
+              res.render("account_page", templateVars);
             })
             .catch((e) => {
-              res.render("profile_page", templateVars);
+              templateVars.message =
+                "Sorry, there was an issue with your info updating";
+              res.render("account_page", templateVars);
             });
+        } else {
+          templateVars.message = "Sorry, the password is not valid";
+          res.render("account_page", templateVars);
         }
-        res.render("profile_page", templateVars);
       })
-      .catch((e) => res.redirect("/"));
+      .catch((e) => {
+        res.redirect("/");
+      });
   });
 
-  router.get("/account", (req, res) => {
-    // const templateVars = {user:null}
-    // database.getUserWithId(req.session.userId)
-    // .then(user => {
-    //   templateVars.user = user
-    //   res.render("account_page", templateVars)
-    // })
-    // .catch((e) => {
-    //   res.render("account_page", templateVars)
-    // })
-  });
-
-=======
-  router.get('/my-account', (req, res) => {
-    const templateVars = {user:null, message: null}
-    database.getUserWithId(req.session.userId)
-    .then(user => {
-      templateVars.user = user
-      res.render("account_page", templateVars)
-    })
-    .catch((e) => {
-      res.render("account_page", templateVars)
-    })
-  })
-
-  router.post('/my-account', (req, res) => {
-    const templateVars = {user:null, message:null}
-    const changes = req.body
-    database.getUserWithId(req.session.userId)
-    .then(user => {
-      templateVars.user = user
-      if (bcrypt.compareSync(req.body.password, user.password)) {
-        database.updateUserById(user, changes)
-        .then(updatedUser => {
-          templateVars.user = updatedUser
-          templateVars.message ='You have updated your account information successfully'
-          res.render('account_page', templateVars)
-        })
-        .catch((e) => {
-          templateVars.message = "Sorry, there was an issue with your info updating"
-          res.render('account_page', templateVars)
-        })
-      }else{
-        templateVars.message = "Sorry, the password is not valid"
-        res.render('account_page', templateVars)
-      }
-    })
-    .catch((e) => {
-      res.redirect('/')
-    })
-  })
-
-  const chrono = function(number) {
-    let result = '';
+  const chrono = function (number) {
+    let result = "";
     if (number / (60 * 60 * 24 * 356 * 1000) >= 1) {
       result = `${Math.floor(number / (60 * 60 * 24 * 365 * 1000))} years ago`;
     } else if (number / (60 * 60 * 24 * 30 * 1000) >= 1) {
@@ -213,35 +153,35 @@ module.exports = (db) => {
     return result;
   };
 
-
   //Get a profile page for specific user
-  router.get('/:id', (req, res) => {
-    const templateVars = {user: null, activeProfilePage: false}
+  router.get("/:id", (req, res) => {
+    const templateVars = { user: null, activeProfilePage: false };
 
-   database.getPublicInfoUserById(req.params.id)
-    .then(data => {
-      data.unix = chrono(new Date - data[0].join_date.getTime())
-      templateVars.data = data
+    database
+      .getPublicInfoUserById(req.params.id)
+      .then((data) => {
+        data.unix = chrono(new Date() - data[0].join_date.getTime());
+        templateVars.data = data;
 
-      if(req.session.userId){
-        database.getUserWithId(req.session.userId)
-        .then(user => {
-          if(user.id === req.session.userId){
-            templateVars.activeProfilePage = true
-          }
-          templateVars.user = user
-          console.log(templateVars.user)
-          res.render("profile_page", templateVars)
-        })
-        .catch((e) => {
-          res.render("profile_page", templateVars)
-        })
-      }
-      res.render("profile_page", templateVars)
-    })
-    .catch((e) => res.redirect("/"))
-  })
+        if (req.session.userId) {
+          database
+            .getUserWithId(req.session.userId)
+            .then((user) => {
+              if (user.id === req.session.userId) {
+                templateVars.activeProfilePage = true;
+              }
+              templateVars.user = user;
+              console.log(templateVars.user);
+              res.render("profile_page", templateVars);
+            })
+            .catch((e) => {
+              res.render("profile_page", templateVars);
+            });
+        }
+        res.render("profile_page", templateVars);
+      })
+      .catch((e) => res.redirect("/"));
+  });
 
->>>>>>> 6c514ae1e3cfb799663472c4c040945c976d535d
   return router;
 };
