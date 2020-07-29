@@ -21,7 +21,8 @@ CREATE TABLE users(
   password VARCHAR(255) NOT NULL,
   join_date TIMESTAMP DEFAULT now(),
   profile_pic_url VARCHAR(255) DEFAULT 'https://via.placeholder.com/100x100',
-  phone_number VARCHAR(255)
+  phone_number VARCHAR(255),
+  token VARCHAR(255)
 );
 
 CREATE TABLE listings(

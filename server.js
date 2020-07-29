@@ -76,16 +76,35 @@ app.get("/", (req, res) => {
     return database.getUserWithId(req.session.userId)
     .then(user => {
       templateVars.user = user
+
+      if(req.session.history.length>=1){
+        database.getRecentlyViewedListings(req.session.history)
+        .then(recentlyViewed => {
+          console.log(recentlyViewed)
+          templateVars.recentlyViewed = recentlyViewed
+          res.render("index", templateVars);
+          return
+        })
+        .catch((e) => {
+          templateVars.recentlyViewed = null
+          res.render("index", templateVars);
+          return
+        })
+      }else{
+
+      templateVars.recentlyViewed = null
       res.render("index", templateVars);
+      }
     })
     .catch((e) => {
       templateVars.user = null
+      templateVars.recentlyViewed = null
       res.render("index", templateVars);
     })
   }else{
   templateVars.user = null
+  templateVars.recentlyViewed = null
   }
-  console.log(templateVars)
   res.render("index", templateVars);
 });
 

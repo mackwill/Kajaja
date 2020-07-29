@@ -141,11 +141,10 @@ exports.updateUserById = updateUserById
 
 
 const getUserByResetToken = function(token){
-  const newToken = new Date(token).toISOString()
   return db.query(`
     SELECT * FROM users
-    WHERE join_date = $1
-  `, [newToken])
+    WHERE token = $1
+  `, [token])
   .then(res => res.rows[0])
   .catch((e) => null)
 }
@@ -162,3 +161,37 @@ const getSingleListing = function(id){
   .catch((e) => null)
 }
 exports.getSingleListing = getSingleListing
+
+const getRecentlyViewedListings = function(arrayOfId){
+  let finalArr = [...new Set(arrayOfId)].splice(0,5)
+  console.log(finalArr.length)
+  let queryStart = `SELECT * FROM listings
+  WHERE (id IN(`
+  if(finalArr.length === 1){
+    queryStart += `$1))`
+  }else if(finalArr.length ===2){
+    queryStart += `$1, $2))`
+  }else if(finalArr.length === 3){
+    queryStart += `$1, $2, $3))`
+  }else if(finalArr.length === 4){
+    queryStart += `$1, $2, $3, $4))`
+  }else{
+    queryStart += `$1, $2, $3, $4, $5))`
+  }
+   return db.query(queryStart, finalArr)
+  .then(res => res.rows)
+  .catch((e) => null)
+}
+exports.getRecentlyViewedListings = getRecentlyViewedListings
+
+const updateUserTokenById = function(id, token){
+  return db.query(`
+  UPDATE users
+  SET token = $1
+  WHERE id = $2
+  RETURNING *
+  `,[token, id])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.updateUserTokenById = updateUserTokenById
