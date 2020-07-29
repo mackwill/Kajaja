@@ -12,9 +12,7 @@
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
       <!-- <BOOTSTRAP> -->
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-
+    <script type="text/javascript" src="/scripts/app.js"></script>
 
     <script
       defer
@@ -58,7 +56,6 @@
   </head>
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
-
     <div class="main">
       <div class="banner"><img width="100%" src="https://via.placeholder.com/500x75/808080"></div>
       <div class="top-stripe">
@@ -77,15 +74,19 @@
     </div>
     <section id="all-listings">
       <% data.forEach(listing => { %>
-      <a class="listing-link" href="/api/widgets/listings/<%= listing.id %>">
         <article class="listing">
           <div class="listing-photo">
+            <a class="listing-link" href="/api/widgets/listings/<%= listing.id %>">
             <img src="https://via.placeholder.com/100x100" />
+          </a>
           </div>
           <div class="listing-content container-fluid">
             <div class="listing-header">
               <div class="listing-header-left">
+                <a class="listing-link" href="/api/widgets/listings/<%= listing.id %>">
                 <h3><%= listing.title %></h3>
+              </a>
+
               </div>
               <div class="listing-header-right">
                 <h3><%= listing.price %></h3>
@@ -95,13 +96,17 @@
               <%= listing.description %>
             </div>
             <% if(activeProfilePage === true) { %>
-              <button class="btn btn-primary">Update</button>
+              <button class="btn btn-primary delete_listing" id="<%= listing.id %>">Delete</button>
+              <a href="/api/widgets/update/listings/<%= listing.id %>"><button class="btn btn-danger">Update</button></a>
             <% }%>
           </div>
         </article>
-      </a>
       <% }) %>
     </section>
-
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

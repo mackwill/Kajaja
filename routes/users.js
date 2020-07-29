@@ -157,32 +157,44 @@ module.exports = (db) => {
 
   //Get a profile page for specific user
   router.get("/:id", (req, res) => {
-    const templateVars = { user: null, activeProfilePage: false };
+    const templateVars = {};
 
-    database
+   database
+    .getUserWithId(req.session.userId)
+    .then((user) => {
+      templateVars.user = user
+      database
       .getPublicInfoUserById(req.params.id)
       .then((data) => {
         data.unix = chrono(new Date() - data[0].join_date.getTime());
         templateVars.data = data;
-
-        if (req.session.userId) {
-          database
-            .getUserWithId(req.session.userId)
-            .then((user) => {
-              if (user.id === req.session.userId) {
-                templateVars.activeProfilePage = true;
-              }
-              templateVars.user = user;
-              console.log(templateVars.user);
-              res.render("profile_page", templateVars);
-            })
-            .catch((e) => {
-              res.render("profile_page", templateVars);
-            });
-        }
+        templateVars.activeProfilePage = (req.params.id == req.session.userId ? true : false)
         res.render("profile_page", templateVars);
+        return
       })
-      .catch((e) => res.redirect("/"));
+      .catch((e) => {
+        templateVars.activeProfilePage = (req.params.id === req.session.userId ? true : false)
+        res.render("profile_page", templateVars);
+        return
+      });
+    })
+    .catch((e) => {
+      templateVars.user = null
+      database
+      .getPublicInfoUserById(req.params.id)
+      .then((data) => {
+        data.unix = chrono(new Date() - data[0].join_date.getTime());
+        templateVars.data = data;
+        templateVars.activeProfilePage = (req.params.id == req.session.userId ? true : false)
+        res.render("profile_page", templateVars);
+        return
+      })
+      .catch((e) => {
+        templateVars.activeProfilePage = (req.params.id === req.session.userId ? true : false)
+        res.render("profile_page", templateVars);
+        return
+      });
+    })
   });
 
   return router;

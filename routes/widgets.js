@@ -63,6 +63,48 @@ module.exports = (db) => {
       });
   });
 
+  router.delete('/listings/:id', (req, res) => {
+    const activeUserId = req.session.userId
+    database.deleteListingById(req.params.id)
+    .then(listing => {
+      res.redirect(`/api/users/${activeUserId}`)
+    })
+    .catch((e) => {
+      res.redirect(`/api/users/${activeUserId}`)
+    })
+  })
+
+  router.get('/update/listings/:id', (req, res) => {
+    const templateVars = {}
+    database.getSingleListing(req.params.id)
+    .then(listing => {
+      templateVars.listing = listing
+      templateVars.user = listing.owner_id
+      res.render('update_listing', templateVars)
+    })
+    .catch(e => {
+
+    })
+  })
+
+  router.post('/update/listings/:id', (req, res) => {
+    const templateVars = {}
+    database.updateSingleListing(req.params.id, req.body)
+    .then(listing => {
+      console.log('success:',listing)
+      templateVars.user = null
+      templateVars.listing = listing
+      templateVars.message = "You have updated your account information successfully";
+      res.render('update_listing', templateVars)
+    })
+    .catch((e) => {
+      templateVars.user = null
+      templateVars.listing = null
+      templateVars.message = 'Sorry we were not able to update the listing information'
+      res.render('update_listing', templateVars)
+    })
+  })
+
   router.get("/listings", (req, res) => {
     const templateVars = {}
     database.getListings(req.query)

@@ -18,6 +18,22 @@ $(document).ready(() => {
   });
 });
 
+$(document).ready(() => {
+  $(document).on("click", ".delete_listing", function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    const listingId = $(this).attr('id')
+
+
+    $.ajax({
+      url: `/api/widgets/listings/${listingId}`,
+      type:'DELETE',
+      success: function(result){
+        console.log('it was deleted:',result)
+      }
+    });
+  });
+})
 // //   });
 // //   //   $.ajax({
 // //   //     method: "GET",
@@ -40,7 +56,6 @@ $(document).ready(() => {
 // });
 // $(() => {
 //   $(document).on('click', '#notificationSwitch', function(e){
-
 //     console.log($('#notificationSwitch').val())
 //   })
 // })

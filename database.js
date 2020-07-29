@@ -195,3 +195,34 @@ const updateUserTokenById = function(id, token){
   .catch((e) => null)
 }
 exports.updateUserTokenById = updateUserTokenById
+
+const deleteListingById = function(listingId){
+  return db.query(`
+    DELETE FROM listings WHERE id = $1 RETURNING *
+  `,[listingId])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.deleteListingById = deleteListingById
+
+const updateSingleListing = function(id, changes){
+  console.log('changes:',changes,'id:',id)
+  const {title, description, price, category} = changes
+
+  let initQuery = `
+  UPDATE listings
+    SET title = $1, description = $2, price = $3
+  `
+  if(category !== 'Categories...'){
+    initQuery += `, category = $4 `
+  }
+  let finalQuery = initQuery.concat(`WHERE id = $5
+  RETURNING *`)
+  return db.query(finalQuery,[title, description, Number(price), category, id])
+  .then(res => res.rows[0])
+  .catch((e) => {
+    console.log(e)
+    null}
+    )
+}
+exports.updateSingleListing = updateSingleListing
