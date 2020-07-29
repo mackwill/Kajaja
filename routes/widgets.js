@@ -160,10 +160,12 @@ module.exports = (db) => {
 
   router.get('/favourites', (req, res) => {
     const templateVars = {}
-    templateVars.user = req.session.userId
 
     database.getFavouritesListings(req.session.userId)
       .then((data) => {
+        console.log('cookie:', req.session.userId)
+        templateVars.user = {}
+        templateVars.user.id = req.session.userId
         templateVars.listings = data
         res.render("favourites_page", templateVars);
       })

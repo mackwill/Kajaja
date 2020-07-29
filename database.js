@@ -251,7 +251,8 @@ const updateSingleListing = function(id, changes){
   if(category !== 'Categories...'){
     initQuery += `, category = $5 `
   }
-  let finalQuery = initQuery.concat(`WHERE id = $6 RETURNING *`)
+  let finalQuery = initQuery.concat(`WHERE id = $6 OR category = $5 RETURNING *`)
+  console.log(finalQuery)
   return db.query(finalQuery,[title, description, Number(price), sold, category, id])
   .then(res => res.rows[0])
   .catch((e) =>

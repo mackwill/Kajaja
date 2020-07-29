@@ -73,39 +73,45 @@ app.use("/api/mailer", nodemailerRoutes(db));
 app.get("/", (req, res) => {
   const templateVars = {}
   if(req.session.userId){
-    return database.getUserWithId(req.session.userId)
+    database.getUserWithId(req.session.userId)
     .then(user => {
+      console.log(user)
       templateVars.user = user
 
-      if(req.session.history.length>=1){
+      if(!req.session.history){
+        templateVars.recentlyViewed = null
+        console.log('is connected but not recently view', templateVars)
+        res.render("index", templateVars);
+      }else{
         database.getRecentlyViewedListings(req.session.history)
         .then(recentlyViewed => {
           console.log(recentlyViewed)
           templateVars.recentlyViewed = recentlyViewed
+          console.log('is connected but with recently view', templateVars)
           res.render("index", templateVars);
           return
         })
         .catch((e) => {
           templateVars.recentlyViewed = null
+          console.log('is connected with recently view but catch error', templateVars)
           res.render("index", templateVars);
           return
         })
-      }else{
-
-      templateVars.recentlyViewed = null
-      res.render("index", templateVars);
       }
     })
     .catch((e) => {
       templateVars.user = null
       templateVars.recentlyViewed = null
+      console.log('got an error getting user by cookie session', templateVars)
+
       res.render("index", templateVars);
     })
   }else{
   templateVars.user = null
   templateVars.recentlyViewed = null
-  }
+  console.log('got no session cookie', templateVars)
   res.render("index", templateVars);
+  }
 });
 
 app.listen(PORT, () => {

@@ -81,14 +81,15 @@
           <% recentlyViewed.forEach(listing => { %>
           <div class="card col-3">
             <img
-              src="https://cdn.chinadialogue.net/content/uploads/2020/05/20080228/picture-of-a-stack-of-books-with-some-harry-potter-glasses-768x512.jpg"
+              src="<%= listing.main_image %>"
               class="card-img-top"
               alt="..."
+              style="max-height:100px""
             />
             <div class="card-body">
               <h5 class="card-title"><%= listing.title %></h5>
               <p class="card-text"><%= listing.price %></p>
-              <a href="#" class="btn btn-primary">See item</a>
+              <a href="/api/widgets/listings/<%= listing.id %>" class="btn btn-primary">See item</a>
             </div>
           </div>
           <%})%>
