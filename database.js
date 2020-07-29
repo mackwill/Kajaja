@@ -117,9 +117,8 @@ const getListings = function(data){
       SELECT * FROM listings
       WHERE category = $1
       AND sold = 'f'
-      AND price BETWEEN $2 AND $3
     `
-    return db.query(finalQuery, [category, min, max])
+    return db.query(finalQuery, [category])
     .then(res => res.rows)
     .catch((e) => null)
   }else{
