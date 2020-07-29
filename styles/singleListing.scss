@@ -5,7 +5,7 @@
   margin-bottom: 5rem;
 
   .single-listing-header {
-    height: 12rem;
+    height: 14rem;
     display: flex;
     align-items: center;
     background-color: none;
@@ -20,6 +20,12 @@
     h4 {
       font-weight: bold;
       font-size: 1.25rem;
+    }
+
+    #single-listing-favourite {
+      margin: auto;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
     }
   }
 
@@ -76,6 +82,8 @@
 @media only screen and (min-width: 768px) {
   #single-listing {
     .single-listing-header {
+      height: 12rem;
+
       h5 {
         font-size: 1.7rem;
       }
