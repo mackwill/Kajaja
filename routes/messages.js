@@ -106,21 +106,10 @@ module.exports = (db) => {
         [messageThread, user, message[0]]
       )
       .then(() => {
-        if (req.session.userId) {
-          database
-            .getUserWithId(req.session.userId)
-            .then((user) => {
-              templateVars.user = user;
-              res.render("index", templateVars);
-            })
-            .catch((e) => {
-              templateVars.user = null;
-              res.render("index", templateVars);
-            });
-        } else {
-          templateVars.user = null;
-          res.render("index", templateVars);
-        }
+        res.end();
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
       });
   });
 

@@ -2,18 +2,19 @@ $(document).ready(() => {
   $(document).on("click", "#respond-to-conversation", function (e) {
     const splitURL = window.location.href.split("/");
     const messageThread = splitURL[splitURL.length - 1];
-    console.log("messageThread", messageThread);
     e.preventDefault();
     e.stopImmediatePropagation();
     const formData = $(this).parent().serialize();
-    console.log("formData: ", formData);
-    $.post(`/api/messages/${messageThread}`, formData).then(() => {
-      $("#message-thread").load(
-        `/api/messages/${messageThread} #message-thread`
-      );
-      $("#message-respond").val("");
-      // });
-    });
+    $.post(`/api/messages/${messageThread}`, formData)
+      .then((x) => {
+        $("#message-thread").load(
+          `/api/messages/${messageThread} #message-thread`
+        );
+        $("#message-respond").val("");
+      })
+      .catch((err) => {
+        console.error("Error: ", err);
+      });
   });
 });
 
@@ -36,8 +37,6 @@ $(document).ready(() => {
 // //   //     $("#all-listings").prepend(createSingleListing(listing));
 // //   //   //   });
 // //   //   // });
-<<<<<<< HEAD
-=======
 // });
 // $(() => {
 //   $(document).on('click', '#notificationSwitch', function(e){
@@ -45,4 +44,3 @@ $(document).ready(() => {
 //     console.log($('#notificationSwitch').val())
 //   })
 // })
->>>>>>> 6c514ae1e3cfb799663472c4c040945c976d535d
