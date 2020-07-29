@@ -73,7 +73,18 @@ exports.createNewListing = createNewListing
 const getListings = function(data){
   let value = null
   let finalQuery = null
-  if(data.q){
+  console.log(data)
+  if(data.q === '' && data.category === 'Categories...'){
+    const {min, max} = data
+    finalQuery = `SELECT * FROM listings
+    WHERE sold = 'f'
+    AND price BETWEEN $1 AND $2
+    ORDER BY creation_date DESC`
+    return db.query(finalQuery, [min, max])
+    .then(res => res.rows)
+    .catch((e) => null)
+  }else if(data.q){
+    const {q, min, max} = data
     value = data.q
       let stringQuery = `SELECT * FROM listings
       WHERE (setweight(to_tsvector(title), 'A') ||
@@ -85,21 +96,36 @@ const getListings = function(data){
         stringQuery += `AND category = '${data.category}'`
       }
       let endQuery = `
+      AND sold = 'f'
+      AND price BEWTEEN $2 AND $3
       ORDER BY ts_rank((setweight(to_tsvector(title), 'A') ||
       setweight(to_tsvector(category), 'B') ||
       setweight(to_tsvector(coalesce(description, '')), 'B')), to_tsquery($1)) DESC
     `
     finalQuery = stringQuery.concat(endQuery)
+    return db.query(finalQuery, [q, min, max])
+    .then(res => res.rows)
+    .catch((e) => null)
   }else if(data.category){
+    const {category, min, max} = data
     value = data.category
     finalQuery = `
-    SELECT * FROM listings WHERE category = $1`
+    SELECT * FROM listings
+    WHERE category = $1
+    AND sold = 'f'
+    AND price BETWEEN $2 AND $3`
+    return db.query(finalQuery, [category, min, max])
+    .then(res => res.rows)
+    .catch((e) => null)
   }else{
-    finalQuery = `SELECT * FROM listings`
+    const {min, max} = data
+    finalQuery = `SELECT * FROM listings
+    WHERE sold = 'f'
+    AND price BETWEEN $1 AND $2`
+    return db.query(finalQuery, [min, max])
+    .then(res => res.rows)
+    .catch((e) => null)
   }
-  return db.query(finalQuery, [value])
-  .then(res => res.rows)
-  .catch((e) => null)
 }
 exports.getListings = getListings
 
