@@ -10,6 +10,7 @@
     margin-bottom: 0.5rem;
     height: 7rem;
     font-size: 0.8rem;
+    border: 2px solid #02894b;
   }
 
   .header {
@@ -17,9 +18,22 @@
     justify-content: space-between;
     margin-top: 1rem;
     margin-bottom: 1rem;
+    align-items: center;
   }
-  .message-header-left {
+  .header-left {
     margin: 0;
+  }
+
+  .header-left > * {
+    font-weight: bold;
+  }
+
+  .header-right {
+    display: flex;
+  }
+
+  .header-right > * {
+    margin-right: 0.5rem;
   }
 
   p {
@@ -29,6 +43,16 @@
     text-overflow: ellipsis;
     max-width: 17rem;
     white-space: nowrap;
+  }
+
+  .message-content {
+    margin-top: 1rem;
+  }
+}
+
+#my-messages-title {
+  h1 {
+    text-align: center;
   }
 }
 

@@ -37,7 +37,13 @@
 
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
+
     <div class="container">
+      <div id="my-messages-title">
+        <h1>My Messages</h1>
+        <hr />
+      </div>
+
       <section id="all-messages">
         <% messages.forEach(message => { %>
         <a class="message-link" href="/api/messages/<%=message.thread_id%>">
@@ -45,12 +51,14 @@
             <!-- <div class="listing-photo col-2">
               <img src="https://via.placeholder.com/100x100" />
             </div> -->
-            <div class="message-content container">
+            <div class="message-content-container container">
               <div class="header">
-                <div class="card-title message-header-left">
+                <div class="card-title header-left">
                   <h3><%= message.title %></h3>
+                  <p>$<%= message.price %></p>
                 </div>
-                <div class="message-header-right">
+                <div class="header-right">
+                  <i class="far fa-clock"></i>
                   <h3><%= message.sent %></h3>
                 </div>
               </div>
