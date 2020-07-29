@@ -271,3 +271,38 @@ const likeListing = function(userId, listingId){
   .catch((e) => null)
 }
 exports.likeListing = likeListing
+
+const addUserPicture = function(userId, imgUrl){
+  return db.query(`
+    UPDATE users
+    SET profile_pic_url = $1
+    WHERE id = $2
+    RETURNING *
+  `,[imgUrl, userId])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.addUserPicture = addUserPicture
+
+const addImagesForListing = function(listingId, images){
+  let middleQuery = null
+  let value = []
+  if(images.length === 1){
+    middleQuery = `SET picture_1 = $2`
+    value = [listingId, images[0]]
+  }else if(images.length === 2){
+    middleQuery = `SET picture_1 = $2, picture_2 = $3`
+    value = [listingId, images[0], images[1]]
+  }else if(images.length === 3){
+    middleQuery = `SET picture_1 = $2, picture_2 = $3, picture_3 = $4`
+    value = [listingId, images[0], images[1], images[2]]
+  }else if(images.length === 4){
+    middleQuery = `SET picture_1 = $2, picture_2 = $3, picture_3 = $4, picture_4 = $5`
+    value = [listingId, images[0], images[1], images[2], images[3]]
+  }
+  const finalQuery = middleQuery.concat('WHERE id = $1')
+  return db.query(finalQuery, value)
+  .then(res => res.rows)
+  .catch((e) => null)
+}
+exports.addImagesForListing = addImagesForListing

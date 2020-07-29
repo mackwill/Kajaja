@@ -11,9 +11,10 @@ const sass = require("node-sass-middleware");
 const app = express();
 const morgan = require("morgan");
 const methodOverride = require('method-override');
-//const _ = require('lodash');
-//const fileUpload = require('express-fileupload');
-//const cors = require('cors')
+
+const _ = require('lodash');
+const fileUpload = require('express-fileupload');
+const cors = require('cors')
 
 
 // PG database client/connection setup
@@ -30,9 +31,19 @@ const database = require('./database')
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
+app.use(cors());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(methodOverride('_method'));
-//app.use(fileUpload({createParentPath: true}));
+app.use(fileUpload({
+    createParentPath: true,
+    limits: {
+      fileSize: 2 * 1024 * 1024 * 1024
+    },
+  })
+);
 
 app.use(
   cookieSession({
@@ -43,8 +54,7 @@ app.use(
 );
 
 app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(bodyParser.json());
+
 app.use(
   "/styles",
   sass({
@@ -122,8 +132,9 @@ app.get("/", (req, res) => {
 });
 
 app.post('/upload-avatar', async(req, res) => {
+  console.log(req.file)
   try{
-    if(!req.file){
+    if(!req.files){
       res.send({
         status:false,
         message:'No file uploaded'
@@ -131,16 +142,14 @@ app.post('/upload-avatar', async(req, res) => {
     }else{
       let avatar = req.files.avatar
 
-      avatar.mv('./uploads/'+ avatar.name)
-
-      res.send({
-        status:true,
-        message:'File is uploaded',
-        data: {
-          name: avatar.name,
-          mimetype: avatar.mimetype,
-          size: avatar.size
-        }
+      avatar.mv('./public/uploads/'+ avatar.name)
+      const imageUrl = `uploads/${avatar.name}`
+      database.addUserPicture(req.session.userId, imageUrl)
+      .then(result => {
+        res.redirect(`/api/users/${req.session.userId}`)
+      })
+      .catch(e => {
+        res.redirect(`/api/users/${req.session.userId}`)
       })
     }
   } catch (err){
@@ -148,7 +157,7 @@ app.post('/upload-avatar', async(req, res) => {
   }
 })
 
-app.post('/upload-photos', async (req, res) => {
+app.post('/upload-photos/:id', async (req, res) => {
   try {
       if(!req.files) {
           res.send({
@@ -163,7 +172,7 @@ app.post('/upload-photos', async (req, res) => {
               let photo = req.files.photos[key];
 
               //move photo to uploads directory
-              photo.mv('./uploads/' + photo.name);
+              photo.mv('./public/uploads/' + photo.name);
 
               //push file details
               data.push({
@@ -173,12 +182,14 @@ app.post('/upload-photos', async (req, res) => {
               });
           });
 
+          database.addImagesForListing(req.params.id, data)
+          .then(result => {
+            res.redirect(`/api/widgets/listings/${req.params.id}`)
+          })
+          .catch(e => {
+            res.redirect(`/api/users/${req.session.userId}`)
+          })
           //return response
-          res.send({
-              status: true,
-              message: 'Files are uploaded',
-              data: data
-          });
       }
   } catch (err) {
       res.status(500).send(err);
