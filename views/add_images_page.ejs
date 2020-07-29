@@ -25,45 +25,63 @@
 
   </head>
 
+
+  <style>
+    html, body {
+    height: auto;
+  }
+    .container{
+      height:100%;
+    }
+      .addImage{
+        order:1px solid black;
+        padding:1em;
+        border-radius:5px;
+        background-color:white;
+      }
+
+  </style>
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
-    <article class="card-body mx-auto" style="max-width: 600px;">
-      <h4 class="card-title mt-3 text-center">Upload your Avatar</h4>
+    <div class="container">
+      <div id="my-messages-title">
+        <h1>Upload Your Avatar</h1>
+        <hr />
+      </div>
+      <section>
+        <form class="addImage" method="POST" action="/upload-avatar" enctype="multipart/form-data">
 
-      <form method="POST" action="/upload-avatar" enctype="multipart/form-data" style="border:1px solid black; padding:1em;border-radius:5px;background-color:white;">
+          <div class="form-group">
+            <input type="file" class="form-control-file" name="avatar" id="exampleFormControlFile1">
+          </div>
 
-        <div class="form-group">
-          <input type="file" class="form-control-file" name="avatar" id="exampleFormControlFile1">
+          <button type="submit" class="btn btn-primary p-3 btn-block">Save this image as my Avatar</button>
+        </form>
+      </section>
+
+        <div id="my-messages-title">
+          <h1>Upload Images to Your Listing</h1>
+          <hr />
         </div>
+        <section>
+          <form class="addImage" method="POST" action="/upload-photos/<%= listingId %>" enctype="multipart/form-data">
 
-        <button type="submit" class="btn btn-primary p-3 btn-block">Save this image as my Avatar</button>
-      </form>
-    </article>
+            <div class="form-group">
+              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
+            </div>
+            <div class="form-group">
+              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
+            </div>
+            <div class="form-group">
+              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
+            </div>
+            <div class="form-group">
+              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
+            </div>
 
-    <% if(listingId){ %>
-    <article class="card-body mx-auto" style="max-width: 600px;">
-      <h4 class="card-title mt-3 text-center">Upload Images to Your Listing</h4>
-
-      <form method="POST" action="/upload-photos/<%= listingId %>" enctype="multipart/form-data" style="border:1px solid black; padding:1em;border-radius:5px;background-color:white;">
-
-        <div class="form-group">
-          <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
-        </div>
-        <div class="form-group">
-          <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
-        </div>
-        <div class="form-group">
-          <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
-        </div>
-        <div class="form-group">
-          <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
-        </div>
-
-        <button type="submit" class="btn btn-primary p-3 btn-block">Save this image for my listing</button>
-      </form>
-    </article>
-    <%}%>
-
-
+            <button type="submit" class="btn btn-primary p-3 btn-block">Save this image for my listing</button>
+          </form>
+        </section>
+      </div>
   </body>
-</html>
+  </html>

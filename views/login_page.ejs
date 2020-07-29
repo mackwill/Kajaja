@@ -12,14 +12,28 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
         <!-- <BOOTSTRAP> -->
 </head>
+<style>
+  html, body {
+  height: 100%;
+}
+  .container{
+    height:100%;
+  }
+</style>
 <body>
   <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
-
+  <div class="container">
+    <div id="my-messages-title">
+      <h1>Login</h1>
+      <hr />
+    </div>
+    <section>
   <% if(message) {%>
     <div class="alert alert-warning" role="alert">
       <%= message %>
     </div>
   <%}%>
   <%- include('partials/login_form') %>
+</section>
 </body>
 </html>
