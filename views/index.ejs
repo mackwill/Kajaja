@@ -27,7 +27,7 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"
     ></script>
-    <!-- <BOOTSTRAP> -->
+    <!-- <BOOTSTRAP -->
 
     <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
@@ -45,6 +45,7 @@
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
 
+    <!-- Random Stuff Links -->
     <div class="container-fluid" id="homepage-container">
       <div class="col-11">
         <h1>Random Links about stuff</h1>
@@ -66,16 +67,14 @@
         <div>
           <% if(recentlyViewed) {%>
 
+          <!-- Recently Seen Links -->
           <h1>Recently Seen/ Recommended for you</h1>
           <div id="recentlyViewed-container">
-            <!-- <div class="col-11"> -->
             <div class="row mr-3 ml-3">
               <div class="scrolling-wrapper ml-3 mr-3">
-                <!-- <div class="row"> -->
                 <div class="col-md-6 col-lg-3 col-sm-10">
                   <% recentlyViewed.forEach(listing => { %>
                   <div class="card m-3">
-                    <!-- <div class="col-md-6 col-lg-3 col-sm-10"> -->
                     <img
                       src="https://cdn.chinadialogue.net/content/uploads/2020/05/20080228/picture-of-a-stack-of-books-with-some-harry-potter-glasses-768x512.jpg"
                       class="card-img-top"
@@ -90,7 +89,6 @@
                         <a href="#" class="btn btn-primary">See item</a>
                       </div>
                     </div>
-                    <!-- </div> -->
                   </div>
                   <%})%>
                 </div>
@@ -98,9 +96,9 @@
             </div>
             <%}%>
           </div>
-          <!-- </div> -->
         </div>
 
+        <!-- Popular Categories Links -->
         <h1>Popular Categories</h1>
         <div id="popular-categories-container">
           <div class="row">
@@ -145,38 +143,6 @@
             </div>
           </div>
         </div>
-
-        <!-- <div id="popular-categories-container">
-          <div class="row ml-3 mr-3">
-            <a
-              href="/api/widgets/listings?category=books"
-              class="col-lg-3 col-6 mt-2"
-              ><img
-                src="https://cdn.chinadialogue.net/content/uploads/2020/05/20080228/picture-of-a-stack-of-books-with-some-harry-potter-glasses-768x512.jpg"
-            /></a>
-            <a
-              href="/api/widgets/listings?category=cars"
-              class="col-lg-3 col-6 mt-2"
-              ><img
-                src="https://www.caasco.com/-/media/CAA-Magazine-Content/Articles/Auto-Advice/2019/5-things-to-know-when-you-shop-for-a-used-car/usedcars-thumb.jpg"
-                width="100%"
-            /></a>
-            <a
-              href="/api/widgets/listings?category=furniture"
-              class="col-lg-3 col-6 mt-2"
-              ><img
-                src="https://www.canadasbossleatherfurniture.com/wp-content/uploads/2015/12/Screen-Shot-2015-12-11-at-11.38.31-AM-300x225.jpg"
-                width="100%"
-            /></a>
-            <a
-              href="/api/widgets/listings?category=electronics"
-              class="col-lg-3 col-6 mt-2"
-              ><img
-                src="https://www.online-tech-tips.com/wp-content/uploads/2019/12/electronic-gadgets.jpeg"
-                width="100%"
-            /></a>
-          </div>
-        </div> -->
       </div>
     </div>
   </body>
