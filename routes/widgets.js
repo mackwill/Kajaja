@@ -172,5 +172,11 @@ module.exports = (db) => {
       });
   })
 
+  router.post('/favourites/:id', (req, res) => {
+    database.likeListing(req.session.userId, req.params.id)
+    .then(result => res.status(204).send())
+    .catch((e) => res.status(204).send())
+  })
+
   return router;
 };

@@ -261,3 +261,13 @@ const updateSingleListing = function(id, changes){
     null})
 }
 exports.updateSingleListing = updateSingleListing
+
+const likeListing = function(userId, listingId){
+  return db.query(`
+    INSERT INTO user_favourites(user_id, listing_id)
+    VALUES($1, $2)
+  `, [userId, listingId])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.likeListing = likeListing

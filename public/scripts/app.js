@@ -17,9 +17,30 @@ $(document).ready(() => {
       });
   });
 
-  $(document).on("click", ".listing-footer", function (e) {
+    $(document).on('click', '.delete_listing', function(e){
+      e.preventDefault()
+      e.stopImmediatePropagation()
+      const listingId = $(this).attr('id')
+      $.ajax({
+        url:`/api/widgets/listings/${listingId}`,
+        type:'DELETE',
+        success: function(result){
+          console.log('item deleted', success)
+        }
+      })
+    })
+
+
+  $(document).on("click", ".favourite-link", function (e) {
+    const listingId = $(this).attr('id')
     e.preventDefault();
     e.stopImmediatePropagation();
-    console.log("hjere");
+    $.ajax({
+      url:`/api/widgets/favourites/${listingId}`,
+      type:'POST',
+      success: function(result){
+        console.log('it faved', result)
+      }
+    })
   });
 });
