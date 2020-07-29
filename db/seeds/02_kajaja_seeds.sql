@@ -41,12 +41,12 @@ INSERT INTO
   )
 VALUES
   (
-    'Green Peugeot',
-    'bicycles',
+    'Green Subaru',
+    'cars',
     1,
-    'Great green Peugeot bicylcle for sale, ideal for someone 5''10 to 6''2',
+    'Great green Subaru for sale, ideal for someone who like AWD cars. Only 100K km',
     'FALSE',
-    350,
+    3500,
     'FALSE',
     'FALSE',
     'H2G2Z8',
@@ -65,12 +65,12 @@ VALUES
     'FALSE'
   ),
   (
-    'Queen size mattress',
-    'furniture',
+    'Window Washing',
+    'services',
     2,
-    'Queen size mattress in great condition',
+    'Window washing in montreal outdoor and indoor',
     'FALSE',
-    30,
+    120,
     'FALSE',
     'FALSE',
     'H2V2N2',
@@ -102,7 +102,7 @@ VALUES
   ),
   (
     'iPhone 7 128GB',
-    'Electronics',
+    'electronics',
     3,
     'Lightly used iPhone 7, 128GB for sale. Comes with case and charger',
     'FALSE',
@@ -113,10 +113,10 @@ VALUES
     'FALSE'
   ),
   (
-    'Fish vase for sale',
-    'Arts & Crafts',
+    'Fishing pole for fly fishing',
+    'outdoor',
     3,
-    'Vase shaped like a fish, perfect for use as a water pitcher. Free, pickup only',
+    'Nice fishing pole set with all the box and a bunch of baits and tackle. Free, pickup only',
     'FALSE',
     0,
     'FALSE',
@@ -125,10 +125,10 @@ VALUES
     'FALSE'
   ),
   (
-    'Opus bike for trade',
-    'bicycles',
+    '4 1/2 Rosemont near the metro',
+    'apartments',
     3,
-    'Looking to trade my red Opus city bike for a similar condition road bike',
+    'Looking to trade my 4 1/2 in Rosemont for a 5 1/2 in the mile end. I have a dog, so looking for pet friendly places.',
     'TRUE',
     0,
     'FALSE',

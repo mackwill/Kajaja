@@ -44,7 +44,7 @@ module.exports = (db) => {
             if(!req.session.history){
               req.session.history = []
             }
-            req.session.history.push(Number(req.params.id))
+            req.session.history.unshift(Number(req.params.id))
             templateVars.user = user
             res.render("single_listing", templateVars);
           })

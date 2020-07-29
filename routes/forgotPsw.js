@@ -15,36 +15,54 @@ module.exports = (db) => {
     res.render('forgot_page', templateVars)
   })
 
+  const generateRandomString = function(num) {
+    const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let randomStr = '';
+    for (let i = num; i > 0; i--) {
+      randomStr += chars[Math.round(Math.random() * (chars.length - 1))];
+    }
+    return randomStr;
+  };
 
   router.post('/forgot-password', (req, res) => {
     console.log('first step:',req.body)
     database.getUserWithEmail(req.body.email)
     .then(user => {
-      console.log('db request worked and returned: ',user)
       if(user){
-        const resetToken = new Date(user.join_date).getTime()
-        console.log('myresettoken:',resetToken)
-        let transporter = nodeMailer.createTransport({
-          host:'smtp.gmail.com',
-          port:465,
-          secure:true,
-          auth:{
-            user:process.env.USERMAIL,
-            pass: process.env.USERPASS
+        const resetToken = generateRandomString(7)
+
+        database.updateUserTokenById(user.id, resetToken)
+        .then(user => {
+          let transporter = nodeMailer.createTransport({
+            host:'smtp.gmail.com',
+            port:465,
+            secure:true,
+            auth:{
+              user:process.env.USERMAIL,
+              pass: process.env.USERPASS
+            }
+          })
+          let mailOptions = {
+            to: req.body.email,
+            subject: 'Reset your password for Kajaja',
+            html: `<p>Hi, to reset your password click on the following link: <a href="${req.protocol}://${req.get('host')}/api/mailer/reset?token=${resetToken}">Reset your password</a></p>`
           }
+          transporter.sendMail(mailOptions, (error, info) => {
+            if(error){
+              return console.log('message wasnt sent:',error)
+            }
+            console.log('Message %s sent: %s', info.messageId, info.response)
+          })
+          res.render('forgot_page', {message: 'Reset email sent'})
+
         })
-        let mailOptions = {
-          to: req.body.email,
-          subject: 'Reset your password for Kajaja',
-          html: `<p>Hi, to reset your password click on the following link: <a href="${req.protocol}://${req.get('host')}/api/mailer/reset?token=${resetToken}">Reset your password</a></p>`
-        }
-        transporter.sendMail(mailOptions, (error, info) => {
-          if(error){
-            return console.log('message wasnt sent:',error)
-          }
-          console.log('Message %s sent: %s', info.messageId, info.response)
+        .catch((e) => {
+
+          res.render('forgot_page', {message: 'Reset email wasnt sent'})
+
         })
-        res.render('forgot_page', {message: 'Reset email sent'})
+
+
       }else{
       res.render('forgot_page', {message: 'Reset email wasnt sent'})
       }

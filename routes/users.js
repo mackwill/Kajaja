@@ -79,13 +79,15 @@ module.exports = (db) => {
     login(email, password)
       .then(user => {
         if (!user) {
-          res.send({error: "error"});
+          res.render('login_page', {user:null, message: "Sorry, those credentials do not match with our database"});
           return;
         }
         req.session.userId = user.id;
         res.redirect('/')
       })
-      .catch(e => res.send(e));
+      .catch(e => {
+        res.render('login_page', {user:null, message:'Sorry, those credentials do not match with our database'})
+      });
   });
 
 
