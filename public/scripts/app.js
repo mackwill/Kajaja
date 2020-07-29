@@ -16,31 +16,10 @@ $(document).ready(() => {
         console.error("Error: ", err);
       });
   });
+
+  $(document).on("click", ".listing-footer", function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    console.log("hjere");
+  });
 });
-
-// //   });
-// //   //   $.ajax({
-// //   //     method: "GET",
-// //   //     url: "/api/users",
-// //   //   }).done((users) => {
-// //   //     for (user of users) {
-// //   //       $("<div>").text(user.name).appendTo($("body"));
-// //   //     }
-// //   //   });
-
-// //   // $.ajax({
-// //   //   method: "GET",
-// //   //   url: "/api/widgets/listings",
-// //   // }).done((data) => {
-// //   //   console.log("data:", data);
-// //   //   listings.forEach((listing) => {
-// //   //     $("#all-listings").prepend(createSingleListing(listing));
-// //   //   //   });
-// //   //   // });
-// });
-// $(() => {
-//   $(document).on('click', '#notificationSwitch', function(e){
-
-//     console.log($('#notificationSwitch').val())
-//   })
-// })
