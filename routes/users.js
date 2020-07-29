@@ -15,6 +15,8 @@ module.exports = (db) => {
   //Get login form
   router.get("/login", (req, res) => {
     const templateVars = { user: null, message: null };
+    templateVars.searchbar = null
+
     if (req.session.message) {
       templateVars.message = req.session.message;
       req.session.message = null;
@@ -25,6 +27,8 @@ module.exports = (db) => {
   //Get registration form
   router.get("/registration", (req, res) => {
     const templateVars = { user: null, message: null };
+    templateVars.searchbar = null
+
     if (req.session.message) {
       templateVars.message = req.session.message;
       req.session.message = null;
@@ -76,14 +80,14 @@ module.exports = (db) => {
     login(email, password)
       .then((user) => {
         if (!user) {
-          res.render('login_page', {user:null, message: "Sorry, those credentials do not match with our database"});
+          res.render('login_page', {user:null, message: "Sorry, those credentials do not match with our database", searchbar:null});
           return;
         }
         req.session.userId = user.id;
         res.redirect("/");
       })
       .catch(e => {
-        res.render('login_page', {user:null, message:'Sorry, those credentials do not match with our database'})
+        res.render('login_page', {user:null, message:'Sorry, those credentials do not match with our database', searchbar:null})
       });
   });
 
@@ -95,6 +99,8 @@ module.exports = (db) => {
 
   router.get("/my-account", (req, res) => {
     const templateVars = { user: null, message: null };
+    templateVars.searchbar = null
+
     database
       .getUserWithId(req.session.userId)
       .then((user) => {
@@ -108,6 +114,8 @@ module.exports = (db) => {
 
   router.post("/my-account", (req, res) => {
     const templateVars = { user: null, message: null };
+    templateVars.searchbar = null
+
     const changes = req.body;
     database
       .getUserWithId(req.session.userId)
@@ -140,6 +148,8 @@ module.exports = (db) => {
   //Get a profile page for specific user
   router.get("/:id", (req, res) => {
     const templateVars = {};
+    templateVars.searchbar = null
+
 
    database
     .getUserWithId(req.session.userId)

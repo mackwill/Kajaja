@@ -32,13 +32,15 @@ $(document).ready(() => {
 
   $(document).on("click", ".favourite-link", function (e) {
     const listingId = $(this).attr('id')
+    const listingBtn = $(this)
+
     e.preventDefault();
     e.stopImmediatePropagation();
     $.ajax({
       url:`/api/widgets/favourites/${listingId}`,
       type:'POST',
       success: function(result){
-        console.log('it faved', result)
+        $(listingBtn).append(result.message)
       }
     })
   });

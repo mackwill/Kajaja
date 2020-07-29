@@ -89,6 +89,8 @@ app.use("/api/mailer", nodemailerRoutes(db));
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
   const templateVars = {}
+  templateVars.searchbar = null
+
   if(req.session.userId){
     database.getUserWithId(req.session.userId)
     .then(user => {

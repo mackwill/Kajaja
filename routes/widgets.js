@@ -15,6 +15,8 @@ module.exports = (db) => {
 
   router.get("/listings/:id", (req, res) => {
     const templateVars = {}
+    templateVars.searchbar = null
+
     database.getSingleListing(req.params.id)
       .then((data) => {
         templateVars.listing = data
@@ -60,6 +62,8 @@ module.exports = (db) => {
 
   router.get('/update/listings/:id', (req, res) => {
     const templateVars = {}
+    templateVars.searchbar = null
+
     database.getSingleListing(req.params.id)
     .then(listing => {
       templateVars.listing = listing
@@ -73,6 +77,8 @@ module.exports = (db) => {
 
   router.post('/update/listings/:id', (req, res) => {
     const templateVars = {}
+    templateVars.searchbar = null
+
     database.updateSingleListing(req.params.id, req.body)
     .then(listing => {
       console.log('success:',listing)
@@ -91,6 +97,8 @@ module.exports = (db) => {
 
   router.get("/listings", (req, res) => {
     const templateVars = {}
+    templateVars.searchbar = req.query
+
     database.getListings(req.query)
       .then((data) => {
         templateVars.listings = data
@@ -121,6 +129,8 @@ module.exports = (db) => {
       res.redirect('/api/users/login')
     }else{
     const templateVars = {}
+    templateVars.searchbar = null
+
     database.getUserWithId(req.session.userId)
          .then(user => {
            templateVars.user = user
@@ -136,13 +146,12 @@ module.exports = (db) => {
   router.post("/create-listing", (req, res) => {
     const listing = req.body;
     listing.owner_id = req.session.userId;
-    console.log("Im here:", listing);
 
     database
       .createNewListing(listing)
       .then((listing) => {
         req.session.listingId = listing.id
-        res.redirect('/api/widgets/add-images')
+        res.redirect(`/api/widgets/update/listings/${listing.id}`)
       })
       .catch((e) => res.render("create_listing_page"));
   });
@@ -154,6 +163,7 @@ module.exports = (db) => {
 
   router.get('/favourites', (req, res) => {
     const templateVars = {}
+    templateVars.searchbar = null
 
     database.getFavouritesListings(req.session.userId)
       .then((data) => {
@@ -169,9 +179,13 @@ module.exports = (db) => {
   })
 
   router.post('/favourites/:id', (req, res) => {
+    if(!req.session.userId){
+      res.send({message:'Sorry you need to be logged in'})
+    }else{
     database.likeListing(req.session.userId, req.params.id)
-    .then(result => res.status(204).send())
-    .catch((e) => res.status(204).send())
+    .then(result => res.send({message:'The item was added to your favourites'}))
+    .catch((e) => res.send({message:'Sorry the item couldnt be save to your favourites'}))
+    }
   })
 
   return router;
