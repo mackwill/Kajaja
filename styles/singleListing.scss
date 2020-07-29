@@ -1,6 +1,97 @@
-.card {
-  .listing-header {
+#single-listing {
+  background-color: white;
+  border-radius: 0.5rem;
+  min-height: 50rem;
+  margin-bottom: 5rem;
+
+  .single-listing-header {
+    height: 12rem;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    background-color: none;
+    border-bottom: 1px solid gray;
+
+    h5 {
+      font-weight: bold;
+      font-size: 1.5rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    h4 {
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+  }
+
+  .header-right > div {
+    justify-content: center;
+  }
+
+  img {
+    object-fit: cover;
+    border: 1px solid gray;
+  }
+
+  #single-listing-container {
+    .img-container {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+#single-listing-content-container {
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+}
+
+#single-listing-contact-container {
+  margin-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+#single-listing-seller-info {
+  padding-bottom: 3rem;
+  .row {
+    justify-content: center;
+  }
+
+  .card-text {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  #call-seller {
+    margin-top: 1rem;
+    justify-content: center;
+
+    a > input {
+      font-size: 0.85rem;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  #single-listing {
+    .single-listing-header {
+      h5 {
+        font-size: 1.7rem;
+      }
+      h4 {
+        font-size: 1.5rem;
+      }
+    }
+  }
+  #single-listing-seller-info {
+    #call-seller {
+      margin-top: 1rem;
+      justify-content: center;
+
+      a > input {
+        font-size: 1rem;
+      }
+    }
   }
 }

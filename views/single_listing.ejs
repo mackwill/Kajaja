@@ -74,30 +74,142 @@
       </div>
     </div> -->
 
-    <!-- Title, price card-->
-<div class="card" style="border:none">
-  <div class="card-body">
-    <h5 class="card-title"><%= listing.title %></h5>
-    <h4 class="card-title">$<%= listing.price %></h4>
-  </div>
- </div>
- <!-- Meta data card-->
+    <div class="container col-lg-10 col-sm-11" id="single-listing">
+      <!-- Title, price card-->
 
- <div class="card" style="border:none">
-   <div class="card-body row">
-     <div class="col-2"><h3><i class="fa fa-map-marker m-3" aria-hidden="true"></h3></i>
- </div>
-  <div class="col-10">
-       <span class="card-text"><small class="text-muted"><%= chrono_listing %></small><br>
-       <span class="card-text"><small class="text-muted"><%= listing.postal_code %></small><br>
-       <span class="card-text"><small class="text-muted"><a href="#">View Map</a></small>
-  </div>
-   </div>
- </div>
+      <div class="row single-listing-header">
+        <div class="header-left col-lg-8 col-md-8 col-sm-8 align-middle">
+          <div class="">
+            <h5><%= listing.title %></h5>
+            <h4 class="text-success">$<%= listing.price %></h4>
+          </div>
+        </div>
+        <div class="header-right col-lg-4 col-md-4 col-sm-4 d-flex mx-auto">
+          <div class="col-10 d-flex">
+            <h3><i class="fa fa-map-marker m-3" aria-hidden="true"></i></h3>
+            <div>
+              <span
+                ><small class="text-muted"><%= chrono_listing %></small><br
+              /></span>
+              <span
+                ><small class="text-muted"><%= listing.postal_code %></small
+                ><br
+              /></span>
+              <span
+                ><small class="text-muted"
+                  ><a href="#">View Map</a></small
+                ></span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
 
- <!-- Small actions bar card-->
+      <!-- Listing -->
 
- <!-- <div class="card" style="border:none">
+      <div id="single-listing-container" class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="img-container col-7 mx-auto">
+              <img src="//placehold.it/400" alt="" />
+            </div>
+
+            <div id="single-listing-content-container">
+              <div>
+                <h3 class="text-success">Description:</h3>
+                <p><%= listing.description %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Sender -->
+
+      <div id="single-listing-contact-container" class="container">
+        <div class="row">
+          <div class="col-12">
+            <form method="POST" action="/api/messages">
+              <div class="form-group">
+                <h3>
+                  <label for="message-to-seller">Contact Kajaja User</label>
+                </h3>
+                <textarea
+                  name="message-to-seller"
+                  type="text"
+                  class="form-control"
+                  id="message-to-seller"
+                  placeholder="Your Message"
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg btn-block">
+                Send message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seller Info -->
+      <div id="single-listing-seller-info" class="container">
+        <div class="row">
+          <div class="col-10">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  <a href="/api/users/<%= listing.owner_id %>"
+                    >KaJaJa Seller: <%= listing.name %></a
+                  >
+                </h5>
+                <p class="card-text">
+                  <i class="fa fa-calendar mr-3" aria-hidden="true"></i> On
+                  Kajaja Since <%= chrono_owner %>
+                </p>
+                <p class="card-text">
+                  <i class="fa fa-list-alt mr-3" aria-hidden="true"></i>
+                  <a href="/api/users/<%= listing.owner_id %>"
+                    >View other listings</a
+                  >
+                </p>
+                <div class="input-group mb-2" id="call-seller">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fa fa-phone" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                  <a href="tel:<listing.phone_number %>"
+                    ><input
+                      class="form-control"
+                      type="text"
+                      placeholder="<%= listing.phone_number %>"
+                      readonly
+                  /></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Meta data card-->
+
+    <!-- <div class="card" style="border:none">
+        <div class="card-body row">
+          <div class="col-2">
+            <h3><i class="fa fa-map-marker m-3" aria-hidden="true"></i></h3>
+          </div>
+        <div class="col-10">
+            <span class="card-text"><small class="text-muted"><%= chrono_listing %></small><br>
+            <span class="card-text"><small class="text-muted"><%= listing.postal_code %></small><br>
+            <span class="card-text"><small class="text-muted"><a href="#">View Map</a></small>
+        </div>
+      </div>
+    </div>
+    </div> -->
+    <!-- Small actions bar card-->
+
+    <!-- <div class="card" style="border:none">
    <div class="card-body row">
      <div>
        <button><i class="fa fa-heart col" aria-hidden="true"></button>
@@ -111,69 +223,45 @@
    </div>
  </div> -->
 
- <!-- Listing card-->
-
- <div class="card">
-   <div class="row no-gutters">
-     <div class="col-sm-4">
-       <img src="https://via.placeholder.com/100x100" class="card-img" alt="...">
-     </div>
-     <div class="col-sm-8">
-       <div class="card-body">
-         <h5 class="card-title">Description</h5>
-         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.<%= listing.description %></p>
-         <p class="card-text"><small class="text-muted"><%= chrono_listing %></small></p>
-       </div>
-     </div>
-   </div>
- </div>
-
- <!-- Contact & Sellers card -->
-
- <div class="row">
-
-   <!-- Contact card -->
-
-   <div class="card col-md-6">
-    <form method="POST" action="/api/messages">
-      <div class="form-group">
-        <h3><label for="message-to-seller">Contact Kajaja User</label></h3>
-       <textarea
-                 name="message-to-seller"
-                 type="text"
-                 class="form-control"
-                 id="message-to-seller"
-                 placeholder="Your Message"
-                 /></textarea>
+    <!-- Listing card-->
+    <!-- <div class="container col-lg-10 col-sm-11 my-3">
+  <a class="listing-link" href="/api/widgets/listings/<%=listing.id%>">
+    <div class="row">
+      <div class="img-container col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <img src="//placehold.it/400" alt="" />
+      </div>
+      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+        <div class="listing-header">
+          <div class="listing-header-left">
+            <h3><%= listing.title %></h3>
+          </div>
+          <div class="listing-header-right">
+            <h3 class="text-success">$<%= listing.price %></h3>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Send message</button>
-     </form>
-   </div>
-
-    <!-- Sellers card -->
-
-   <div class="card col-md-6">
-      <div class="card-body">
-        <h5 class="card-title text-center"><a href="/api/users/<%= listing.owner_id %>"><%= listing.name %></a></h5>
-        <p class="card-text"><i class="fa fa-calendar mr-3" aria-hidden="true"></i>
-   On Kajaja Since <%= chrono_owner %></p>
-        <p class="card-text"><i class="fa fa-list-alt mr-3" aria-hidden="true"></i>
-          <a href="/api/users/<%= listing.owner_id %>">View other listings</a>
-
-        </p>
-        <div class="input-group mb-2">
-          <div class="input-group-prepend">
-            <div class="input-group-text"><i class="fa fa-phone" aria-hidden="true"></i></div>
-           </div>
-          <a href="tel:<listing.phone_number %>"><input class="form-control" type="text" placeholder="<%= listing.phone_number %>" readonly></a>
-         </div>
-       </div>
+        <div class="text listing-body">
+          <p><%= listing.description %></p>
+        </div>
+        <div class="listing-footer">
+          <form href="#" class="favourite-link"></form>
+            <i class="fas fa-heart"></i>
+          </form>
+        </div>
+      </div>
+      <div class="w-100"></div>
     </div>
- </div>
+  </a>
+</div> -->
+
+    <!-- Contact & Sellers card -->
+
+    <!-- <div class="row"> -->
+
+    <!-- Contact card -->
 
     <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
       crossorigin="anonymous"
     ></script>
     <script
