@@ -22,29 +22,66 @@
     ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="module" src="/kajaja/public/scripts/uploadImages.js"></script>
-    <style>
-      .hidden{display:none;}
-    </style>
+
   </head>
 
+
+  <style>
+    html, body {
+    height: auto;
+  }
+    .container{
+      height:100%;
+    }
+      .addImage{
+        order:1px solid black;
+        padding:1em;
+        border-radius:5px;
+        background-color:white;
+      }
+
+  </style>
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
-    <!-- <article class="card-body mx-auto" style="max-width: 600px;">
-      <h4 class="card-title mt-3 text-center">Add images to your ad</h4>
-      <form method="POST" action="/api/widgets/add-images">
+    <div class="container">
+      <div id="my-messages-title">
+        <h1>Upload Your Avatar</h1>
+        <hr />
+      </div>
+      <section>
+        <form class="addImage" method="POST" action="/upload-avatar" enctype="multipart/form-data">
 
-        <div class="form-group">
-          <label for="exampleFormControlFile1">Example file input</label>
-          <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1">
+          <div class="form-group">
+            <input type="file" class="form-control-file" name="avatar" id="exampleFormControlFile1">
+          </div>
+
+          <button type="submit" class="btn btn-primary p-3 btn-block">Save this image as my Avatar</button>
+        </form>
+      </section>
+
+        <div id="my-messages-title">
+          <h1>Upload Images to Your Listing</h1>
+          <hr />
         </div>
+        <section>
+          <form class="addImage" method="POST" action="/upload-photos/<%= listingId %>" enctype="multipart/form-data">
 
-        <button type="submit" class="btn btn-primary p-3">Save this image to my ad</button>
-      </form>
-    </article> -->
-    <article>
-      <img width="250" height="250" id="placeholder" src="http://placehold.it/250x250&text='click to upload'">
-      <input class="hidden" type="file" onchange="previewFile()" id="img-upload">
-    </article>
+            <div class="form-group">
+              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
+            </div>
+            <div class="form-group">
+              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
+            </div>
+            <div class="form-group">
+              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
+            </div>
+            <div class="form-group">
+              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
+            </div>
 
+            <button type="submit" class="btn btn-primary p-3 btn-block">Save this image for my listing</button>
+          </form>
+        </section>
+      </div>
   </body>
-</html>
+  </html>

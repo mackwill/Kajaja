@@ -17,6 +17,7 @@ $(document).ready(() => {
       });
   });
 
+<<<<<<< HEAD
   $(document).on("click", ".delete_listing", function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -29,6 +30,20 @@ $(document).ready(() => {
       },
     });
   });
+=======
+    $(document).on('click', '.delete_listing', function(e){
+      e.preventDefault()
+      e.stopImmediatePropagation()
+      const listingId = $(this).attr('id')
+      $.ajax({
+        url:`/api/widgets/listings/${listingId}`,
+        type:'DELETE',
+        success: function(result){
+          console.log('item deleted', success)
+        }
+      })
+    })
+>>>>>>> 890a1d643650c44387531fe204a459a56b077106
 
   $(document).on("click", ".favourite-link", function (e) {
     const listingId = $(this).attr("id");

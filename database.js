@@ -251,7 +251,8 @@ const updateSingleListing = function(id, changes){
   if(category !== 'Categories...'){
     initQuery += `, category = $5 `
   }
-  let finalQuery = initQuery.concat(`WHERE id = $6 RETURNING *`)
+  let finalQuery = initQuery.concat(`WHERE id = $6 OR category = $5 RETURNING *`)
+  console.log(finalQuery)
   return db.query(finalQuery,[title, description, Number(price), sold, category, id])
   .then(res => res.rows[0])
   .catch((e) =>
@@ -270,3 +271,48 @@ const likeListing = function(userId, listingId){
   .catch((e) => null)
 }
 exports.likeListing = likeListing
+
+const addUserPicture = function(userId, imgUrl){
+  return db.query(`
+    UPDATE users
+    SET profile_pic_url = $1
+    WHERE id = $2
+    RETURNING *
+  `,[imgUrl, userId])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.addUserPicture = addUserPicture
+
+const addImagesForListing = function(listingId, images){
+  let middleQuery = null
+  let value = []
+  if(images.length === 1){
+    middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1)
+    VALUES($1, $2)`
+    value = [listingId, images[0].name]
+  }else if(images.length === 2){
+    middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1, picture_2)
+    VALUES($1, $2, $3)`
+    value = [listingId, images[0].name, images[1].name]
+  }else if(images.length === 3){
+    middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1, picture_2, picture_3)
+    VALUES($1, $2, $3, $4)`
+    value = [listingId, images[0].name, images[1].name, images[2].name]
+  }else if(images.length === 4){
+    middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1, picture_2)
+    VALUES($1, $2, $3, $4, $5)`
+    value = [listingId, images[0].name, images[1].name, images[2].name, images[3].name]
+  }
+  const finalQuery = middleQuery.concat(' RETURNING *')
+  return db.query(finalQuery, value)
+  .then(res => {
+    console.log('success:',res.rows)
+    res.rows
+  })
+  .catch((e) => {
+    console.log('not working',e)
+    null
+    })
+}
+exports.addImagesForListing = addImagesForListing
