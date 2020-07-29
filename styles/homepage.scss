@@ -1,0 +1,53 @@
+img:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+.scrolling-wrapper .card {
+  display: inline-block;
+}
+
+#recentlyViewed-container {
+  img {
+    object-fit: cover;
+  }
+
+  h5 {
+    font-weight: bold;
+    color: black;
+    font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 10rem;
+    white-space: nowrap;
+  }
+
+  p {
+    font-weight: bold;
+    margin-bottom: 0.85rem;
+  }
+}
+
+#popular-categories-container {
+  padding-bottom: 5rem;
+  a {
+    padding: 0;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  #recentlyViewed-container {
+    h5 {
+      font-size: 1rem;
+      max-width: 15rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}
