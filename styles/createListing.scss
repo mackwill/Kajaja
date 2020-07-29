@@ -1,0 +1,20 @@
+#create-listing-container {
+  padding-bottom: 5rem;
+  .card {
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    form > div {
+      padding: 0;
+    }
+  }
+
+  #price-row {
+    align-items: center;
+    justify-content: center;
+
+    div {
+      margin-right: 1rem;
+    }
+  }
+}
