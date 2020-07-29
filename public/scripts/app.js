@@ -30,7 +30,6 @@ $(document).ready(() => {
       })
     })
 
-
   $(document).on("click", ".favourite-link", function (e) {
     const listingId = $(this).attr('id')
     e.preventDefault();

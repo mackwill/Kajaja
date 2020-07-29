@@ -38,16 +38,7 @@
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
     <section>
-      <!-- <div class="custom-control custom-switch mt-3 mb-3 ml-3">
-        <input
-          type="checkbox"
-          class="custom-control-input"
-          id="notificationSwitch"
-        />
-        <label class="custom-control-label" for="notificationSwitch"
-          >Get notified when new items are posted</label
-        >
-      </div> -->
+
     </section>
     <section id="all-listings">
       <% listings.forEach(listing => { %>
@@ -56,7 +47,7 @@
         <a class="listing-link" href="/api/widgets/listings/<%=listing.id%>">
           <div class="row">
             <div class="img-container col-lg-3 col-md-3 col-sm-3 col-xs-3">
-              <img src="//placehold.it/200" alt="" />
+              <img src="<%= listing.main_image %>" alt="" />
             </div>
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
               <div class="listing-header">
@@ -72,7 +63,7 @@
               </div>
               <div class="listing-footer">
                 <% if(user){ %>
-                <form class="favourite-link" id="<%= listing.id %>">
+                <form class="favourite-link" id="<%= user %>">
                   <i class="fas fa-heart"></i>
                 </form>
                 <%}%>

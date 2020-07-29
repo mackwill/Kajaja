@@ -147,23 +147,19 @@ module.exports = (db) => {
       .catch((e) => res.render("create_listing_page"));
   });
 
-  router.get('/add-images', (req, res) => {
-    const templateVars = {user: req.session.userId}
+  router.get('/add-images/:id', (req, res) => {
+    const templateVars = {user: req.session.userId, listingId: req.params.id}
     res.render('add_images_page', templateVars)
-  })
-
-  router.post('/add-images', (req, res) => {
-    console.log(req.body)
-    //res.redirect(`/api/widgets/listings/${listing.id}`);
-    res.send({good:'good'})
   })
 
   router.get('/favourites', (req, res) => {
     const templateVars = {}
-    templateVars.user = req.session.userId
 
     database.getFavouritesListings(req.session.userId)
       .then((data) => {
+        console.log('cookie:', req.session.userId)
+        templateVars.user = {}
+        templateVars.user.id = req.session.userId
         templateVars.listings = data
         res.render("favourites_page", templateVars);
       })

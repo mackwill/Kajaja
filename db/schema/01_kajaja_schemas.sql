@@ -37,7 +37,8 @@ CREATE TABLE listings(
   boosted BOOLEAN DEFAULT FALSE,
   creation_date TIMESTAMP DEFAULT now(),
   postal_code VARCHAR(255),
-  sold BOOLEAN DEFAULT FALSE
+  sold BOOLEAN DEFAULT FALSE,
+  main_image VARCHAR(255) DEFAULT 'https://via.placeholder.com/100x100'
 );
 
 CREATE TABLE listing_pictures(
