@@ -76,14 +76,20 @@ module.exports = (db) => {
     login(email, password)
       .then((user) => {
         if (!user) {
-          res.render('login_page', {user:null, message: "Sorry, those credentials do not match with our database"});
+          res.render("login_page", {
+            user: null,
+            message: "Sorry, those credentials do not match with our database",
+          });
           return;
         }
         req.session.userId = user.id;
         res.redirect("/");
       })
-      .catch(e => {
-        res.render('login_page', {user:null, message:'Sorry, those credentials do not match with our database'})
+      .catch((e) => {
+        res.render("login_page", {
+          user: null,
+          message: "Sorry, those credentials do not match with our database",
+        });
       });
   });
 
@@ -141,42 +147,48 @@ module.exports = (db) => {
   router.get("/:id", (req, res) => {
     const templateVars = {};
 
-   database
-    .getUserWithId(req.session.userId)
-    .then((user) => {
-      templateVars.user = user
-      database
-      .getPublicInfoUserById(req.params.id)
-      .then((data) => {
-        data.unix = chrono(new Date() - data[0].join_date.getTime());
-        templateVars.data = data;
-        templateVars.activeProfilePage = (req.params.id == req.session.userId ? true : false)
-        res.render("profile_page", templateVars);
-        return
+    database
+      .getUserWithId(req.session.userId)
+      .then((user) => {
+        templateVars.user = user;
+        database
+          .getPublicInfoUserById(req.params.id)
+          .then((data) => {
+            console.log("data:", data);
+            data.unix = chrono(new Date() - data[0].join_date.getTime());
+            templateVars.listings = data;
+            templateVars.activeProfilePage =
+              req.params.id == req.session.userId ? true : false;
+            res.render("profile_page", templateVars);
+            return;
+          })
+          .catch((e) => {
+            templateVars.activeProfilePage =
+              req.params.id === req.session.userId ? true : false;
+            res.render("profile_page", templateVars);
+            return;
+          });
       })
       .catch((e) => {
-        templateVars.activeProfilePage = (req.params.id === req.session.userId ? true : false)
-        res.render("profile_page", templateVars);
-        return
+        templateVars.user = null;
+        database
+          .getPublicInfoUserById(req.params.id)
+          .then((data) => {
+            console.log("data:", data);
+            data.unix = chrono(new Date() - data[0].join_date.getTime());
+            templateVars.listings = data;
+            templateVars.activeProfilePage =
+              req.params.id == req.session.userId ? true : false;
+            res.render("profile_page", templateVars);
+            return;
+          })
+          .catch((e) => {
+            templateVars.activeProfilePage =
+              req.params.id === req.session.userId ? true : false;
+            res.render("profile_page", templateVars);
+            return;
+          });
       });
-    })
-    .catch((e) => {
-      templateVars.user = null
-      database
-      .getPublicInfoUserById(req.params.id)
-      .then((data) => {
-        data.unix = chrono(new Date() - data[0].join_date.getTime());
-        templateVars.data = data;
-        templateVars.activeProfilePage = (req.params.id == req.session.userId ? true : false)
-        res.render("profile_page", templateVars);
-        return
-      })
-      .catch((e) => {
-        templateVars.activeProfilePage = (req.params.id === req.session.userId ? true : false)
-        res.render("profile_page", templateVars);
-        return
-      });
-    })
   });
 
   return router;
