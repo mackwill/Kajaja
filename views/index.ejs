@@ -46,9 +46,9 @@
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
 
     <!-- Random Stuff Links -->
-    <div class="container-fluid" id="homepage-container">
-      <div class="col-11">
-        <h1>Random Links about stuff</h1>
+    <div class="container-fluid col-11" id="homepage-container">
+      <div class="mx-auto">
+        <h1>Random Links About Stuff</h1>
 
         <div class="scrolling-wrapper ml-3 mr-3">
           <div class="col-md-6 col-lg-3 col-sm-10">
@@ -64,53 +64,54 @@
           </div>
         </div>
 
-        <div>
-          <% if(recentlyViewed) {%>
+        <% if(recentlyViewed) {%>
 
-          <!-- Recently Seen Links -->
-          <h1>Recently Seen/ Recommended for you</h1>
-          <div id="recentlyViewed-container">
-            <div class="row mr-3 ml-3">
-              <div class="scrolling-wrapper ml-3 mr-3">
-                <div class="col-md-6 col-lg-3 col-sm-10">
-                  <% recentlyViewed.forEach(listing => { %>
-                  <div class="card m-3">
-                    <img
-                      src="<%= listing.main_image %>"
-                      class="card-img-top"
-                      alt="..."
-                    />
-                    <div class="card-body">
-                      <h5 class="card-title"><%= listing.title %></h5>
-                      <p class="card-text text-success">
-                        $<%= listing.price %>
-                      </p>
-                      <div class="text-center">
-                        <a href="/api/widgets/listings/<%= listing.id %>" class="btn btn-primary">See item</a>
-                      </div>
+        <!-- Recently Seen Links -->
+        <h1>Recently Seen/ Recommended for you</h1>
+        <div id="recentlyViewed-container">
+          <div class="row mr-3 ml-3">
+            <div class="scrolling-wrapper ml-3 mr-3">
+              <div class="col-md-6 col-lg-3 col-sm-10">
+                <% recentlyViewed.forEach(listing => { %>
+                <div class="card m-3">
+                  <img
+                    src="<%= listing.main_image %>"
+                    class="card-img-top"
+                    alt="..."
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title"><%= listing.title %></h5>
+                    <p class="card-text text-success">
+                      $<%= listing.price %>
+                    </p>
+                    <div class="text-center">
+                      <a
+                        href="/api/widgets/listings/<%= listing.id %>"
+                        class="btn btn-primary"
+                        >See item</a
+                      >
                     </div>
                   </div>
-                  <%})%>
                 </div>
+                <%})%>
               </div>
             </div>
-            <%}%>
           </div>
+          <%}%>
         </div>
 
         <!-- Popular Categories Links -->
-        <h1>Popular Categories</h1>
         <div id="popular-categories-container">
+          <h1>Popular Categories</h1>
           <div class="row">
             <div class="scrolling-wrapper ml-3 mr-3">
-              <div class="col-md-6 col-lg-3 col-sm-10">
+              <div class="col-md-5 col-lg-3 col-sm-10">
                 <div class="card m-3 bg-transparent">
                   <h2 class="text-center">Furnitures</h2>
                   <a
                     href="/api/widgets/listings?category=books"
                     class="col-lg-3 col-6 mt-2"
-                    ><img
-                      src="images/box_furniture.png"
+                    ><img src="images/box_furniture.png"
                   /></a>
                 </div>
                 <div class="card m-3 bg-transparent">
@@ -118,9 +119,7 @@
                   <a
                     href="/api/widgets/listings?category=cars"
                     class="col-lg-3 col-6 mt-2"
-                    ><img
-                      src="images/box_car.png"
-                      width="100%"
+                    ><img src="images/box_car.png" width="100%"
                   /></a>
                 </div>
 
@@ -129,9 +128,7 @@
                   <a
                     href="/api/widgets/listings?category=furniture"
                     class="col-lg-3 col-6 mt-2"
-                    ><img
-                      src="images/box_apartment.png"
-                      width="100%"
+                    ><img src="images/box_apartment.png" width="100%"
                   /></a>
                 </div>
                 <div class="card m-3 bg-transparent">
@@ -139,9 +136,7 @@
                   <a
                     href="/api/widgets/listings?category=electronics"
                     class="col-lg-3 col-6 mt-2"
-                    ><img
-                      src="images/box_electronic.png"
-                      width="100%"
+                    ><img src="images/box_electronic.png" width="100%"
                   /></a>
                 </div>
               </div>
