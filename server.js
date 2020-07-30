@@ -15,7 +15,7 @@ const methodOverride = require('method-override');
 const _ = require('lodash');
 const fileUpload = require('express-fileupload');
 const cors = require('cors')
-
+const TemplateVars = require('./routes/schema/TemplateVars')
 
 // PG database client/connection setup
 const { Pool } = require("pg");
@@ -26,6 +26,7 @@ db.connect();
 module.exports = db;
 
 const database = require('./database')
+const { checkIfUserHasACookie } = require("./helper");
 
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
@@ -87,54 +88,27 @@ app.use("/api/mailer", nodemailerRoutes(db));
 // Home page
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
-app.get("/", (req, res) => {
-  const templateVars = {}
-  templateVars.searchbar = null
+app.get("/", checkIfUserHasACookie, (req, res) => {
+  const templateVars = new TemplateVars(req.user)
 
-  if(req.session.userId){
-    database.getUserWithId(req.session.userId)
-    .then(user => {
-      console.log(user)
-      templateVars.user = user
-
-      if(!req.session.history){
-        templateVars.recentlyViewed = null
-        console.log('is connected but not recently view', templateVars)
-        res.render("index", templateVars);
-      }else{
-        database.getRecentlyViewedListings(req.session.history)
-        .then(recentlyViewed => {
-          console.log(recentlyViewed)
-          templateVars.recentlyViewed = recentlyViewed
-          console.log('is connected but with recently view', templateVars)
-          res.render("index", templateVars);
-          return
-        })
-        .catch((e) => {
-          templateVars.recentlyViewed = null
-          console.log('is connected with recently view but catch error', templateVars)
-          res.render("index", templateVars);
-          return
-        })
-      }
-    })
-    .catch((e) => {
-      templateVars.user = null
-      templateVars.recentlyViewed = null
-      console.log('got an error getting user by cookie session', templateVars)
-
+  if(!req.session.history){
+    res.render("index", templateVars);
+  }else{
+    database.getRecentlyViewedListings(req.session.history)
+    .then(recentlyViewed => {
+      templateVars.recentlyViewed = recentlyViewed
       res.render("index", templateVars);
     })
-  }else{
-  templateVars.user = null
-  templateVars.recentlyViewed = null
-  console.log('got no session cookie', templateVars)
-  res.render("index", templateVars);
+    .catch((e) => {
+      res.render("index", templateVars);
+    })
   }
 });
 
+
+
+
 app.post('/upload-avatar', async(req, res) => {
-  console.log(req.file)
   try{
     if(!req.files){
       res.send({
@@ -145,13 +119,13 @@ app.post('/upload-avatar', async(req, res) => {
       let avatar = req.files.avatar
 
       avatar.mv('./public/uploads/'+ avatar.name)
-      const imageUrl = `uploads/${avatar.name}`
+      const imageUrl = `/uploads/${avatar.name}`
       database.addUserPicture(req.session.userId, imageUrl)
-      .then(result => {
+      .then(() => {
         res.redirect(`/api/users/${req.session.userId}`)
       })
       .catch(e => {
-        res.redirect(`/api/users/${req.session.userId}`)
+        res.status(500).send(e)
       })
     }
   } catch (err){
@@ -160,7 +134,6 @@ app.post('/upload-avatar', async(req, res) => {
 })
 
 app.post('/upload-main/:id', async(req, res) => {
-  console.log(req.file)
   try{
     if(!req.files){
       res.send({
@@ -171,10 +144,9 @@ app.post('/upload-main/:id', async(req, res) => {
       let mainImage = req.files.mainImage
 
       mainImage.mv('./public/uploads/'+ mainImage.name)
-      const imageUrl = `uploads/${mainImage.name}`
+      const imageUrl = `/uploads/${mainImage.name}`
       database.addMainImageToListing(req.params.id, imageUrl)
-      .then(result => {
-        console.log('made it')
+      .then(() => {
         res.redirect(`/api/widgets/listings/${req.params.id}`)
       })
       .catch(e => {
@@ -212,10 +184,10 @@ app.post('/upload-photos/:id', async (req, res) => {
           });
           if(data.length > 0){
           database.addImagesForListing(req.params.id, data)
-          .then(result => {
+          .then(() => {
             res.redirect(`/api/widgets/listings/${req.params.id}`)
           })
-          .catch(e => {
+          .catch(() => {
             res.redirect(`/api/users/${req.session.userId}`)
           })
           //return response
