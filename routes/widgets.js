@@ -158,6 +158,8 @@ module.exports = (db) => {
 
   router.get('/add-images/:id', (req, res) => {
     const templateVars = {user: req.session.userId, listingId: req.params.id}
+    templateVars.searchbar = null
+
     res.render('add_images_page', templateVars)
   })
 

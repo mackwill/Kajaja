@@ -1,0 +1,30 @@
+.top-stripe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.top-stripe img {
+  border-radius: 50px;
+  margin-top: -3em;
+  border: 1px solid black;
+}
+.middle-stripe {
+  display: flex;
+  text-align: center;
+}
+.middle-stripe div {
+  width: 100%;
+}
+.lower-stripe {
+  display: flex;
+}
+.lower-stripe div {
+  width: 100%;
+  margin-top: 2em;
+  text-align: center;
+  border-bottom: 1px solid grey;
+}
+.lower-stripe div:hover {
+  background-color: grey;
+  cursor: pointer;
+}

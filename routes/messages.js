@@ -90,7 +90,6 @@ module.exports = (db) => {
   });
 
   router.post("/:id", (req, res) => {
-    const templateVars = {};
     const user = req.session.userId;
     const messageThread = req.params.id;
     console.log("here too ", messageThread);
@@ -122,40 +121,28 @@ module.exports = (db) => {
     console.log("message: ", message);
     const user = req.session.userId;
     templatVars.user = user;
-    db.query(
-      `INSERT INTO message_thread (listing_id, sender_id)
-      VALUES ($1, $2)
+    return db
+      .query(
+        `INSERT INTO message_thread (listing_id)
+      VALUES ($1)
 
       RETURNING *
     ;`,
-      [listingId, user]
-    )
+        [listingId]
+      )
       .then((data) => {
         const threadId = data.rows[0].id;
         db.query(
           `
-        INSERT INTO user_message (thread_id, content)
-        VALUES ($1, $2)
+        INSERT INTO user_message (thread_id, sender_id, content)
+        VALUES ($1, $2, $3)
         RETURNING *;
         `,
-          [threadId, message[0]]
-        ).then(() => {
-          if (req.session.userId) {
-            database
-              .getUserWithId(req.session.userId)
-              .then((user) => {
-                templateVars.user = user;
-                res.render("index", templateVars);
-              })
-              .catch((e) => {
-                templateVars.user = null;
-                res.render("index", templateVars);
-              });
-          } else {
-            templateVars.user = null;
-            res.render("index", templateVars);
-          }
-        });
+          [threadId, user, message[0]]
+        );
+      })
+      .then(() => {
+        res.end();
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });

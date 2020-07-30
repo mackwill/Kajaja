@@ -1,0 +1,39 @@
+#create-listing-container {
+  padding-bottom: 5rem;
+  .card {
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    form > div {
+      padding: 0;
+    }
+  }
+
+  #price-row {
+    align-items: center;
+    justify-content: center;
+
+    div {
+      margin-right: 1rem;
+    }
+  }
+
+  fieldset {
+    border: none;
+    .row {
+      justify-content: space-around;
+    }
+  }
+
+  #seller-location {
+    justify-content: center;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  #create-listing-container {
+    #seller-location {
+      justify-content: left;
+    }
+  }
+}

@@ -93,7 +93,7 @@
       <div id="single-listing-contact-container" class="container">
         <div class="row">
           <div class="col-12">
-            <form method="POST" action="/api/messages">
+            <form id='contact-seller-form' method="POST" action="/api/messages">
               <div class="form-group">
                 <h3>
                   <label for="message-to-seller">Contact Kajaja User</label>
@@ -106,10 +106,13 @@
                   placeholder="Your Message"
                 ></textarea>
               </div>
-              <button type="submit" class="btn btn-primary btn-lg btn-block">
+              <button id="submit-message" type="submit" class="btn btn-primary btn-lg btn-block">
                 Send message
               </button>
             </form>
+            <div id="message-sent-alert" class="alert alert-success collapse" role="alert">
+              Your message has been successfully sent!
+            </div>
           </div>
         </div>
       </div>

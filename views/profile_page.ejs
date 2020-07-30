@@ -5,12 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- <BOOTSTRAP> -->
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
 
-      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-      <!-- <BOOTSTRAP> -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/styles/listings.css" type="text/css" />
 
     <script type="text/javascript" src="/scripts/app.js"></script>
 
@@ -18,56 +37,23 @@
       defer
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
     ></script>
-    <link rel="stylesheet" href="/styles/listings.css" type="text/css" />
-
-    <style>
-
-.top-stripe{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-.top-stripe img{
-  border-radius:50px;
-  margin-top:-3em;
-  border:1px solid black;
-  width:100px;
-}
-.middle-stripe{
-  display:flex;
-  text-align:center;
-}
-.middle-stripe div{
-  width:100%;
-}
-.lower-stripe{
-  display:flex;
-}
-.lower-stripe div{
-  width:100%;
-  margin-top:2em;
-  text-align:center;
-  border-bottom:1px solid grey;
-}
-.lower-stripe div:hover{
-  background-color:grey;
-  cursor:pointer;
-}
-
-    </style>
   </head>
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
+
+    <!-- User profile header -->
     <div class="main">
-      <div class="banner"><img width="100%" src="https://via.placeholder.com/500x75/808080"></div>
+      <div class="banner">
+        <img width="100%" src="https://via.placeholder.com/500x75/808080" />
+      </div>
       <div class="top-stripe">
-        <img src="/<%= data[0].profile_pic_url %>">
-        <h2><%= data[0].name %><h2>
+        <img src="/<%= listings[0].profile_pic_url %>" />
+        <h2><%= listings[0].name %></h2>
       </div>
       <div class="middle-stripe">
-        <div><span>--</span><br>Avg Reply</div>
-        <div><span>--</span><br>Reply Rate</div>
-        <div><span><%= data.unix %></span><br>On Kijiji since</div>
+        <div><span>--</span><br />Avg Reply</div>
+        <div><span>--</span><br />Reply Rate</div>
+        <div><span><%= listings.unix %></span><br />On Kijiji since</div>
       </div>
       <div class="lower-stripe">
         <div class="isActive">Listings</div>
@@ -75,46 +61,45 @@
       </div>
     </div>
 
+    <!-- Listings associated to user -->
     <section id="all-listings">
-      <% data.forEach(listing => { %>
-
-      <div class="container col-lg-10 col-sm-11 my-3">
-        <a class="listing-link" href="/api/widgets/listings/<%=listing.id%>">
-          <div class="row">
-            <div class="img-container col-lg-3 col-md-3 col-sm-3 col-xs-3">
-              <img src="<%= listing.main_image %>" alt="" />
-            </div>
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-              <div class="listing-header">
-                <div class="listing-header-left">
-                  <h3><%= listing.title %></h3>
+      <% listings.forEach(listing => { %>
+        <div class="container col-lg-10 col-sm-11 my-3">
+          <a class="listing-link" href="/api/widgets/listings/<%=listing.id%>">
+            <div class="row">
+              <div class="img-container col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <img src="<%= listing.main_image %>" alt="" />
+              </div>
+              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                <div class="listing-header">
+                  <div class="listing-header-left">
+                    <h3><%= listing.title %></h3>
+                  </div>
+                  <div class="listing-header-right">
+                    <h3 class="text-success">$<%= listing.price %></h3>
+                  </div>
                 </div>
-                <div class="listing-header-right">
-                  <h3 class="text-success">$<%= listing.price %></h3>
+                <div class="text listing-body">
+                  <p><%= listing.description %></p>
+                </div>
+                <div class="listing-footer">
+                  <% if(user){ %>
+                  <form class="favourite-link" id="<%= listing.id %>">
+                    <i class="fas fa-heart"></i>
+                  </form>
+                  <%}%>
                 </div>
               </div>
-              <div class="text listing-body">
-                <p><%= listing.description %></p>
-              </div>
-              <div class="listing-footer">
-                <% if(user){ %>
-                <form class="favourite-link" id="<%= listing.id %>">
-                  <i class="fas fa-heart"></i>
-                </form>
-                <%}%>
+              <div class="w-100">
+                <% if(activeProfilePage === true) { %>
+                  <button class="btn btn-primary delete_listing" id="<%= listing.id %>">Delete</button>
+                  <a href="/api/widgets/update/listings/<%= listing.id %>"><button class="btn btn-danger">Update</button></a>
+                <% }%>
               </div>
             </div>
-            <div class="w-100">
-              <% if(activeProfilePage === true) { %>
-                <button class="btn btn-primary delete_listing" id="<%= listing.id %>">Delete</button>
-                <a href="/api/widgets/update/listings/<%= listing.id %>"><button class="btn btn-danger">Update</button></a>
-              <% }%>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <% }) %>
+          </a>
+        </div>
+        <% }) %>
     </section>
     <script
       src="https://code.jquery.com/jquery-3.5.1.js"

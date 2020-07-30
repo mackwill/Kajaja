@@ -151,42 +151,48 @@ module.exports = (db) => {
     templateVars.searchbar = null
 
 
-   database
-    .getUserWithId(req.session.userId)
-    .then((user) => {
-      templateVars.user = user
-      database
-      .getPublicInfoUserById(req.params.id)
-      .then((data) => {
-        data.unix = chrono(new Date() - data[0].join_date.getTime());
-        templateVars.data = data;
-        templateVars.activeProfilePage = (req.params.id == req.session.userId ? true : false)
-        res.render("profile_page", templateVars);
-        return
+    database
+      .getUserWithId(req.session.userId)
+      .then((user) => {
+        templateVars.user = user;
+        database
+          .getPublicInfoUserById(req.params.id)
+          .then((data) => {
+            console.log("data:", data);
+            data.unix = chrono(new Date() - data[0].join_date.getTime());
+            templateVars.listings = data;
+            templateVars.activeProfilePage =
+              req.params.id == req.session.userId ? true : false;
+            res.render("profile_page", templateVars);
+            return;
+          })
+          .catch((e) => {
+            templateVars.activeProfilePage =
+              req.params.id === req.session.userId ? true : false;
+            res.render("profile_page", templateVars);
+            return;
+          });
       })
       .catch((e) => {
-        templateVars.activeProfilePage = (req.params.id === req.session.userId ? true : false)
-        res.render("profile_page", templateVars);
-        return
+        templateVars.user = null;
+        database
+          .getPublicInfoUserById(req.params.id)
+          .then((data) => {
+            console.log("data:", data);
+            data.unix = chrono(new Date() - data[0].join_date.getTime());
+            templateVars.listings = data;
+            templateVars.activeProfilePage =
+              req.params.id == req.session.userId ? true : false;
+            res.render("profile_page", templateVars);
+            return;
+          })
+          .catch((e) => {
+            templateVars.activeProfilePage =
+              req.params.id === req.session.userId ? true : false;
+            res.render("profile_page", templateVars);
+            return;
+          });
       });
-    })
-    .catch((e) => {
-      templateVars.user = null
-      database
-      .getPublicInfoUserById(req.params.id)
-      .then((data) => {
-        data.unix = chrono(new Date() - data[0].join_date.getTime());
-        templateVars.data = data;
-        templateVars.activeProfilePage = (req.params.id == req.session.userId ? true : false)
-        res.render("profile_page", templateVars);
-        return
-      })
-      .catch((e) => {
-        templateVars.activeProfilePage = (req.params.id === req.session.userId ? true : false)
-        res.render("profile_page", templateVars);
-        return
-      });
-    })
   });
 
   return router;
