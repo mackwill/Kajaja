@@ -88,7 +88,6 @@ module.exports = (db) => {
         return database.createNewThread(listingId);
       })
       .then((data) => {
-        console.log("data: ", data);
         const threadId = data[0].id;
         return database.insertIntoCreatedThread(threadId, userId, message[0]);
       })

@@ -18,7 +18,6 @@ module.exports = (db) => {
 
   //Submit your email to receive reset email
   router.post('/forgot-password', (req, res) => {
-    console.log('first step:',req.body)
     database.getUserWithEmail(req.body.email)
     .then(user => {
       if(user){
@@ -61,7 +60,6 @@ module.exports = (db) => {
       }
     })
     .catch((e) => {
-      console.log('db request didnt worked send:', e)
       res.redirect('/')
     })
   })
@@ -76,7 +74,6 @@ module.exports = (db) => {
   router.get('/reset-password', (req, res) => {
     database.getUserByResetToken(req.session.reset)
     .then(user => {
-      console.log(user)
       req.session.reset = user.id
       res.redirect('/api/mailer/change-password')
     })

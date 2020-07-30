@@ -13,7 +13,6 @@ const filterMessagesByUser = function (messages) {
       messagesByListing.push(message);
     }
   });
-  console.log("messagesByListing", messagesByListing);
   return messagesByListing;
 };
 
