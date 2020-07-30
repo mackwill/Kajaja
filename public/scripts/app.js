@@ -49,7 +49,6 @@ $(document).ready(() => {
       type: "POST",
       success: function (result) {
         // $(listingBtn).append(result.message);
-        console.log("here");
         $(`#favourite-alert`).find(".modal-body").html(result.message);
         $(`#favourite-alert`).modal("show");
       },

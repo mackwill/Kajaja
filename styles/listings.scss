@@ -67,7 +67,9 @@
 div.container:hover {
   border: 2px solid blue;
 }
-
+.modal-parent {
+  background-color: #f0f0f0;
+}
 @media only screen and (min-width: 600px) {
   #all-listings {
     p {
