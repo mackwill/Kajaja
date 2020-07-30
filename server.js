@@ -12,10 +12,8 @@ const app = express();
 const morgan = require("morgan");
 const methodOverride = require("method-override");
 
-// const _ = require("lodash");
- const fileUpload = require("express-fileupload");
+const fileUpload = require("express-fileupload");
 const cors = require("cors");
-const TemplateVars = require("./routes/schema/TemplateVars");
 
 // PG database client/connection setup
 const { Pool } = require("pg");
@@ -24,9 +22,6 @@ const db = new Pool(dbParams);
 db.connect();
 
 module.exports = db;
-
-const database = require("./database");
-const { checkIfUserHasACookie } = require("./helper");
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -66,12 +61,12 @@ app.use(express.static("uploads"));
 
 // Separated Routes for each Resource
 const messageRoutes = require("./routes/messages");
-const nodemailerRoutes = require("./routes/forgotPsw");
-const uploadImagesRoutes = require("./routes/uploadImages");
+const nodemailerRoutes = require("./routes/mailer");
+const uploadImagesRoutes = require("./routes/upload");
 
-const listingsRoutes = require("./routes/zlistings");
-const favouritesRoutes = require("./routes/zfavourites");
-const usersRoutes = require("./routes/zusers");
+const listingsRoutes = require("./routes/listings");
+const favouritesRoutes = require("./routes/favourites");
+const usersRoutes = require("./routes/users");
 const indexRoutes = require("./routes/index");
 
 // Mount all resource routes

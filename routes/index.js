@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const database = require("../database");
-const { chrono, checkIfUserHasACookie, hasListingBeenLiked } = require("../helper");
+const { checkIfUserHasACookie } = require("../helper");
 const TemplateVars = require('./schema/TemplateVars')
 
 
@@ -68,5 +68,9 @@ module.exports = (db) => {
     res.render("registration_page", templateVars);
   });
 
+  router.get('*',checkIfUserHasACookie, (req, res) => {
+    let templateVars = new TemplateVars(req.user)
+    res.render('404', templateVars)
+  })
   return router;
 };

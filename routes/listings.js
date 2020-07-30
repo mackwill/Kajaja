@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const database = require("../database");
-const { chrono, checkIfUserHasACookie, hasListingBeenLiked } = require("../helper");
+const { chrono, checkIfUserHasACookie } = require("../helper");
 const TemplateVars = require('./schema/TemplateVars')
 
 

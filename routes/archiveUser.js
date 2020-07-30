@@ -1,3 +1,10 @@
+/*
+ * All routes for Users are defined here
+ * Since this file is loaded in server.js into api/users,
+ *   these routes are mounted onto /users
+ * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
+ */
+
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
@@ -8,6 +15,27 @@ const TemplateVars = require('./schema/TemplateVars')
 
 
 module.exports = (db) => {
+  //Get login form
+  router.get("/login", checkIfUserHasACookie, (req, res) => {
+    let templateVars = new TemplateVars(req.user)
+
+    if (req.session.message) {
+      templateVars.message = req.session.message;
+      req.session.message = null;
+    }
+    res.render("login_page", templateVars);
+  });
+
+  //Get registration form
+  router.get("/registration", checkIfUserHasACookie, (req, res) => {
+    let templateVars = new TemplateVars(req.user)
+
+    if (req.session.message) {
+      templateVars.message = req.session.message;
+      req.session.message = null;
+    }
+    res.render("registration_page", templateVars);
+  });
 
   // Create a new user
   router.post("/", (req, res) => {
@@ -18,14 +46,14 @@ module.exports = (db) => {
     .then((existingUser) => {
       if (existingUser) {
         req.session.message = "Sorry User already exists";
-        res.redirect("/registration");
+        res.redirect("/api/users/registration");
       } else {
         database
           .addUser(user)
           .then((user) => {
             if (!user) {
               req.session.message = "Sorry there was an issue";
-              res.redirect("/registration");
+              res.redirect("/api/users/registration");
             }else{
               req.session.userId = user.id;
               res.redirect("/");
@@ -33,13 +61,12 @@ module.exports = (db) => {
           })
           .catch((e) => {
             req.session.message = "Sorry there was an issue";
-            res.redirect("/registration");
+            res.redirect("/api/users/registration");
           });
       }
     });
   });
 
-  //Login a User
   router.post("/login", (req, res) => {
     const { email, password } = req.body;
     const templateVars = new TemplateVars(undefined)
@@ -62,16 +89,14 @@ module.exports = (db) => {
   //Logout a user
   router.get("/logout", (req, res) => {
     req.session.userId = null;
-    res.redirect("/login");
+    res.redirect("/api/users/login");
   });
 
-  //Get 'update my account' form
   router.get("/my-account", checkIfUserHasACookie, (req, res) => {
     const templateVars = new TemplateVars(req.user)
     res.render("account_page", templateVars);
   });
 
-  //Update my account
   router.post("/my-account", checkIfUserHasACookie, (req, res) => {
     const templateVars = new TemplateVars(req.user)
     const changes = req.body;
@@ -94,7 +119,7 @@ module.exports = (db) => {
     }
   });
 
-  //Get a user profile by its id
+  //Get a profile page for specific user
   router.get("/:id", checkIfUserHasACookie, (req, res) => {
     const templateVars = new TemplateVars(req.user)
 
