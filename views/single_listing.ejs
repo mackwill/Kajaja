@@ -78,6 +78,19 @@
               <img src="/<%= listing.main_image %>" alt="" />
             </div>
 
+            <div class="img-container row mx-auto" style="justify-content: space-evenly;">
+              <% if(listing.picture_1 !== 'https://via.placeholder.com/100x100'){%>
+                <img src="/<%= listing.picture_1 %>" width="25%;"alt="" />
+              <%}%>
+              <% if(listing.picture_2 !== 'https://via.placeholder.com/100x100'){%>
+                <img src="/<%= listing.picture_2 %>" width="25%;"alt="" />
+              <%}%>
+              <% if(listing.picture_3 !== 'https://via.placeholder.com/100x100'){%>
+                <img src="/<%= listing.picture_3 %>" width="25%;"alt="" />
+              <%}%>
+            </div>
+
+
             <div id="single-listing-content-container">
               <div>
                 <h3 class="text-success">Description:</h3>

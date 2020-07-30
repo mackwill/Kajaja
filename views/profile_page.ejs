@@ -42,30 +42,64 @@
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
     ></script>
   </head>
+
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
 
     <!-- User profile header -->
-
-    <div class="col-12" id="profile-header-container">
-      <div class="banner">
-        <img width="100%" src="https://via.placeholder.com/500x75/808080" />
+    <div class="card text-center profile-card">
+      <div class="card-header bg-success">
       </div>
+      <div class="card-body">
+    <div class="" id="profile-header-container">
       <div class="top-stripe d-flex justify-content-center">
-        <img src="<%= listings[0].profile_pic_url %>" />
+        <img src="/<%= listings[0].profile_pic_url %>" />
         <h1><%= listings[0].name %></h1>
       </div>
-      <div class="middle-stripe">
-        <div><span>--</span><br />Avg Reply</div>
-        <div><span>--</span><br />Reply Rate</div>
-        <div><span><%= listings.unix %></span><br />On Kijiji since</div>
-      </div>
-      <div class="lower-stripe">
-        <div class="isActive">Listings</div>
-        <div>Reviews</div>
-      </div>
-    </div>
 
+      <div class="row sellers-info">
+        <div class="input-group m-1 col-md-4" id="email-seller">
+          <a href="tel:<listing.phone_number %>"
+            >
+            <small id="emailHelp" class="form-text text-muted">Seller's Phone</small>
+            <input
+              class="form-control"
+              type="text"
+              placeholder="<%= listings[0].phone_number %>"
+              readonly
+          /></a>
+        </div>
+        <div class="input-group m-1 col-md-4" id="call-seller">
+          <a href="mailto:<%= listings[0].email %>"
+            >
+            <small id="emailHelp" class="form-text text-muted">Seller's Email</small>
+            <input
+              class="form-control"
+              type="email"
+              placeholder="<%= listings[0].email %>"
+              readonly
+            />
+          </a>
+        </div>
+        <div class="input-group m-1 col-md-4" id="call-seller">
+          <div>
+            <small id="emailHelp" class="form-text text-muted">On KaJaJa since</small>
+            <input
+              class="form-control"
+              type="email"
+              placeholder="<%= listings.unix %>"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+
+    </div>
+    </div>
+    </div>
+    <div>
+      <h1 class="text-center"><%= listings[0].name %>'s Listings</h1>
+    </div>
     <!-- Listings associated to user -->
     <section id="all-listings">
       <% listings.forEach(listing => { %>
