@@ -336,6 +336,9 @@ const addMainImageToListing = function(listingId, image){
 }
 exports.addMainImageToListing = addMainImageToListing
 
+// ------------------------------------ Messages table queries ------------------------------------
+
+
 const getMessagesFromUser = function(userId){
   return db.query(`
     SELECT * FROM message_thread

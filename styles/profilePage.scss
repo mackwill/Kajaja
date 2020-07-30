@@ -47,6 +47,9 @@
     justify-content: center;
   }
 }
+.modal-backdrop {
+  z-index: 0;
+}
 
 @media only screen and (min-width: 600px) {
   .container {
@@ -56,17 +59,27 @@
   }
 }
 
-.input-group{
+.input-group {
   justify-content: center;
 }
-.profile-card{
-  width:90vw; margin:0 auto; border-radius:5px;
+.profile-card {
+  width: 90vw;
+  margin: 0 auto;
+  border-radius: 5px;
 }
-.profile-card .card-header{
+.profile-card .card-header {
   height: 5rem;
 }
-.sellers-info{
-  flex-wrap:nowrap;
+.sellers-info {
+  flex-wrap: nowrap;
   display: flex;
   justify-content: center;
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  input {
+    text-align: center;
+  }
 }

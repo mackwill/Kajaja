@@ -2,29 +2,31 @@ const express = require("express");
 const router = express.Router();
 const database = require("../database");
 const helpers = require("../helper");
-const { checkIfUserHasACookie } = require("../helper");
-const TemplateVars = require('./schema/TemplateVars')
+const { checkIfUserHasACookie, filterByListingId } = require("../helper");
+const TemplateVars = require("./schema/TemplateVars");
 
 module.exports = (db) => {
   //Get a message thread
   router.get("/", checkIfUserHasACookie, (req, res) => {
-    const templateVars = new TemplateVars(req.user)
-    database.getMessagesFromUser(req.user.id)
-    .then((data) => {
-      templateVars.messages = helpers.timeSinceSent(
-        helpers.filterMessagesByUser(data.rows)
-      );
-      res.render("all_messages", templateVars);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+    const templateVars = new TemplateVars(req.user);
+    database
+      .getMessagesFromUser(req.user.id)
+      .then((data) => {
+        templateVars.messages = helpers.timeSinceSent(
+          helpers.filterMessagesByUser(data.rows)
+        );
+        res.render("all_messages", templateVars);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
   });
 
   //Get a single message
   router.get("/:id", checkIfUserHasACookie, (req, res) => {
-    const templateVars = new TemplateVars(req.user)
-    database.getMessageThreadById(req.params.id)
+    const templateVars = new TemplateVars(req.user);
+    database
+      .getMessageThreadById(req.params.id)
       .then((data) => {
         templateVars.messages = helpers.timeSinceSent(data.rows);
         templateVars.threadId = req.params.id;
@@ -43,7 +45,8 @@ module.exports = (db) => {
     const messageThreadId = req.params.id;
 
     const message = Object.values(req.body);
-    database.createAMessage(messageThreadId, userId, message[0])
+    database
+      .createAMessage(messageThreadId, userId, message[0])
       .then(() => {
         res.end();
       })
@@ -60,20 +63,42 @@ module.exports = (db) => {
     const message = Object.values(req.body);
     const userId = req.session.userId;
     templatVars.user = userId;
-    database.createNewThread(listingId)
-    .then((data) => {
-      const threadId = data[0].id;
-      database.insertIntoCreatedThread(threadId, userId, message[0])
+    database
+      .getMessagesFromUser(userId)
+      .then((data) => {
+        const messagesArr = filterByListingId(listingId, data.rows);
+        if (messagesArr.length > 0) {
+          database
+            .insertIntoCreatedThread(
+              messagesArr[0].thread_id,
+              userId,
+              message[0]
+            )
+            .then(() => {
+              res.end();
+            })
+            .catch((err) => {
+              res.status(500).json({ error: err.message });
+            });
+        } else {
+          return data.rows;
+        }
+      })
+      .then((data) => {
+        // console.log("data: ", data);
+        return database.createNewThread(listingId);
+      })
+      .then((data) => {
+        console.log("data: ", data);
+        const threadId = data[0].id;
+        return database.insertIntoCreatedThread(threadId, userId, message[0]);
+      })
       .then(() => {
         res.end();
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
   });
 
   return router;
