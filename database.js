@@ -1,8 +1,11 @@
 const db = require('./server')
-const bcrypt = require('bcrypt');
-const messages = require('./routes/messages');
+const bcrypt = require('bcrypt')
+const queryHelpers = require('./queryHelpers')
+
+// ------------------------------------ Users table queries ------------------------------------
 
 
+// Return a user with a given email
 const getUserWithEmail = function(email) {
   return db.query(`
     SELECT * FROM users
@@ -13,6 +16,7 @@ const getUserWithEmail = function(email) {
 }
 exports.getUserWithEmail = getUserWithEmail;
 
+// Return a user with a given id
 const getUserWithId = function(id) {
   return db.query(`
     SELECT * FROM users
@@ -23,6 +27,7 @@ const getUserWithId = function(id) {
 }
 exports.getUserWithId = getUserWithId;
 
+// Add a user to the database with all of the provided information
 const addUser =  function(user) {
   const { name, email, password } = user
   return db.query(`
@@ -34,6 +39,7 @@ const addUser =  function(user) {
 }
 exports.addUser = addUser;
 
+// Updates the database with a new password for the logged in user
 const updateUserPasswordByUserId = function(userId, newPassword){
   return db.query(`
     UPDATE users
@@ -45,7 +51,7 @@ const updateUserPasswordByUserId = function(userId, newPassword){
 }
 exports.updateUserPasswordByUserId = updateUserPasswordByUserId
 
-
+// Get 'public' information of a user by a given id
 const getPublicInfoUserById = function(userId){
   return db.query(`
     SELECT users.name, users.email, users.join_date, users.profile_pic_url, users.phone_number, listings.*
@@ -58,6 +64,76 @@ const getPublicInfoUserById = function(userId){
 }
 exports.getPublicInfoUserById = getPublicInfoUserById
 
+
+// Checks for changes in any of the currently logged in user data
+// and updates it in the databse
+const updateUserById = function(user, changes){
+  const {name, phone, email} = changes
+  const {id} = user
+  const initQuery = `
+    UPDATE users
+    SET name = $1, phone_number = $2, email = $3
+  `
+  if(changes.newpassword !== ''){
+    initQuery += `, password = ${bcrypt.hashSync(changes.newpassword, 12)}`
+  }
+
+  endQuery = `
+    WHERE id = $4
+    RETURNING *
+  `
+
+  let finalQuery = initQuery.concat(endQuery)
+
+  return db.query(finalQuery, [name, phone, email, id])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.updateUserById = updateUserById
+
+// Selects the reset token from the database for a given user
+const getUserByResetToken = function(token){
+  return db.query(`
+    SELECT * FROM users
+    WHERE token = $1
+  `, [token])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.getUserByResetToken = getUserByResetToken
+
+// Updates the user's forget password token and sets
+// it in the database
+const updateUserTokenById = function(id, token){
+  return db.query(`
+    UPDATE users
+    SET token = $1
+    WHERE id = $2
+    RETURNING *
+  `,[token, id])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.updateUserTokenById = updateUserTokenById
+
+// Allows the user to update their profile picture and
+// updates the database with the selected image
+const addUserPicture = function(userId, imgUrl){
+  return db.query(`
+    UPDATE users
+    SET profile_pic_url = $1
+    WHERE id = $2
+    RETURNING *
+  `,[imgUrl, userId])
+  .then(res => res.rows[0])
+  .catch((e) => null)
+}
+exports.addUserPicture = addUserPicture
+
+// ------------------------------------ Listing table queries ------------------------------------
+
+
+// Create a new listing and insert into table
 const createNewListing = function(listing){
   const {title, category, owner_id, description, isTrade, price, postal_code} = listing
   return db.query(`
@@ -69,11 +145,12 @@ const createNewListing = function(listing){
 }
 exports.createNewListing = createNewListing
 
-
+// Get all listings based on search parameters (i.e category, price etc.)
 const getListings = function(data){
   let value = null
   let finalQuery = null
 
+  // If no category is selected
   if(data.q === '' && data.category === 'Categories...'){
     const {min, max} = data
     finalQuery = `
@@ -86,31 +163,17 @@ const getListings = function(data){
     .then(res => res.rows)
     .catch((e) => null)
 
+    // If there is text in the search bar
   }else if(data.q){
-    console.log('im here')
     const {q, min, max} = data
-    let stringQuery = `
-      SELECT * FROM listings
-      WHERE (setweight(to_tsvector(title), 'A') ||
-      setweight(to_tsvector(category), 'B') ||
-      setweight(to_tsvector(coalesce(description, '')), 'C'))
-      @@ to_tsquery($1)
-    `
-    if(data.category !== 'Categories...'){
-      stringQuery += `AND category = '${data.category}'`
-    }
-    let endQuery = `
-      AND sold = 'f'
-      AND price BETWEEN $2 AND $3
-      ORDER BY ts_rank((setweight(to_tsvector(title), 'A') ||
-      setweight(to_tsvector(category), 'B') ||
-      setweight(to_tsvector(coalesce(description, '')), 'B')), to_tsquery($1)) DESC
-    `
-    finalQuery = stringQuery.concat(endQuery)
+
+    const finalQuery = queryHelpers.checkCategories(data)
 
     return db.query(finalQuery, [q, min, max])
     .then(res => res.rows)
     .catch((e) => null)
+
+  // If a category is selected
   }else if(data.category){
     const {category, min, max} = data
     value = data.category
@@ -136,7 +199,7 @@ const getListings = function(data){
 }
 exports.getListings = getListings
 
-
+// Get the listings favourited by the currently logged in user
 const getFavouritesListings = function(userId){
   return db.query(`
     SELECT * FROM user_favourites
@@ -149,42 +212,8 @@ const getFavouritesListings = function(userId){
 }
 exports.getFavouritesListings = getFavouritesListings
 
-const updateUserById = function(user, changes){
-  const {name, phone, email} = changes
-  const {id} = user
-  const initQuery = `
-    UPDATE users
-    SET name = $1, phone_number = $2, email = $3
-  `
-  if(changes.newpassword !== ''){
-    initQuery += `, password = ${bcrypt.hashSync(changes.newpassword, 12)}`
-  }
-
-  endQuery = `
-    WHERE id = $4
-    RETURNING *
-  `
-
-  let finalQuery = initQuery.concat(endQuery)
-
-  return db.query(finalQuery, [name, phone, email, id])
-  .then(res => res.rows[0])
-  .catch((e) => null)
-}
-exports.updateUserById = updateUserById
-
-
-const getUserByResetToken = function(token){
-  return db.query(`
-    SELECT * FROM users
-    WHERE token = $1
-  `, [token])
-  .then(res => res.rows[0])
-  .catch((e) => null)
-}
-exports.getUserByResetToken = getUserByResetToken
-
-
+// Once a user clicks on a listing link, this will return that
+// single listing from the database
 const getSingleListing = function(id){
   return db.query(`
     SELECT listings.*, users.join_date, users.name, users.phone_number, users.email
@@ -197,39 +226,20 @@ const getSingleListing = function(id){
 }
 exports.getSingleListing = getSingleListing
 
+// Checks the listings viewed while logged in and returns
+// those listings from the database
 const getRecentlyViewedListings = function(arrayOfId){
   let finalArr = [...new Set(arrayOfId)].splice(0,4)
-  let queryStart = `
-    SELECT * FROM listings
-    WHERE (id IN(
-  `
-  if(finalArr.length === 1){
-    queryStart += `$1))`
-  }else if(finalArr.length ===2){
-    queryStart += `$1, $2))`
-  }else if(finalArr.length === 3){
-    queryStart += `$1, $2, $3))`
-  }else{
-    queryStart += `$1, $2, $3, $4))`
-  }
-   return db.query(queryStart, finalArr)
+
+  const queryStart = queryHelpers.checkHowManyRecentlyViewed(finalArr)
+
+  return db.query(queryStart, finalArr)
   .then(res => res.rows)
   .catch((e) => null)
 }
 exports.getRecentlyViewedListings = getRecentlyViewedListings
 
-const updateUserTokenById = function(id, token){
-  return db.query(`
-    UPDATE users
-    SET token = $1
-    WHERE id = $2
-    RETURNING *
-  `,[token, id])
-  .then(res => res.rows[0])
-  .catch((e) => null)
-}
-exports.updateUserTokenById = updateUserTokenById
-
+// Delete user with a given id from the database
 const deleteListingById = function(listingId){
   return db.query(`
     DELETE FROM listings
@@ -241,19 +251,13 @@ const deleteListingById = function(listingId){
 }
 exports.deleteListingById = deleteListingById
 
+// Updates a selected listing with the changed data
 const updateSingleListing = function(id, changes){
   const sold = changes.sold ? true : false
   const {title, description, price, category} = changes
 
-  let initQuery = `
-    UPDATE listings
-    SET title = $1, description = $2, price = $3, sold = $4
-  `
-  if(category !== 'Categories...'){
-    initQuery += `, category = $5 `
-  }
-  let finalQuery = initQuery.concat(`WHERE id = $6 OR category = $5 RETURNING *`)
-  console.log(finalQuery)
+  const finalQuery = queryHelpers.checkIfListingCategoryChaged(category)
+
   return db.query(finalQuery,[title, description, Number(price), sold, category, id])
   .then(res => res.rows[0])
   .catch((e) =>
@@ -261,8 +265,11 @@ const updateSingleListing = function(id, changes){
     console.log(e)
     null})
 }
+
 exports.updateSingleListing = updateSingleListing
 
+// Allows the user to "like" a listing and updates the database with
+// the user id and listing id
 const likeListing = function(userId, listingId){
   return db.query(`
     INSERT INTO user_favourites(user_id, listing_id)
@@ -273,19 +280,26 @@ const likeListing = function(userId, listingId){
 }
 exports.likeListing = likeListing
 
-const addUserPicture = function(userId, imgUrl){
+// Returns a list of listings already liked by the user
+const listingsLikedByUser = function(userId){
   return db.query(`
-    UPDATE users
-    SET profile_pic_url = $1
-    WHERE id = $2
-    RETURNING *
-  `,[imgUrl, userId])
-  .then(res => res.rows[0])
+    SELECT * FROM user_favourites
+    WHERE user_id = $1
+  `, [userId])
+  .then(res => {
+    return res.rows
+  })
   .catch((e) => null)
 }
-exports.addUserPicture = addUserPicture
+exports.listingsLikedByUser = listingsLikedByUser
 
+
+// Allows the user to add up to 4 images to their listing
+// which are then stored in the database
 const addImagesForListing = function(listingId, images){
+
+  // const finalQuery = checkNumberOfImages(images)
+
   let middleQuery = null
   let value = []
   if(images.length === 1){
@@ -301,16 +315,16 @@ const addImagesForListing = function(listingId, images){
   const finalQuery = middleQuery.concat(' RETURNING *')
   return db.query(finalQuery, value)
   .then(res => {
-    console.log('success:',res.rows)
     res.rows
   })
   .catch((e) => {
-    console.log('not working',e)
     null
     })
 }
 exports.addImagesForListing = addImagesForListing
 
+// Allows the user to add a main image to their listing
+// and stores in the database
 const addMainImageToListing = function(listingId, image){
   return db.query(`
     UPDATE listings

@@ -8,7 +8,7 @@
 const express = require("express");
 const router = express.Router();
 const database = require("../database");
-const { chrono, checkIfUserHasACookie } = require("../helper");
+const { chrono, checkIfUserHasACookie, hasListingBeenLiked } = require("../helper");
 const TemplateVars = require('./schema/TemplateVars')
 
 
@@ -17,7 +17,8 @@ module.exports = (db) => {
   router.get("/listings/:id", checkIfUserHasACookie, (req, res) => {
     let templateVars = new TemplateVars(req.user)
 
-    database.getSingleListing(req.params.id)
+    database
+      .getSingleListing(req.params.id)
       .then((data) => {
         templateVars.single_listing = data
         templateVars.chrono_listing = chrono(new Date - data.creation_date.getTime())
@@ -81,7 +82,8 @@ module.exports = (db) => {
       templateVars.searchbar = {q:'', category:req.query.category, min:0, max:999} :
       templateVars.searchbar = req.query
 
-    database.getListings(req.query)
+    database
+      .getListings(req.query)
       .then((data) => {
         templateVars.listings = data
 
@@ -109,8 +111,8 @@ module.exports = (db) => {
     database
       .createNewListing(listing)
       .then((listing) => {
-        req.session.listingId = listing.id
-        res.redirect(`/api/widgets/update/listings/${listing.id}`)
+        req.session.listingId = listing.id;
+        res.redirect(`/api/widgets/update/listings/${listing.id}`);
       })
       .catch((e) => {
         let templateVars = new TemplateVars(undefined)
@@ -139,14 +141,15 @@ module.exports = (db) => {
         res.render('add_images_page', templateVars)
       })
     }
-  })
+  });
 
   ///////
 
   router.get('/favourites', checkIfUserHasACookie, (req, res) => {
     const templateVars = new TemplateVars(req.user)
 
-    database.getFavouritesListings(req.session.userId)
+    database
+      .getFavouritesListings(req.session.userId)
       .then((data) => {
         templateVars.listings = data
         res.render("favourites_page", templateVars);
@@ -154,17 +157,36 @@ module.exports = (db) => {
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
-  })
+  });
 
-  router.post('/favourites/:id', (req, res) => {
-    if(!req.session.userId){
-      res.send({message:'Sorry you need to be logged in'})
-    }else{
-    database.likeListing(req.session.userId, req.params.id)
-    .then(result => res.send({message:'The item was added to your favourites'}))
-    .catch((e) => res.send({message:'Sorry the item couldnt be save to your favourites'}))
+  router.post("/favourites/:id", (req, res) => {
+    let errMessage = "Sorry the item couldnt be save to your favourites";
+    if (!req.session.userId) {
+      res.send({ message: "Sorry you need to be logged in" });
+    } else {
+      database
+        .listingsLikedByUser(req.session.userId)
+        .then((res) => {
+          const favouritesArr = hasListingBeenLiked(req.params.id, res);
+          if (favouritesArr.length > 0) {
+            errMessage = "You already like this posting";
+            throw Error;
+          }
+        })
+        .then(() => {
+          database.likeListing(req.session.userId, req.params.id);
+        })
+
+        .then((result) =>
+          res.send({ message: "The item was added to your favourites" })
+        )
+        .catch((e) =>
+          res.send({
+            message: errMessage,
+          })
+        );
     }
-  })
+  });
 
   return router;
 };

@@ -1,7 +1,8 @@
 const database = require("./database");
 const bcrypt = require("bcrypt");
 
-
+// Returns the most recent message of a conversation thread
+// per listing id
 const filterMessagesByUser = function (messages) {
   const messagesByListing = [];
   const passedId = [];
@@ -18,6 +19,8 @@ const filterMessagesByUser = function (messages) {
 
 exports.filterMessagesByUser = filterMessagesByUser;
 
+// Returns amount of time since something was created
+// or since the function was called)
 const chrono = function (number) {
   let result = "";
   if (number / (60 * 60 * 24 * 356 * 1000) >= 1) {
@@ -38,6 +41,8 @@ const chrono = function (number) {
 
 exports.chrono = chrono;
 
+// Adds a time since sent key to each message object
+// by calling the chrono function
 const timeSinceSent = (messages) => {
   const updatedMessages = [];
   messages.forEach((message) => {
@@ -51,16 +56,18 @@ exports.timeSinceSent = timeSinceSent;
 
 //Check if user is logged in helper
 const checkIfUserHasACookie = function (req, res, next) {
-  return database.getUserWithId(req.session.userId).then((user) => {
+  return database
+    .getUserWithId(req.session.userId)
+    .then((user) => {
       req.user = user;
-      next()
+      next();
     })
     .catch((e) => {
-      req.user = null
-      next()
-    })
+      req.user = null;
+      next();
+    });
 };
-exports.checkIfUserHasACookie = checkIfUserHasACookie
+exports.checkIfUserHasACookie = checkIfUserHasACookie;
 
 //Login helper
 const login = function (email, password) {
@@ -72,3 +79,11 @@ const login = function (email, password) {
   });
 };
 exports.login = login;
+
+const hasListingBeenLiked = (listingId, favourites) => {
+  return favourites.filter((listing) => {
+    return listing.listing_id === Number(listingId);
+  });
+};
+
+exports.hasListingBeenLiked = hasListingBeenLiked;
