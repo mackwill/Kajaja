@@ -50,3 +50,11 @@ const timeSinceSent = (messages) => {
 };
 
 exports.timeSinceSent = timeSinceSent;
+
+const hasListingBeenLiked = (listingId, favourites) => {
+  return favourites.filter((listing) => {
+    return listing.listing_id === Number(listingId);
+  });
+};
+
+exports.hasListingBeenLiked = hasListingBeenLiked;
