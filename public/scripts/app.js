@@ -38,6 +38,7 @@ $(document).ready(() => {
   // GET request to allow the user to favourite a listing
   // and add it to their favourites page
   $(document).on("click", ".favourite-link", function (e) {
+    const $this = $(this);
     const listingId = $(this).attr("id");
     const listingBtn = $(this);
 
@@ -47,7 +48,10 @@ $(document).ready(() => {
       url: `/api/widgets/favourites/${listingId}`,
       type: "POST",
       success: function (result) {
-        $(listingBtn).append(result.message);
+        // $(listingBtn).append(result.message);
+        console.log("here");
+        $(`#favourite-alert`).find(".modal-body").html(result.message);
+        $(`#favourite-alert`).modal("show");
       },
     });
   });
