@@ -44,6 +44,7 @@
   <body>
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
     <div class="container">
+      <% if(fromUser){%>
       <div id="my-messages-title">
         <h1>Upload Your Avatar</h1>
         <hr />
@@ -58,7 +59,21 @@
           <button type="submit" class="btn btn-primary p-3 btn-block">Save this image as my Avatar</button>
         </form>
       </section>
-
+      <%}else{%>
+      <% if(listing.main_image === 'https://via.placeholder.com/100x100'){%>
+      <div id="my-messages-title">
+        <h1>Upload Main Image to Your Listing</h1>
+        <hr />
+      </div>
+      <section>
+        <form class="addImage" method="POST" action="/upload-main/<%= listingId %>" enctype="multipart/form-data">
+          <div class="form-group">
+            <input type="file" class="form-control-file" name="mainImage" id="exampleFormControlFile1">
+          </div>
+          <button type="submit" class="btn btn-primary p-3 btn-block">Save this image for my listing</button>
+        </form>
+      </section>
+      <%}else{%>
         <div id="my-messages-title">
           <h1>Upload Images to Your Listing</h1>
           <hr />
@@ -75,9 +90,11 @@
             <div class="form-group">
               <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
             </div>
-            <button type="submit" class="btn btn-primary p-3 btn-block">Save this image for my listing</button>
+            <button type="submit" class="btn btn-primary p-3 btn-block">Save those images for my listing</button>
           </form>
         </section>
+        <%}%>
+        <%}%>
       </div>
   </body>
   </html>

@@ -159,6 +159,33 @@ app.post('/upload-avatar', async(req, res) => {
   }
 })
 
+app.post('/upload-main/:id', async(req, res) => {
+  console.log(req.file)
+  try{
+    if(!req.files){
+      res.send({
+        status:false,
+        message:'No file uploaded'
+      })
+    }else{
+      let mainImage = req.files.mainImage
+
+      mainImage.mv('./public/uploads/'+ mainImage.name)
+      const imageUrl = `uploads/${mainImage.name}`
+      database.addMainImageToListing(req.params.id, imageUrl)
+      .then(result => {
+        console.log('made it')
+        res.redirect(`/api/widgets/listings/${req.params.id}`)
+      })
+      .catch(e => {
+        res.redirect(`/api/widgets/listings/${req.params.id}`)
+      })
+    }
+  } catch (err){
+    res.status(500).send(err)
+  }
+})
+
 app.post('/upload-photos/:id', async (req, res) => {
   try {
       if(!req.files) {
