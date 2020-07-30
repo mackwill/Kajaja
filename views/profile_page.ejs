@@ -102,6 +102,9 @@
     </div>
     <!-- Listings associated to user -->
     <section id="all-listings">
+      <% console.log('lisings length: ', listings.length) %>
+
+      <% if (listings[0].id !== null) { %>
       <% listings.forEach(listing => { %>
       <div class="container col-lg-10 col-sm-11 my-3">
         <a class="listing-link" href="/api/widgets/listings/<%=listing.id%>">
@@ -144,6 +147,7 @@
         </div>
       </div>
       <% }) %>
+      <% } %>
     </section>
   </body>
 </html>

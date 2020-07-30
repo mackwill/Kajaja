@@ -22,16 +22,16 @@ $(document).ready(() => {
   // Post request to delete a listing when a user
   // is logged into their account
   $(document).on("click", ".delete_listing", function (e) {
+    const splitURL = window.location.href.split("/");
+    const user = splitURL[splitURL.length - 1];
     e.preventDefault();
     e.stopImmediatePropagation();
     const listingId = $(this).attr("id");
     $.ajax({
       url: `/api/widgets/listings/${listingId}`,
       type: "DELETE",
-      success: function (result) {
-        $(listingId).append(result.message);
-        console.log("item deleted", success);
-      },
+    }).then(() => {
+      $("#all-listings").load(`/api/users/${user} #all-listings`);
     });
   });
 
