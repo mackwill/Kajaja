@@ -3,6 +3,10 @@
   margin: auto;
   margin-top: 2rem;
 
+  a {
+    text-decoration: none;
+    color: black;
+  }
   .card {
     display: flex;
     flex-direction: row;
@@ -17,8 +21,6 @@
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
-    margin-bottom: 1rem;
-    align-items: center;
   }
   .header-left {
     margin: 0;
@@ -35,6 +37,13 @@
   .header-right > * {
     margin-right: 0.5rem;
   }
+  h4 {
+    font-size: 1rem;
+  }
+
+  h5 {
+    font-size: 0.8rem;
+  }
 
   p {
     font-size: 0.75rem;
@@ -43,10 +52,6 @@
     text-overflow: ellipsis;
     max-width: 17rem;
     white-space: nowrap;
-  }
-
-  .message-content {
-    margin-top: 1rem;
   }
 }
 
