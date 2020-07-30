@@ -102,7 +102,12 @@ module.exports = (db) => {
 
   router.get("/listings", (req, res) => {
     const templateVars = {}
-    templateVars.searchbar = req.query
+    if(!req.q){
+      templateVars.searchbar = {q:'', category:req.query.category, min:0, max:999}
+
+    }else{
+      templateVars.searchbar = req.query
+    }
 
     database.getListings(req.query)
       .then((data) => {
@@ -174,7 +179,6 @@ module.exports = (db) => {
 
     database.getFavouritesListings(req.session.userId)
       .then((data) => {
-        console.log('cookie:', req.session.userId)
         templateVars.user = {}
         templateVars.user.id = req.session.userId
         templateVars.listings = data

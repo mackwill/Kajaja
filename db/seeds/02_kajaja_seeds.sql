@@ -52,7 +52,7 @@ VALUES
     'FALSE',
     'H2G2Z8',
     'TRUE',
-    'https://www.subaru.com/content/dam/subaru/vehicles/2020/OBK/vsp/exterior-360/TAP/TAP_000.jpg.transform/x530/image.jpg'
+    'images/seed_01.png'
   ),
   (
     'Dinner Table',
@@ -65,7 +65,7 @@ VALUES
     'TRUE',
     'H2V2N2',
     'FALSE',
-    'https://www.ikea.com/images/a-large-dining-room-with-an-extendable-dining-table-and-chai-cf51a18a870ff4c36996520ce3932b2b.jpg?f=xxxl'
+    'images/seed_02.png'
   ),
   (
     'Window Washing',
@@ -78,7 +78,7 @@ VALUES
     'FALSE',
     'H2V2N2',
     'FALSE',
-    'https://www.fallsafetyapp.com/wp-content/uploads/blog/window-cleaner-safety.jpg'
+    'images/seed_03.png'
   ),
   (
     'Harry Potter book collection',
@@ -91,7 +91,7 @@ VALUES
     'TRUE',
     'H2E2B1',
     'FALSE',
-    'https://images-na.ssl-images-amazon.com/images/I/91TfTh2kjNL.jpg'
+    'images/seed_04.png'
   ),
   (
     'Like new computer desk',
@@ -104,7 +104,7 @@ VALUES
     'FALSE',
     'H2X3R4',
     'FALSE',
-    'https://medias.roomlala.com/home/photo/2/800x600/a_207319_1530720007_2_800x600.jpg'
+    'images/seed_05.png'
   ),
   (
     'iPhone 7 128GB',
@@ -117,7 +117,7 @@ VALUES
     'TRUE',
     'H2V4A2',
     'FALSE',
-    'https://medias.roomlala.com/home/photo/2/800x600/a_207319_1530720007_2_800x600.jpg'
+    'images/seed_06.png'
   ),
   (
     'Fishing pole for fly fishing',
@@ -130,7 +130,7 @@ VALUES
     'FALSE',
     'H2V4A2',
     'FALSE',
-    'https://medias.roomlala.com/home/photo/2/800x600/a_207319_1530720007_2_800x600.jpg'
+    'images/seed_07.png'
   ),
   (
     '4 1/2 Rosemont near the metro',
@@ -143,7 +143,7 @@ VALUES
     'TRUE',
     'H2V4A2',
     'FALSE',
-    'https://medias.roomlala.com/home/photo/2/800x600/a_207319_1530720007_2_800x600.jpg'
+    'images/seed_08.png'
   );
 
 INSERT INTO
