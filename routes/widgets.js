@@ -53,7 +53,7 @@ module.exports = (db) => {
     const activeUserId = req.session.userId
     database.deleteListingById(req.params.id)
     .then(listing => {
-      res.redirect(`/api/users/${activeUserId}`)
+      res.send({message:'Item successfully deleted'})
     })
     .catch((e) => {
       res.redirect(`/api/users/${activeUserId}`)
@@ -63,11 +63,13 @@ module.exports = (db) => {
   router.get('/update/listings/:id', (req, res) => {
     const templateVars = {}
     templateVars.searchbar = null
+    templateVars.message = null
 
     database.getSingleListing(req.params.id)
     .then(listing => {
       templateVars.listing = listing
-      templateVars.user = listing.owner_id
+      templateVars.user = {}
+      templateVars.user.id = listing.owner_id
       res.render('update_listing', templateVars)
     })
     .catch(e => {
@@ -78,11 +80,14 @@ module.exports = (db) => {
   router.post('/update/listings/:id', (req, res) => {
     const templateVars = {}
     templateVars.searchbar = null
+    templateVars.message = null
+
 
     database.updateSingleListing(req.params.id, req.body)
     .then(listing => {
       console.log('success:',listing)
-      templateVars.user = null
+      templateVars.user = {}
+      templateVars.user.id = listing.owner_id
       templateVars.listing = listing
       templateVars.message = "You have updated your account information successfully";
       res.render('update_listing', templateVars)

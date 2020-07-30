@@ -67,18 +67,14 @@
           <form class="addImage" method="POST" action="/upload-photos/<%= listingId %>" enctype="multipart/form-data">
 
             <div class="form-group">
-              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
+              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1" required oninvalid="this.setCustomValidity('Please upload at least 2 images')">
+            </div>
+            <div class="form-group">
+              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1" required oninvalid="this.setCustomValidity('Please upload at least 2 iamges')">
             </div>
             <div class="form-group">
               <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
             </div>
-            <div class="form-group">
-              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
-            </div>
-            <div class="form-group">
-              <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1">
-            </div>
-
             <button type="submit" class="btn btn-primary p-3 btn-block">Save this image for my listing</button>
           </form>
         </section>

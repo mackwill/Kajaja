@@ -183,7 +183,7 @@ app.post('/upload-photos/:id', async (req, res) => {
                   size: photo.size
               });
           });
-
+          if(data.length > 0){
           database.addImagesForListing(req.params.id, data)
           .then(result => {
             res.redirect(`/api/widgets/listings/${req.params.id}`)
@@ -192,6 +192,7 @@ app.post('/upload-photos/:id', async (req, res) => {
             res.redirect(`/api/users/${req.session.userId}`)
           })
           //return response
+        }
       }
   } catch (err) {
       res.status(500).send(err);

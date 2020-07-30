@@ -288,21 +288,14 @@ const addImagesForListing = function(listingId, images){
   let middleQuery = null
   let value = []
   if(images.length === 1){
-    middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1)
-    VALUES($1, $2)`
+    middleQuery = `UPDATE listings SET picture_1 = $2 WHERE id = $1`
     value = [listingId, images[0].name]
   }else if(images.length === 2){
-    middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1, picture_2)
-    VALUES($1, $2, $3)`
+    middleQuery = `UPDATE listings SET picture_1 = $2, picture_2 = $3 WHERE id = $1`
     value = [listingId, images[0].name, images[1].name]
   }else if(images.length === 3){
-    middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1, picture_2, picture_3)
-    VALUES($1, $2, $3, $4)`
+    middleQuery = `UPDATE listings SET picture_1 = $2, picture_2 = $3, picture_3 = $4 WHERE id = $1`
     value = [listingId, images[0].name, images[1].name, images[2].name]
-  }else if(images.length === 4){
-    middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1, picture_2)
-    VALUES($1, $2, $3, $4, $5)`
-    value = [listingId, images[0].name, images[1].name, images[2].name, images[3].name]
   }
   const finalQuery = middleQuery.concat(' RETURNING *')
   return db.query(finalQuery, value)
@@ -315,4 +308,35 @@ const addImagesForListing = function(listingId, images){
     null
     })
 }
+// const addImagesForListing = function(listingId, images){
+//   let middleQuery = null
+//   let value = []
+//   if(images.length === 1){
+//     middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1)
+//     VALUES($1, $2)`
+//     value = [listingId, images[0].name]
+//   }else if(images.length === 2){
+//     middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1, picture_2)
+//     VALUES($1, $2, $3)`
+//     value = [listingId, images[0].name, images[1].name]
+//   }else if(images.length === 3){
+//     middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1, picture_2, picture_3)
+//     VALUES($1, $2, $3, $4)`
+//     value = [listingId, images[0].name, images[1].name, images[2].name]
+//   }else if(images.length === 4){
+//     middleQuery = `INSERT INTO listing_pictures (listing_id, picture_1, picture_2)
+//     VALUES($1, $2, $3, $4, $5)`
+//     value = [listingId, images[0].name, images[1].name, images[2].name, images[3].name]
+//   }
+//   const finalQuery = middleQuery.concat(' RETURNING *')
+//   return db.query(finalQuery, value)
+//   .then(res => {
+//     console.log('success:',res.rows)
+//     res.rows
+//   })
+//   .catch((e) => {
+//     console.log('not working',e)
+//     null
+//     })
+// }
 exports.addImagesForListing = addImagesForListing

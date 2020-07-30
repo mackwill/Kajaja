@@ -25,6 +25,7 @@ $(document).ready(() => {
       url: `/api/widgets/listings/${listingId}`,
       type: "DELETE",
       success: function (result) {
+        $(listingId).append(result.message)
         console.log("item deleted", success);
       },
     });
@@ -44,6 +45,11 @@ $(document).ready(() => {
       }
     })
   });
+
+  $('#search_query').focus(function (e) {
+    $('#search div').show()
+  })
+
 
   $(document).on("click", "#submit-message", function (e) {
     e.preventDefault();
