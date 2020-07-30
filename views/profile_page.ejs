@@ -13,8 +13,8 @@
     />
 
     <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
       crossorigin="anonymous"
     ></script>
     <script
@@ -29,7 +29,11 @@
     ></script>
 
     <!-- CSS -->
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/navbar.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/searchBar.css" type="text/css" />
     <link rel="stylesheet" href="/styles/listings.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/profilePage.css" type="text/css" />
 
     <script type="text/javascript" src="/scripts/app.js"></script>
 
@@ -42,13 +46,14 @@
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
 
     <!-- User profile header -->
-    <div class="main">
+
+    <div class="col-12" id="profile-header-container">
       <div class="banner">
         <img width="100%" src="https://via.placeholder.com/500x75/808080" />
       </div>
-      <div class="top-stripe">
-        <img src="/<%= listings[0].profile_pic_url %>" />
-        <h2><%= listings[0].name %></h2>
+      <div class="top-stripe d-flex justify-content-center">
+        <img src="<%= listings[0].profile_pic_url %>" />
+        <h1><%= listings[0].name %></h1>
       </div>
       <div class="middle-stripe">
         <div><span>--</span><br />Avg Reply</div>
@@ -64,47 +69,47 @@
     <!-- Listings associated to user -->
     <section id="all-listings">
       <% listings.forEach(listing => { %>
-        <div class="container col-lg-10 col-sm-11 my-3">
-          <a class="listing-link" href="/api/widgets/listings/<%=listing.id%>">
-            <div class="row">
-              <div class="img-container col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                <img src="/<%= listing.main_image %>" alt="" />
-              </div>
-              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-                <div class="listing-header">
-                  <div class="listing-header-left">
-                    <h3><%= listing.title %></h3>
-                  </div>
-                  <div class="listing-header-right">
-                    <h3 class="text-success">$<%= listing.price %></h3>
-                  </div>
+      <div class="container col-lg-10 col-sm-11 my-3">
+        <a class="listing-link" href="/api/widgets/listings/<%=listing.id%>">
+          <div class="row">
+            <div class="img-container col-lg-3 col-md-3 col-sm-3 col-xs-3">
+              <img src="/<%= listing.main_image %>" alt="" />
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+              <div class="listing-header">
+                <div class="listing-header-left">
+                  <h3><%= listing.title %></h3>
                 </div>
-                <div class="text listing-body">
-                  <p><%= listing.description %></p>
-                </div>
-                <div class="listing-footer">
-                  <% if(user){ %>
-                  <form class="favourite-link" id="<%= listing.id %>">
-                    <i class="fas fa-heart"></i>
-                  </form>
-                  <%}%>
+                <div class="listing-header-right">
+                  <h3 class="text-success">$<%= listing.price %></h3>
                 </div>
               </div>
-              <div class="w-100">
-                <% if(activeProfilePage === true) { %>
-                  <button class="btn btn-primary delete_listing" id="<%= listing.id %>">Delete</button>
-                  <a href="/api/widgets/update/listings/<%= listing.id %>"><button class="btn btn-danger">Update</button></a>
-                <% }%>
+              <div class="text listing-body">
+                <p><%= listing.description %></p>
+              </div>
+              <div class="listing-footer">
+                <% if(user){ %>
+                <form class="favourite-link" id="<%= listing.id %>">
+                  <i class="fas fa-heart"></i>
+                </form>
+                <%}%>
               </div>
             </div>
-          </a>
+            <div class="w-100"></div>
+          </div>
+        </a>
+        <div class="w-100 d-flex edit-listing-buttons">
+          <% if(activeProfilePage === true) { %>
+          <a href="/api/widgets/update/listings/<%= listing.id %>"
+            ><button class="btn btn-primary">Update</button></a
+          >
+          <button class="btn btn-danger delete_listing" id="<%= listing.id %>">
+            Delete
+          </button>
+          <% } %>
         </div>
-        <% }) %>
+      </div>
+      <% }) %>
     </section>
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.js"
-      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-      crossorigin="anonymous"
-    ></script>
   </body>
 </html>
