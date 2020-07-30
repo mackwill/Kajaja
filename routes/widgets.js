@@ -137,8 +137,6 @@ module.exports = (db) => {
     }
   })
 
-  ///////
-
   router.get('/favourites', checkIfUserHasACookie, (req, res) => {
     const templateVars = new TemplateVars(req.user)
 

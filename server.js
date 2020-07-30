@@ -12,8 +12,8 @@ const app = express();
 const morgan = require("morgan");
 const methodOverride = require("method-override");
 
-const _ = require("lodash");
-const fileUpload = require("express-fileupload");
+// const _ = require("lodash");
+ const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const TemplateVars = require("./routes/schema/TemplateVars");
 
@@ -74,6 +74,7 @@ const usersRoutes = require("./routes/users");
 const widgetsRoutes = require("./routes/widgets");
 const messageRoutes = require("./routes/messages");
 const nodemailerRoutes = require("./routes/forgotPsw");
+const uploadImagesRoutes = require("./routes/uploadImages");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -81,6 +82,7 @@ app.use("/api/users", usersRoutes(db));
 app.use("/api/widgets", widgetsRoutes(db));
 app.use("/api/messages", messageRoutes(db));
 app.use("/api/mailer", nodemailerRoutes(db));
+app.use("/", uploadImagesRoutes(db));
 
 // Note: mount other resources here, using the same pattern above
 
@@ -102,99 +104,6 @@ app.get("/", checkIfUserHasACookie, (req, res) => {
       .catch((e) => {
         res.render("index", templateVars);
       });
-  }
-});
-
-app.post("/upload-avatar", async (req, res) => {
-  try {
-    if (!req.files) {
-      res.send({
-        status: false,
-        message: "No file uploaded",
-      });
-    } else {
-      let avatar = req.files.avatar;
-
-      avatar.mv("./public/uploads/" + avatar.name);
-      const imageUrl = `/uploads/${avatar.name}`;
-      database
-        .addUserPicture(req.session.userId, imageUrl)
-        .then(() => {
-          res.redirect(`/api/users/${req.session.userId}`);
-        })
-        .catch((e) => {
-          res.status(500).send(e);
-        });
-    }
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
-
-app.post("/upload-main/:id", async (req, res) => {
-  try {
-    if (!req.files) {
-      res.send({
-        status: false,
-        message: "No file uploaded",
-      });
-    } else {
-      let mainImage = req.files.mainImage;
-
-      mainImage.mv("./public/uploads/" + mainImage.name);
-      const imageUrl = `/uploads/${mainImage.name}`;
-      database
-        .addMainImageToListing(req.params.id, imageUrl)
-        .then(() => {
-          res.redirect(`/api/widgets/listings/${req.params.id}`);
-        })
-        .catch((e) => {
-          res.redirect(`/api/widgets/listings/${req.params.id}`);
-        });
-    }
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
-
-app.post("/upload-photos/:id", async (req, res) => {
-  try {
-    if (!req.files) {
-      res.send({
-        status: false,
-        message: "No file uploaded",
-      });
-    } else {
-      let data = [];
-
-      //loop all files
-      _.forEach(_.keysIn(req.files.photos), (key) => {
-        let photo = req.files.photos[key];
-
-        //move photo to uploads directory
-        photo.mv("./public/uploads/" + photo.name);
-
-        //push file details
-        data.push({
-          name: photo.name,
-          mimetype: photo.mimetype,
-          size: photo.size,
-        });
-      });
-      if (data.length > 0) {
-        database
-          .addImagesForListing(req.params.id, data)
-          .then(() => {
-            res.redirect(`/api/widgets/listings/${req.params.id}`);
-          })
-          .catch(() => {
-            res.redirect(`/api/users/${req.session.userId}`);
-          });
-        //return response
-      }
-    }
-  } catch (err) {
-    res.status(500).send(err);
   }
 });
 
