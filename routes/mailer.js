@@ -6,13 +6,13 @@ const nodeMailer = require('nodemailer')
 const dotenv = require('dotenv');
 dotenv.config()
 const helper = require("../helper");
-
+const TemplateVars = require("./schema/TemplateVars");
 
 module.exports = (db) => {
 
   //Get forgot password form
   router.get('/forgot-password', (req, res) => {
-    const templateVars = {user:null, message:null}
+    const templateVars = new TemplateVars(undefined)
     res.render('forgot_page', templateVars)
   })
 
@@ -83,7 +83,8 @@ module.exports = (db) => {
 
   //Get form to update the password
   router.get('/change-password', (req, res) => {
-    res.render('reset_password')
+    const templateVars = new TemplateVars()
+    res.render('reset_password', templateVars)
   })
 
   //Update the users password
