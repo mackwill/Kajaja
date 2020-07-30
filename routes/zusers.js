@@ -65,28 +65,6 @@ module.exports = (db) => {
     res.redirect("/login");
   });
 
-  //Get a user profile by its id
-  router.get("/:id", checkIfUserHasACookie, (req, res) => {
-    const templateVars = new TemplateVars(req.user)
-
-    database
-     .getPublicInfoUserById(req.params.id)
-      .then((data) => {
-        data.unix = chrono(new Date() - data[0].join_date.getTime());
-        templateVars.listings = data;
-        templateVars.activeProfilePage =
-          req.params.id == req.session.userId ? true : false;
-        res.render("profile_page", templateVars);
-        return;
-      })
-      .catch((e) => {
-        templateVars.activeProfilePage =
-          req.params.id === req.session.userId ? true : false;
-        res.render("profile_page", templateVars);
-        return;
-      });
-  });
-
   //Get 'update my account' form
   router.get("/my-account", checkIfUserHasACookie, (req, res) => {
     const templateVars = new TemplateVars(req.user)
@@ -114,6 +92,28 @@ module.exports = (db) => {
       templateVars.message = "Sorry, the password is not valid";
       res.render("account_page", templateVars);
     }
+  });
+
+  //Get a user profile by its id
+  router.get("/:id", checkIfUserHasACookie, (req, res) => {
+    const templateVars = new TemplateVars(req.user)
+
+    database
+     .getPublicInfoUserById(req.params.id)
+      .then((data) => {
+        data.unix = chrono(new Date() - data[0].join_date.getTime());
+        templateVars.listings = data;
+        templateVars.activeProfilePage =
+          req.params.id == req.session.userId ? true : false;
+        res.render("profile_page", templateVars);
+        return;
+      })
+      .catch((e) => {
+        templateVars.activeProfilePage =
+          req.params.id === req.session.userId ? true : false;
+        res.render("profile_page", templateVars);
+        return;
+      });
   });
 
   return router;

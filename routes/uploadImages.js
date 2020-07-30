@@ -3,6 +3,8 @@ const router = express.Router();
 const database = require("../database");
 const _ = require("lodash");
 const { checkIfUserHasACookie } = require("../helper");
+const TemplateVars = require('./schema/TemplateVars')
+
 
 module.exports = (db) => {
 
