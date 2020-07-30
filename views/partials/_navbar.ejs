@@ -1,5 +1,18 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/">KaJaJa</a>
+
+  <div class="order-lg-last ml-auto" id="navbar-right-header">
+    <% if(user) { %>
+
+    <a href="/api/users/my-account"
+      ><i class="far fa-user-circle text-primary"></i
+    ></a>
+
+    <a href="/api/messages"><i class="far fa-comment text-primary"></i></a>
+
+    <% } %>
+  </div>
+
   <button
     class="navbar-toggler bg-success"
     type="button"
@@ -11,6 +24,7 @@
   >
     <span class="navbar-toggler-icon"></span>
   </button>
+
   <% if(!user){ %>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -48,16 +62,22 @@
         <a class="nav-link" href="/api/widgets/favourites">My favourites</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/api/messages">My messages</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/api/users/my-account">My account</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" href="/api/users/<%= user.id %>">My listings</a>
       </li>
     </ul>
-    <a class="btn bg-success text-white my-2 my-sm-0" href="/api/users/logout"
+    <ul class="nav navbar-nav navbar-right collapse">
+      <li>
+        <a href="/api/users/my-account"
+          ><i class="far fa-user-circle text-primary"></i
+        ></a>
+      </li>
+      <li>
+        <a href="/api/messages"><i class="far fa-comment text-primary"></i></a>
+      </li>
+    </ul>
+    <a
+      class="btn bg-success text-white my-2 my-sm-0 order-lg-last"
+      href="/api/users/logout"
       >Logout</a
     >
   </div>
