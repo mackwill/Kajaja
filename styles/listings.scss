@@ -60,6 +60,15 @@
 div.container:hover {
   border: 2px solid blue;
 }
+
+@media only screen and (max-width: 600px) {
+  #all-listings {
+    .listing-footer {
+      right: 10%;
+    }
+  }
+}
+
 @media only screen and (min-width: 600px) {
   #all-listings {
     p {
