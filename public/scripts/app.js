@@ -22,22 +22,23 @@ $(document).ready(() => {
   // Post request to delete a listing when a user
   // is logged into their account
   $(document).on("click", ".delete_listing", function (e) {
+    const splitURL = window.location.href.split("/");
+    const user = splitURL[splitURL.length - 1];
     e.preventDefault();
     e.stopImmediatePropagation();
     const listingId = $(this).attr("id");
     $.ajax({
       url: `/api/widgets/listings/${listingId}`,
       type: "DELETE",
-      success: function (result) {
-        $(listingId).append(result.message);
-        console.log("item deleted", success);
-      },
+    }).then(() => {
+      $("#all-listings").load(`/api/users/${user} #all-listings`);
     });
   });
 
   // GET request to allow the user to favourite a listing
   // and add it to their favourites page
   $(document).on("click", ".favourite-link", function (e) {
+    const $this = $(this);
     const listingId = $(this).attr("id");
     const listingBtn = $(this);
 
@@ -47,7 +48,10 @@ $(document).ready(() => {
       url: `/api/widgets/favourites/${listingId}`,
       type: "POST",
       success: function (result) {
-        $(listingBtn).append(result.message);
+        // $(listingBtn).append(result.message);
+        console.log("here");
+        $(`#favourite-alert`).find(".modal-body").html(result.message);
+        $(`#favourite-alert`).modal("show");
       },
     });
   });

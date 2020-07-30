@@ -280,6 +280,19 @@ const likeListing = function(userId, listingId){
 }
 exports.likeListing = likeListing
 
+// Returns a list of listings already liked by the user
+const listingsLikedByUser = function(userId){
+  return db.query(`
+    SELECT * FROM user_favourites
+    WHERE user_id = $1
+  `, [userId])
+  .then(res => {
+    return res.rows
+  })
+  .catch((e) => null)
+}
+exports.listingsLikedByUser = listingsLikedByUser
+
 
 // Allows the user to add up to 4 images to their listing
 // which are then stored in the database
