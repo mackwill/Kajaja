@@ -31,10 +31,7 @@
   .container{
     height:100%;
   }
-  img{
-    border-radius:50px;
-    border:1px solid black;
-  }
+
 </style>
 <body>
   <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
@@ -54,7 +51,19 @@
         <div class="row">
           <img class='col-sm-3' src="<%= single_listing.main_image %>">
         </div>
-        <h4 class="card-text text-warning"><a href="/api/upload/add-images/<%= single_listing.id %>">Add images to your listing</a></h4>
+        <div class="img-container row mt-2 mb-2" style="justify-content: flex-start;">
+          <% if(single_listing.picture_1 !== 'https://via.placeholder.com/100x100'){%>
+            <img src="<%= single_listing.picture_1 %>" width="20%;"alt=""/>
+          <%}%>
+          <% if(single_listing.picture_2 !== 'https://via.placeholder.com/100x100'){%>
+            <img src="<%= single_listing.picture_2 %>" width="20%;"alt="" />
+          <%}%>
+          <% if(single_listing.picture_3 !== 'https://via.placeholder.com/100x100'){%>
+            <img src="<%= single_listing.picture_3 %>" width="20%;"alt="" />
+          <%}%>
+        </div>
+        <h4 class="card-text text-warning">
+          <a href="/api/upload/add-images/<%= single_listing.id %>">Add images to your listing</a></h4>
 
         <form method="POST" action="/api/listings/<%= single_listing.id %>/update">
           <div class="form-group">
@@ -93,7 +102,6 @@
           </button>
         </form>
       </div>
-    <div class="card-footer text-muted"></div>
     </div>
   </section>
 </body>

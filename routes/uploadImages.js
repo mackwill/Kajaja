@@ -52,10 +52,10 @@ module.exports = (db) => {
         database
           .addMainImageToListing(req.params.id, imageUrl)
           .then(() => {
-            res.redirect(`/api/widgets/listings/${req.params.id}`);
+            res.redirect(`/api/listings/${req.params.id}`);
           })
           .catch((e) => {
-            res.redirect(`/api/widgets/listings/${req.params.id}`);
+            res.redirect(`/api/listings/${req.params.id}`);
           });
       }
     } catch (err) {
@@ -92,7 +92,7 @@ module.exports = (db) => {
           database
             .addImagesForListing(req.params.id, data)
             .then(() => {
-              res.redirect(`/api/widgets/listings/${req.params.id}`);
+              res.redirect(`/api/listings/${req.params.id}`);
             })
             .catch(() => {
               res.redirect(`/api/users/${req.session.userId}`);

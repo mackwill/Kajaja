@@ -97,11 +97,11 @@ module.exports = (db) => {
     database.updateUserPasswordByUserId(req.session.reset, cryptedPassword)
       .then(user => {
         req.session = null
-        res.redirect('/api/users/login')
+        res.redirect('/login')
       })
       .catch((e) => {
         req.session = null
-        res.redirect('/api.users/login')
+        res.redirect('/login')
       })
   })
 
