@@ -53,22 +53,22 @@
         <form class="addImage" method="POST" action="/upload-avatar" enctype="multipart/form-data">
 
           <div class="form-group">
-            <input type="file" class="form-control-file" name="avatar" id="exampleFormControlFile1">
+            <input type="file" class="form-control-file" name="avatar" id="exampleFormControlFile1" required oninvalid="this.setCustomValidity('Please upload select a file before submiting')">
           </div>
 
           <button type="submit" class="btn btn-primary p-3 btn-block">Save this image as my Avatar</button>
         </form>
       </section>
       <%}else{%>
-      <% if(listing.main_image === 'https://via.placeholder.com/100x100'){%>
+      <% if(single_listing.main_image === 'https://via.placeholder.com/100x100'){%>
       <div id="my-messages-title">
         <h1>Upload Main Image to Your Listing</h1>
         <hr />
       </div>
       <section>
-        <form class="addImage" method="POST" action="/upload-main/<%= listingId %>" enctype="multipart/form-data">
+        <form class="addImage" method="POST" action="/upload-main/<%= single_listing.id %>" enctype="multipart/form-data">
           <div class="form-group">
-            <input type="file" class="form-control-file" name="mainImage" id="exampleFormControlFile1">
+            <input type="file" class="form-control-file" name="mainImage" id="exampleFormControlFile1" required oninvalid="this.setCustomValidity('Please upload select a file before submiting')">
           </div>
           <button type="submit" class="btn btn-primary p-3 btn-block">Save this image for my listing</button>
         </form>
@@ -79,7 +79,7 @@
           <hr />
         </div>
         <section>
-          <form class="addImage" method="POST" action="/upload-photos/<%= listingId %>" enctype="multipart/form-data">
+          <form class="addImage" method="POST" action="/upload-photos/<%= single_listing.id %>" enctype="multipart/form-data">
 
             <div class="form-group">
               <input type="file" class="form-control-file" name="photos" id="exampleFormControlFile1" required oninvalid="this.setCustomValidity('Please upload at least 2 images')">

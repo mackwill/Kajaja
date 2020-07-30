@@ -39,8 +39,8 @@
       <div class="row single-listing-header">
         <div class="header-left col-lg-8 col-md-8 col-sm-8 align-middle">
           <div class="">
-            <h5><%= listing.title %></h5>
-            <h4 class="text-success">$<%= listing.price %></h4>
+            <h5><%= single_listing.title %></h5>
+            <h4 class="text-success">$<%= single_listing.price %></h4>
           </div>
         </div>
         <div class="header-right col-lg-4 col-md-4 col-sm-4 d-flex mx-auto">
@@ -51,7 +51,7 @@
                 ><small class="text-muted"><%= chrono_listing %></small><br
               /></span>
               <span
-                ><small class="text-muted"><%= listing.postal_code %></small
+                ><small class="text-muted"><%= single_listing.postal_code %></small
                 ><br
               /></span>
               <span
@@ -63,7 +63,7 @@
           </div>
         </div>
         <div id="single-listing-favourite">
-          <form class="favourite-link" id="<%= listing.id %>" style="display:flex;flex-direction:column">
+          <form class="favourite-link" id="<%= single_listing.id %>" style="display:flex;flex-direction:column">
             <button class="btn bg-success text-white"><i class="fas fa-heart"></i> Save As Favouite</butto>
           </form>
         </div>
@@ -75,18 +75,18 @@
         <div class="row">
           <div class="col-12">
             <div class="img-container col-7 mx-auto">
-              <img src="/<%= listing.main_image %>" alt="" />
+              <img src="<%= single_listing.main_image %>" alt="" />
             </div>
 
             <div class="img-container row mx-auto" style="justify-content: space-evenly;">
-              <% if(listing.picture_1 !== 'https://via.placeholder.com/100x100'){%>
-                <img src="/<%= listing.picture_1 %>" width="25%;"alt="" />
+              <% if(single_listing.picture_1 !== 'https://via.placeholder.com/100x100'){%>
+                <img src="<%= single_listing.picture_1 %>" width="25%;"alt="" />
               <%}%>
-              <% if(listing.picture_2 !== 'https://via.placeholder.com/100x100'){%>
-                <img src="/<%= listing.picture_2 %>" width="25%;"alt="" />
+              <% if(single_listing.picture_2 !== 'https://via.placeholder.com/100x100'){%>
+                <img src="<%= single_listing.picture_2 %>" width="25%;"alt="" />
               <%}%>
-              <% if(listing.picture_3 !== 'https://via.placeholder.com/100x100'){%>
-                <img src="/<%= listing.picture_3 %>" width="25%;"alt="" />
+              <% if(single_listing.picture_3 !== 'https://via.placeholder.com/100x100'){%>
+                <img src="<%= single_listing.picture_3 %>" width="25%;"alt="" />
               <%}%>
             </div>
 
@@ -94,7 +94,7 @@
             <div id="single-listing-content-container">
               <div>
                 <h3 class="text-success">Description:</h3>
-                <p><%= listing.description %></p>
+                <p><%= single_listing.description %></p>
               </div>
             </div>
           </div>
@@ -137,8 +137,8 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title text-center">
-                  <a href="/api/users/<%= listing.owner_id %>"
-                    >KaJaJa Seller: <%= listing.name %></a
+                  <a href="/api/users/<%= single_listing.owner_id %>"
+                    >KaJaJa Seller: <%= single_listing.name %></a
                   >
                 </h5>
                 <p class="card-text">
@@ -147,7 +147,7 @@
                 </p>
                 <p class="card-text">
                   <i class="fa fa-list-alt mr-3" aria-hidden="true"></i>
-                  <a href="/api/users/<%= listing.owner_id %>"
+                  <a href="/api/users/<%= single_listing.owner_id %>"
                     >View other listings</a
                   >
                 </p>
@@ -157,11 +157,11 @@
                       <i class="fa fa-phone" aria-hidden="true"></i>
                     </div>
                   </div>
-                  <a href="tel:<listing.phone_number %>"
+                  <a href="tel:<%= single_listing.phone_number %>"
                     ><input
                       class="form-control"
                       type="text"
-                      placeholder="<%= listing.phone_number %>"
+                      placeholder="<%= single_listing.phone_number %>"
                       readonly
                   /></a>
                 </div>

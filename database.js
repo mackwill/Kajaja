@@ -287,6 +287,19 @@ const addImagesForListing = function(listingId, images){
 
   const finalQuery = checkNumberOfImages(images)
 
+  // let middleQuery = null
+  // let value = []
+  // if(images.length === 1){
+  //   middleQuery = `UPDATE listings SET picture_1 = $2 WHERE id = $1`
+  //   value = [listingId, `/uploads/${images[0].name}`]
+  // }else if(images.length === 2){
+  //   middleQuery = `UPDATE listings SET picture_1 = $2, picture_2 = $3 WHERE id = $1`
+  //   value = [listingId, `/uploads/${images[0].name}`, `/uploads/${images[1].name}`]
+  // }else if(images.length === 3){
+  //   middleQuery = `UPDATE listings SET picture_1 = $2, picture_2 = $3, picture_3 = $4 WHERE id = $1`
+  //   value = [listingId, `/uploads/${images[0].name}`, `/uploads/${images[1].name}`, `/uploads/${images[3].name}`]
+  // }
+  // const finalQuery = middleQuery.concat(' RETURNING *')
   return db.query(finalQuery, value)
   .then(res => {
     res.rows

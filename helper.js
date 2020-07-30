@@ -1,3 +1,6 @@
+const database = require("./database");
+const bcrypt = require("bcrypt");
+
 // Returns the most recent message of a conversation thread
 // per listing id
 const filterMessagesByUser = function (messages) {
@@ -50,3 +53,29 @@ const timeSinceSent = (messages) => {
 };
 
 exports.timeSinceSent = timeSinceSent;
+
+//Check if user is logged in helper
+const checkIfUserHasACookie = function (req, res, next) {
+  return database
+    .getUserWithId(req.session.userId)
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch((e) => {
+      req.user = null;
+      next();
+    });
+};
+exports.checkIfUserHasACookie = checkIfUserHasACookie;
+
+//Login helper
+const login = function (email, password) {
+  return database.getUserWithEmail(email).then((user) => {
+    if (bcrypt.compareSync(password, user.password)) {
+      return user;
+    }
+    return null;
+  });
+};
+exports.login = login;

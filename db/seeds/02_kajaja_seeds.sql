@@ -52,7 +52,7 @@ VALUES
     'FALSE',
     'H2G2Z8',
     'TRUE',
-    'images/seed_01.png'
+    '/images/seed_01.png'
   ),
   (
     'Dinner Table',
@@ -65,7 +65,7 @@ VALUES
     'TRUE',
     'H2V2N2',
     'FALSE',
-    'images/seed_02.png'
+    '/images/seed_02.png'
   ),
   (
     'Window Washing',
@@ -78,7 +78,7 @@ VALUES
     'FALSE',
     'H2V2N2',
     'FALSE',
-    'images/seed_03.png'
+    '/images/seed_03.png'
   ),
   (
     'Harry Potter book collection',
@@ -91,7 +91,7 @@ VALUES
     'TRUE',
     'H2E2B1',
     'FALSE',
-    'images/seed_04.png'
+    '/images/seed_04.png'
   ),
   (
     'Like new computer desk',
@@ -104,7 +104,7 @@ VALUES
     'FALSE',
     'H2X3R4',
     'FALSE',
-    'images/seed_05.png'
+    '/images/seed_05.png'
   ),
   (
     'iPhone 7 128GB',
@@ -117,7 +117,7 @@ VALUES
     'TRUE',
     'H2V4A2',
     'FALSE',
-    'images/seed_06.png'
+    '/images/seed_06.png'
   ),
   (
     'Fishing pole for fly fishing',
@@ -130,7 +130,7 @@ VALUES
     'FALSE',
     'H2V4A2',
     'FALSE',
-    'images/seed_07.png'
+    '/images/seed_07.png'
   ),
   (
     '4 1/2 Rosemont near the metro',
@@ -143,7 +143,7 @@ VALUES
     'TRUE',
     'H2V4A2',
     'FALSE',
-    'images/seed_08.png'
+    '/images/seed_08.png'
   );
 
 INSERT INTO
