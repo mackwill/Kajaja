@@ -1,25 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const database = require("../database");
-const { checkIfUserHasACookie, hasListingBeenLiked } = require("../helper");
-const TemplateVars = require('./schema/TemplateVars')
-
+const { checkIfUserHasACookie, filterByListingId } = require("../helper");
+const TemplateVars = require("./schema/TemplateVars");
 
 module.exports = (db) => {
-
   //Get the user's favourite listings
-  router.get('/', checkIfUserHasACookie, (req, res) => {
-    const templateVars = new TemplateVars(req.user)
+  router.get("/", checkIfUserHasACookie, (req, res) => {
+    const templateVars = new TemplateVars(req.user);
 
-    database.getFavouritesListings(req.session.userId)
+    database
+      .getFavouritesListings(req.session.userId)
       .then((data) => {
-        templateVars.listings = data
+        templateVars.listings = data;
         res.render("favourites_page", templateVars);
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
-  })
+  });
 
   //Add a listing to a user's favourite listing
   router.post("/:id", (req, res) => {
@@ -30,7 +29,7 @@ module.exports = (db) => {
       database
         .listingsLikedByUser(req.session.userId)
         .then((res) => {
-          const favouritesArr = hasListingBeenLiked(req.params.id, res);
+          const favouritesArr = filterByListingId(req.params.id, res);
           if (favouritesArr.length > 0) {
             errMessage = "You already like this posting";
             throw Error;

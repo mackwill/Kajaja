@@ -80,20 +80,21 @@ const login = function (email, password) {
 };
 exports.login = login;
 
-const hasListingBeenLiked = (listingId, favourites) => {
-  return favourites.filter((listing) => {
+const filterByListingId = (listingId, array) => {
+  return array.filter((listing) => {
     return listing.listing_id === Number(listingId);
   });
 };
 
-exports.hasListingBeenLiked = hasListingBeenLiked;
+exports.filterByListingId = filterByListingId;
 
-const generateRandomString = function(num) {
-  const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let randomStr = '';
+const generateRandomString = function (num) {
+  const chars =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let randomStr = "";
   for (let i = num; i > 0; i--) {
     randomStr += chars[Math.round(Math.random() * (chars.length - 1))];
   }
   return randomStr;
 };
-exports.generateRandomString = generateRandomString
+exports.generateRandomString = generateRandomString;

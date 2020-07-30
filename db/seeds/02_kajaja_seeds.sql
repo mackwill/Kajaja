@@ -144,7 +144,22 @@ VALUES
     'H2V4A2',
     'FALSE',
     '/images/seed_08.png'
+  ),
+  (
+    'Spend a day with the legened of Nicolas Cage',
+    'services',
+    2,
+    'Nicolas Cage is bestowing upon us unworthy folks the opportunity, nay, the privillage of a lifetime, to spend an entire 7 minutes with the legend. We only say 7 minutes because the common human can only handle that level of greatness so 6 minutes, so we''re pushing the envelope a little here. Your majesty awaits.',
+    'TRUE',
+    999,
+    'FALSE',
+    'TRUE',
+    'H2V4A2',
+    'FALSE',
+    '/images/seed_09.png'
   );
+
+;
 
 INSERT INTO
   user_favourites(user_id, listing_id)

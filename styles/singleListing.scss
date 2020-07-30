@@ -31,6 +31,9 @@
 
   .header-right > div {
     justify-content: center;
+    h4 {
+      font-size: 1.5rem;
+    }
   }
 
   img {
@@ -77,6 +80,9 @@
       font-size: 0.85rem;
     }
   }
+}
+.modal-backdrop {
+  z-index: 0;
 }
 
 @media only screen and (min-width: 768px) {
