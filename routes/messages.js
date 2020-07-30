@@ -85,7 +85,6 @@ module.exports = (db) => {
         }
       })
       .then((data) => {
-        // console.log("data: ", data);
         return database.createNewThread(listingId);
       })
       .then((data) => {
