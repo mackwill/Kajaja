@@ -167,10 +167,21 @@ module.exports = (db) => {
   });
 
   router.get('/add-images/:id', (req, res) => {
-    const templateVars = {user: req.session.userId, listingId: req.params.id}
+    const templateVars = {user:{id:req.session.userId}, listingId: req.params.id, listing:{main_image:null}, fromUser:false}
     templateVars.searchbar = null
-
-    res.render('add_images_page', templateVars)
+    if(req.params.id === 'abc'){
+      templateVars.fromUser = true
+      res.render('add_images_page', templateVars)
+    }else{
+      database.getSingleListing(req.params.id)
+      .then(listing => {
+        templateVars.listing = listing
+        res.render('add_images_page', templateVars)
+      })
+      .catch(e => {
+        res.render('add_images_page', templateVars)
+      })
+    }
   })
 
   router.get('/favourites', (req, res) => {
