@@ -94,7 +94,7 @@ app.get("/", (req, res) => {
   if(req.session.userId){
     database.getUserWithId(req.session.userId)
     .then(user => {
-      console.log(user)
+      console.log('app.get user', user)
       templateVars.user = user
 
       if(!req.session.history){

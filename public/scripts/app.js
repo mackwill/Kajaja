@@ -1,4 +1,6 @@
 $(document).ready(() => {
+  // Post request to allow user to respond to a message thread,
+  // and the message thread updates without the page refreshing
   $(document).on("click", "#respond-to-conversation", function (e) {
     const splitURL = window.location.href.split("/");
     const messageThread = splitURL[splitURL.length - 1];
@@ -17,6 +19,8 @@ $(document).ready(() => {
       });
   });
 
+  // Post request to delete a listing when a user
+  // is logged into their account
   $(document).on("click", ".delete_listing", function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -25,32 +29,35 @@ $(document).ready(() => {
       url: `/api/widgets/listings/${listingId}`,
       type: "DELETE",
       success: function (result) {
-        $(listingId).append(result.message)
+        $(listingId).append(result.message);
         console.log("item deleted", success);
       },
     });
   });
 
+  // GET request to allow the user to favourite a listing
+  // and add it to their favourites page
   $(document).on("click", ".favourite-link", function (e) {
-    const listingId = $(this).attr('id')
-    const listingBtn = $(this)
+    const listingId = $(this).attr("id");
+    const listingBtn = $(this);
 
     e.preventDefault();
     e.stopImmediatePropagation();
     $.ajax({
-      url:`/api/widgets/favourites/${listingId}`,
-      type:'POST',
-      success: function(result){
-        $(listingBtn).append(result.message)
-      }
-    })
+      url: `/api/widgets/favourites/${listingId}`,
+      type: "POST",
+      success: function (result) {
+        $(listingBtn).append(result.message);
+      },
+    });
   });
 
-  $('#search_query').focus(function (e) {
-    $('#search div').show()
-  })
+  $("#search_query").focus(function (e) {
+    $("#search div").show();
+  });
 
-
+  // POST request to allow the user to respond to
+  // a listing and start a new message thread
   $(document).on("click", "#submit-message", function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -58,6 +65,6 @@ $(document).ready(() => {
     $.post(`/api/messages`, formData).then(() => {
       $("#contact-seller-form").hide();
       $("#message-sent-alert").show();
-    })
-  })
+    });
+  });
 });

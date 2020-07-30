@@ -1,3 +1,5 @@
+// Returns the most recent message of a conversation thread
+// per listing id
 const filterMessagesByUser = function (messages) {
   const messagesByListing = [];
   const passedId = [];
@@ -14,6 +16,8 @@ const filterMessagesByUser = function (messages) {
 
 exports.filterMessagesByUser = filterMessagesByUser;
 
+// Returns amount of time since something was created
+// or since the function was called)
 const chrono = function (number) {
   let result = "";
   if (number / (60 * 60 * 24 * 356 * 1000) >= 1) {
@@ -34,6 +38,8 @@ const chrono = function (number) {
 
 exports.chrono = chrono;
 
+// Adds a time since sent key to each message object
+// by calling the chrono function
 const timeSinceSent = (messages) => {
   const updatedMessages = [];
   messages.forEach((message) => {
