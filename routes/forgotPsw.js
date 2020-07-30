@@ -4,8 +4,9 @@ const bcrypt = require('bcrypt')
 const database = require('../database')
 const nodeMailer = require('nodemailer')
 const dotenv = require('dotenv');
-const { reset } = require('nodemon');
 dotenv.config()
+const helper = require("../helper");
+
 
 module.exports = (db) => {
 
@@ -15,21 +16,13 @@ module.exports = (db) => {
     res.render('forgot_page', templateVars)
   })
 
-  const generateRandomString = function(num) {
-    const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let randomStr = '';
-    for (let i = num; i > 0; i--) {
-      randomStr += chars[Math.round(Math.random() * (chars.length - 1))];
-    }
-    return randomStr;
-  };
-
+  //Submit your email to receive reset email
   router.post('/forgot-password', (req, res) => {
     console.log('first step:',req.body)
     database.getUserWithEmail(req.body.email)
     .then(user => {
       if(user){
-        const resetToken = generateRandomString(7)
+        const resetToken = helper.generateRandomString(7)
 
         database.updateUserTokenById(user.id, resetToken)
         .then(user => {
@@ -73,15 +66,14 @@ module.exports = (db) => {
     })
   })
 
+  //Validate the cookie from the email clicked
   router.get('/reset', (req, res) => {
     req.session.reset = req.query.token
-    console.log('got user on /reset route')
     res.redirect('/api/mailer/reset-password')
   })
 
+  //Get form to update the password
   router.get('/reset-password', (req, res) => {
-    console.log('got user on reset-pass route')
-    console.log(req.session.reset)
     database.getUserByResetToken(req.session.reset)
     .then(user => {
       console.log(user)
@@ -93,10 +85,12 @@ module.exports = (db) => {
     })
   })
 
+  //Get form to update the password
   router.get('/change-password', (req, res) => {
     res.render('reset_password')
   })
 
+  //Update the users password
   router.post('/change-password', (req, res) => {
       const cryptedPassword = bcrypt.hashSync(req.body.password, 10)
 

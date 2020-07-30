@@ -28,7 +28,7 @@ $(document).ready(() => {
     e.stopImmediatePropagation();
     const listingId = $(this).attr("id");
     $.ajax({
-      url: `/api/widgets/listings/${listingId}`,
+      url: `/api/listings/${listingId}`,
       type: "DELETE",
     }).then(() => {
       $("#all-listings").load(`/api/users/${user} #all-listings`);
@@ -45,7 +45,7 @@ $(document).ready(() => {
     e.preventDefault();
     e.stopImmediatePropagation();
     $.ajax({
-      url: `/api/widgets/favourites/${listingId}`,
+      url: `/api/favourites/${listingId}`,
       type: "POST",
       success: function (result) {
         // $(listingBtn).append(result.message);

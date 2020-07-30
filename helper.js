@@ -87,3 +87,13 @@ const hasListingBeenLiked = (listingId, favourites) => {
 };
 
 exports.hasListingBeenLiked = hasListingBeenLiked;
+
+const generateRandomString = function(num) {
+  const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let randomStr = '';
+  for (let i = num; i > 0; i--) {
+    randomStr += chars[Math.round(Math.random() * (chars.length - 1))];
+  }
+  return randomStr;
+};
+exports.generateRandomString = generateRandomString

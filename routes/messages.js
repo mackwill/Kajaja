@@ -6,6 +6,7 @@ const { checkIfUserHasACookie } = require("../helper");
 const TemplateVars = require('./schema/TemplateVars')
 
 module.exports = (db) => {
+  //Get a message thread
   router.get("/", checkIfUserHasACookie, (req, res) => {
     const templateVars = new TemplateVars(req.user)
     database.getMessagesFromUser(req.user.id)
@@ -20,6 +21,7 @@ module.exports = (db) => {
     });
   });
 
+  //Get a single message
   router.get("/:id", checkIfUserHasACookie, (req, res) => {
     const templateVars = new TemplateVars(req.user)
     database.getMessageThreadById(req.params.id)
@@ -35,6 +37,7 @@ module.exports = (db) => {
       });
   });
 
+  //Post a single message to a thread
   router.post("/:id", checkIfUserHasACookie, (req, res) => {
     const userId = req.session.userId;
     const messageThreadId = req.params.id;
@@ -49,28 +52,29 @@ module.exports = (db) => {
       });
   });
 
-router.post("/", (req, res) => {
-  const templatVars = new TemplateVars(undefined);
-  const headerArr = req.headers.referer.split("/");
-  const listingId = headerArr[headerArr.length - 1];
-  const message = Object.values(req.body);
-  const userId = req.session.userId;
-  templatVars.user = userId;
-  database.createNewThread(listingId)
-  .then((data) => {
-    const threadId = data[0].id;
-    database.insertIntoCreatedThread(threadId, userId, message[0])
-    .then(() => {
-      res.end();
+  //Create a thread and add a message to it
+  router.post("/", (req, res) => {
+    const templatVars = new TemplateVars(undefined);
+    const headerArr = req.headers.referer.split("/");
+    const listingId = headerArr[headerArr.length - 1];
+    const message = Object.values(req.body);
+    const userId = req.session.userId;
+    templatVars.user = userId;
+    database.createNewThread(listingId)
+    .then((data) => {
+      const threadId = data[0].id;
+      database.insertIntoCreatedThread(threadId, userId, message[0])
+      .then(() => {
+        res.end();
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
     });
-  })
-  .catch((err) => {
-    res.status(500).json({ error: err.message });
   });
-});
 
   return router;
 };

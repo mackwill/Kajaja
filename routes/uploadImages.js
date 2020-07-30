@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const database = require("../database");
 const _ = require("lodash");
+const { checkIfUserHasACookie } = require("../helper");
 
 module.exports = (db) => {
 
 
-  router.post("/upload-avatar", async (req, res) => {
+  //Upload an avatar to the user's profile
+  router.post("/avatar", async (req, res) => {
     try {
       if (!req.files) {
         res.send({
@@ -32,7 +34,8 @@ module.exports = (db) => {
     }
   });
 
-  router.post("/upload-main/:id", async (req, res) => {
+  //Upload the main image of a listing
+  router.post("/main/:id", async (req, res) => {
     try {
       if (!req.files) {
         res.send({
@@ -58,7 +61,8 @@ module.exports = (db) => {
     }
   });
 
-  router.post("/upload-photos/:id", async (req, res) => {
+  //Upload the side pictures of a listing
+  router.post("/photos/:id", async (req, res) => {
     try {
       if (!req.files) {
         res.send({
@@ -98,6 +102,30 @@ module.exports = (db) => {
       res.status(500).send(err);
     }
   });
+
+  //Get the 'add image' form page
+  router.get('/add-images/:id', checkIfUserHasACookie, (req, res) => {
+    let templateVars = new TemplateVars(req.user)
+    templateVars.fromUser = false
+
+    if(req.params.id === 'abc'){
+      templateVars.fromUser = true
+      templateVars.single_listing = {}
+      templateVars.single_listing.main_image = null
+
+      res.render('add_images_page', templateVars)
+    }else{
+      database.getSingleListing(req.params.id)
+      .then(listing => {
+        templateVars.single_listing = listing
+        res.render('add_images_page', templateVars)
+      })
+      .catch(e => {
+        templateVars.single_listing.main_image = null
+        res.render('add_images_page', templateVars)
+      })
+    }
+  })
 
 return router;
 };

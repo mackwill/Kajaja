@@ -54,9 +54,9 @@
         <div class="row">
           <img class='col-sm-3' src="<%= single_listing.main_image %>">
         </div>
-        <h4 class="card-text text-warning"><a href="/api/widgets/add-images/<%= single_listing.id %>">Add images to your listing</a></h4>
+        <h4 class="card-text text-warning"><a href="/api/upload/add-images/<%= single_listing.id %>">Add images to your listing</a></h4>
 
-        <form method="POST" action="/api/widgets/update/listings/<%= single_listing.id %>">
+        <form method="POST" action="/api/listings/<%= single_listing.id %>/update">
           <div class="form-group">
           <label for="userName" class="mt-3">Change Listing Title</label>
           <input type="text" class="form-control" id='listing_title' value="<%= single_listing.title %>" name='title'><br>

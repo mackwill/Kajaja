@@ -36,7 +36,7 @@
 
   <body>
     <% if(!searchbar){%>
-    <form id="search" method="GET" action="/api/widgets/listings" class="m-3">
+    <form id="search" method="GET" action="/api/listings" class="m-3">
       <div class="form-row row">
         <div class="form-group col-md-4">
           <input type="text" class="form-control" id="search_query" name='q' placeholder="search for items..">
@@ -74,7 +74,7 @@
   </form>
   <%}else{%>
 
-    <form id="search" method="GET" action="/api/widgets/listings" class="m-3">
+    <form id="search" method="GET" action="/api/listings" class="m-3">
       <div class="form-row row">
         <div class="form-group col-md-4">
           <input type="text" class="form-control" id="search_query" name='q' placeholder="search for" value="<%= searchbar.q %>">

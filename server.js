@@ -32,7 +32,6 @@ const { checkIfUserHasACookie } = require("./helper");
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(cors());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
@@ -45,7 +44,6 @@ app.use(
     },
   })
 );
-
 app.use(
   cookieSession({
     name: "session",
@@ -53,9 +51,7 @@ app.use(
     maxAge: 60 * 60 * 1000 * 1,
   })
 );
-
 app.set("view engine", "ejs");
-
 app.use(
   "/styles",
   sass({
@@ -69,43 +65,25 @@ app.use(express.static("public"));
 app.use(express.static("uploads"));
 
 // Separated Routes for each Resource
-// Note: Feel free to replace the example routes below with your own
-const usersRoutes = require("./routes/users");
-const widgetsRoutes = require("./routes/widgets");
 const messageRoutes = require("./routes/messages");
 const nodemailerRoutes = require("./routes/forgotPsw");
 const uploadImagesRoutes = require("./routes/uploadImages");
 
+const listingsRoutes = require("./routes/zlistings");
+const favouritesRoutes = require("./routes/zfavourites");
+const usersRoutes = require("./routes/zusers");
+const indexRoutes = require("./routes/index");
+
 // Mount all resource routes
-// Note: Feel free to replace the example routes below with your own
-app.use("/api/users", usersRoutes(db));
-app.use("/api/widgets", widgetsRoutes(db));
 app.use("/api/messages", messageRoutes(db));
 app.use("/api/mailer", nodemailerRoutes(db));
-app.use("/", uploadImagesRoutes(db));
+app.use("/api/upload", uploadImagesRoutes(db));
 
-// Note: mount other resources here, using the same pattern above
+app.use("/api/listings", listingsRoutes(db));
+app.use("/api/favourites", favouritesRoutes(db));
+app.use("/api/users", usersRoutes(db));
+app.use("/", indexRoutes(db));
 
-// Home page
-// Warning: avoid creating more routes in this file!
-// Separate them into separate routes files (see above).
-app.get("/", checkIfUserHasACookie, (req, res) => {
-  const templateVars = new TemplateVars(req.user);
-
-  if (!req.session.history) {
-    res.render("index", templateVars);
-  } else {
-    database
-      .getRecentlyViewedListings(req.session.history)
-      .then((recentlyViewed) => {
-        templateVars.recentlyViewed = recentlyViewed;
-        res.render("index", templateVars);
-      })
-      .catch((e) => {
-        res.render("index", templateVars);
-      });
-  }
-});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
