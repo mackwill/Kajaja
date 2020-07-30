@@ -12,22 +12,6 @@
       crossorigin="anonymous"
     />
 
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.js"
-      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-      crossorigin="anonymous"
-    ></script>
-
     <!-- CSS -->
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/navbar.css" type="text/css" />
@@ -48,64 +32,63 @@
 
     <!-- User profile header -->
     <div class="card text-center profile-card">
-      <div class="card-header bg-success">
-      </div>
+      <div class="card-header bg-success"></div>
       <div class="card-body">
-    <div class="" id="profile-header-container">
-      <div class="top-stripe d-flex justify-content-center">
-        <img src="/<%= listings[0].profile_pic_url %>" />
-        <h1><%= listings[0].name %></h1>
-      </div>
+        <div class="" id="profile-header-container">
+          <div class="top-stripe d-flex justify-content-center">
+            <img src="/<%= listings[0].profile_pic_url %>" />
+            <h1><%= listings[0].name %></h1>
+          </div>
 
-      <div class="row sellers-info">
-        <div class="input-group m-1 col-md-4" id="email-seller">
-          <a href="tel:<listing.phone_number %>"
-            >
-            <small id="emailHelp" class="form-text text-muted">Seller's Phone</small>
-            <input
-              class="form-control"
-              type="text"
-              placeholder="<%= listings[0].phone_number %>"
-              readonly
-          /></a>
-        </div>
-        <div class="input-group m-1 col-md-4" id="call-seller">
-          <a href="mailto:<%= listings[0].email %>"
-            >
-            <small id="emailHelp" class="form-text text-muted">Seller's Email</small>
-            <input
-              class="form-control"
-              type="email"
-              placeholder="<%= listings[0].email %>"
-              readonly
-            />
-          </a>
-        </div>
-        <div class="input-group m-1 col-md-4" id="call-seller">
-          <div>
-            <small id="emailHelp" class="form-text text-muted">On KaJaJa since</small>
-            <input
-              class="form-control"
-              type="email"
-              placeholder="<%= listings.unix %>"
-              readonly
-            />
+          <div class="row sellers-info">
+            <div class="input-group m-1 col-md-4" id="email-seller">
+              <a href="tel:<listing.phone_number %>">
+                <small id="emailHelp" class="form-text text-muted"
+                  >Seller's Phone</small
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="<%= listings[0].phone_number %>"
+                  readonly
+              /></a>
+            </div>
+            <div class="input-group m-1 col-md-4" id="call-seller">
+              <a href="mailto:<%= listings[0].email %>">
+                <small id="emailHelp" class="form-text text-muted"
+                  >Seller's Email</small
+                >
+                <input
+                  class="form-control"
+                  type="email"
+                  placeholder="<%= listings[0].email %>"
+                  readonly
+                />
+              </a>
+            </div>
+            <div class="input-group m-1 col-md-4" id="call-seller">
+              <div>
+                <small id="emailHelp" class="form-text text-muted"
+                  >On KaJaJa since</small
+                >
+                <input
+                  class="form-control"
+                  type="email"
+                  placeholder="<%= listings.unix %>"
+                  readonly
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-    </div>
-    </div>
     </div>
     <div>
       <h1 class="text-center"><%= listings[0].name %>'s Listings</h1>
     </div>
     <!-- Listings associated to user -->
     <section id="all-listings">
-      <% console.log('lisings length: ', listings.length) %>
-
-      <% if (listings[0].id !== null) { %>
-      <% listings.forEach(listing => { %>
+      <% if(listings[0].id !== null) { %> <% listings.forEach(listing => { %>
       <div class="container col-lg-10 col-sm-11 my-3">
         <a class="listing-link" href="/api/widgets/listings/<%=listing.id%>">
           <div class="row">
@@ -119,17 +102,17 @@
                 </div>
                 <div class="listing-header-right">
                   <h3 class="text-success">$<%= listing.price %></h3>
+                  <% if(user){ %>
+                  <form class="favourite-link" id="<%= listing.id %>">
+                    <button class="btn btn-primary">
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </form>
+                  <%}%>
                 </div>
               </div>
               <div class="text listing-body">
                 <p><%= listing.description %></p>
-              </div>
-              <div class="listing-footer">
-                <% if(user){ %>
-                <form class="favourite-link" id="<%= listing.id %>">
-                  <i class="fas fa-heart"></i>
-                </form>
-                <%}%>
               </div>
             </div>
             <div class="w-100"></div>
@@ -146,8 +129,24 @@
           <% } %>
         </div>
       </div>
-      <% }) %>
-      <% } %>
+      <% }) %> <% } %>
     </section>
+    <%- include("partials/_favouriteModal") %>
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
