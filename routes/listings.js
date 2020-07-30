@@ -19,7 +19,6 @@ module.exports = (db) => {
           max: 999,
         })
       : (templateVars.searchbar = req.query);
-
     database
       .getListings(req.query)
       .then((data) => {

@@ -165,13 +165,18 @@ const getListings = function(data){
 
     // If there is text in the search bar
   }else if(data.q){
-    const {q, min, max} = data
+    const {min, max} = data
+    let q = data.q
+    if(q.split(' ').length > 1){
+      q = q.split(' ')[0]
+    }
 
     const finalQuery = queryHelpers.checkCategories(data)
 
     return db.query(finalQuery, [q, min, max])
     .then(res => res.rows)
     .catch((e) => null)
+
 
   // If a category is selected
   }else if(data.category){

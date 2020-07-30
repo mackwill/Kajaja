@@ -20,7 +20,7 @@ CREATE TABLE users(
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   join_date TIMESTAMP DEFAULT now(),
-  profile_pic_url VARCHAR(255) DEFAULT 'https://via.placeholder.com/100x100',
+  profile_pic_url VARCHAR(255) DEFAULT '/images/placeholder-profile.jpg',
   phone_number VARCHAR(255),
   token VARCHAR(255)
 );
