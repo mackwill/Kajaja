@@ -78,6 +78,9 @@
     }
   }
 }
+.modal-backdrop {
+  z-index: 0;
+}
 
 @media only screen and (min-width: 768px) {
   #single-listing {

@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css"
-    />
-    <link
-      rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
@@ -27,7 +23,6 @@
     ></script>
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
-    <script type="text/javascript" src="/scripts/listings-render.js"></script>
   </head>
 
   <body>
@@ -63,8 +58,14 @@
           </div>
         </div>
         <div id="single-listing-favourite">
-          <form class="favourite-link" id="<%= listing.id %>" style="display:flex;flex-direction:column">
-            <button class="btn bg-success text-white"><i class="fas fa-heart"></i> Save As Favouite</butto>
+          <form
+            class="favourite-link"
+            id="<%= listing.id %>"
+            style="display: flex; flex-direction: column;"
+          >
+            <button class="btn bg-success text-white">
+              <i class="fas fa-heart"></i> Save As Favouite
+            </button>
           </form>
         </div>
       </div>
@@ -78,18 +79,21 @@
               <img src="/<%= listing.main_image %>" alt="" />
             </div>
 
-            <div class="img-container row mx-auto" style="justify-content: space-evenly;">
-              <% if(listing.picture_1 !== 'https://via.placeholder.com/100x100'){%>
-                <img src="/<%= listing.picture_1 %>" width="25%;"alt="" />
-              <%}%>
-              <% if(listing.picture_2 !== 'https://via.placeholder.com/100x100'){%>
-                <img src="/<%= listing.picture_2 %>" width="25%;"alt="" />
-              <%}%>
-              <% if(listing.picture_3 !== 'https://via.placeholder.com/100x100'){%>
-                <img src="/<%= listing.picture_3 %>" width="25%;"alt="" />
+            <div
+              class="img-container row mx-auto"
+              style="justify-content: space-evenly;"
+            >
+              <% if(listing.picture_1 !==
+              'https://via.placeholder.com/100x100'){%>
+              <img src="/<%= listing.picture_1 %>" width="25%;" alt="" />
+              <%}%> <% if(listing.picture_2 !==
+              'https://via.placeholder.com/100x100'){%>
+              <img src="/<%= listing.picture_2 %>" width="25%;" alt="" />
+              <%}%> <% if(listing.picture_3 !==
+              'https://via.placeholder.com/100x100'){%>
+              <img src="/<%= listing.picture_3 %>" width="25%;" alt="" />
               <%}%>
             </div>
-
 
             <div id="single-listing-content-container">
               <div>
@@ -106,7 +110,7 @@
       <div id="single-listing-contact-container" class="container">
         <div class="row">
           <div class="col-12">
-            <form id='contact-seller-form' method="POST" action="/api/messages">
+            <form id="contact-seller-form" method="POST" action="/api/messages">
               <div class="form-group">
                 <h3>
                   <label for="message-to-seller">Contact Kajaja User</label>
@@ -119,11 +123,19 @@
                   placeholder="Your Message"
                 ></textarea>
               </div>
-              <button id="submit-message" type="submit" class="btn btn-primary btn-lg btn-block">
+              <button
+                id="submit-message"
+                type="submit"
+                class="btn btn-primary btn-lg btn-block"
+              >
                 Send message
               </button>
             </form>
-            <div id="message-sent-alert" class="alert alert-success collapse" role="alert">
+            <div
+              id="message-sent-alert"
+              class="alert alert-success collapse"
+              role="alert"
+            >
               Your message has been successfully sent!
             </div>
           </div>
@@ -171,7 +183,7 @@
         </div>
       </div>
     </div>
-
+    <%- include("partials/_favouriteModal") %>
     <script
       src="https://code.jquery.com/jquery-3.5.1.js"
       integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
