@@ -298,21 +298,21 @@ exports.listingsLikedByUser = listingsLikedByUser
 // which are then stored in the database
 const addImagesForListing = function(listingId, images){
 
-  const finalQuery = checkNumberOfImages(images)
+  // const finalQuery = checkNumberOfImages(images)
 
-  // let middleQuery = null
-  // let value = []
-  // if(images.length === 1){
-  //   middleQuery = `UPDATE listings SET picture_1 = $2 WHERE id = $1`
-  //   value = [listingId, `/uploads/${images[0].name}`]
-  // }else if(images.length === 2){
-  //   middleQuery = `UPDATE listings SET picture_1 = $2, picture_2 = $3 WHERE id = $1`
-  //   value = [listingId, `/uploads/${images[0].name}`, `/uploads/${images[1].name}`]
-  // }else if(images.length === 3){
-  //   middleQuery = `UPDATE listings SET picture_1 = $2, picture_2 = $3, picture_3 = $4 WHERE id = $1`
-  //   value = [listingId, `/uploads/${images[0].name}`, `/uploads/${images[1].name}`, `/uploads/${images[3].name}`]
-  // }
-  // const finalQuery = middleQuery.concat(' RETURNING *')
+  let middleQuery = null
+  let value = []
+  if(images.length === 1){
+    middleQuery = `UPDATE listings SET picture_1 = $2 WHERE id = $1`
+    value = [listingId, `/uploads/${images[0].name}`]
+  }else if(images.length === 2){
+    middleQuery = `UPDATE listings SET picture_1 = $2, picture_2 = $3 WHERE id = $1`
+    value = [listingId, `/uploads/${images[0].name}`, `/uploads/${images[1].name}`]
+  }else if(images.length === 3){
+    middleQuery = `UPDATE listings SET picture_1 = $2, picture_2 = $3, picture_3 = $4 WHERE id = $1`
+    value = [listingId, `/uploads/${images[0].name}`, `/uploads/${images[1].name}`, `/uploads/${images[3].name}`]
+  }
+  const finalQuery = middleQuery.concat(' RETURNING *')
   return db.query(finalQuery, value)
   .then(res => {
     res.rows
@@ -335,3 +335,59 @@ const addMainImageToListing = function(listingId, image){
   .catch((e) => null)
 }
 exports.addMainImageToListing = addMainImageToListing
+
+const getMessagesFromUser = function(userId){
+  return db.query(`
+    SELECT * FROM message_thread
+    JOIN listings ON listing_id = listings.id
+    JOIN user_message ON thread_id = message_thread.id
+    WHERE owner_id = $1 OR sender_id = $1
+    ORDER BY send_date DESC;
+  `,[userId])
+  .then(res => res)
+  .catch((e) => null)
+}
+exports.getMessagesFromUser = getMessagesFromUser
+
+const getMessageThreadById = function(threadId){
+return db.query(`
+  SELECT user_message.*, message_thread.*, listings.*, users.name FROM user_message
+  JOIN message_thread on thread_id = message_thread.id
+  JOIN listings ON listing_id = listings.id
+  JOIN users ON sender_id = users.id
+  WHERE thread_id = $1
+  ORDER BY send_date;
+  `, [threadId])
+  .then(res => res)
+  .catch((e) => null)
+}
+exports.getMessageThreadById = getMessageThreadById
+
+const createAMessage = function(thread_id, user_id, message){
+  return db.query(`
+    INSERT INTO user_message (thread_id, sender_id, content)
+    VALUES ($1, $2, $3)
+    RETURNING *
+  `, [thread_id, user_id, message])
+}
+exports.createAMessage = createAMessage
+
+const createNewThread = function(listingId){
+  return db.query(`
+  INSERT INTO message_thread (listing_id)
+  VALUES ($1)
+  RETURNING *;
+  `, [listingId])
+  .then(res => res.rows)
+  .catch((e) => null)
+}
+exports.createNewThread = createNewThread
+
+const insertIntoCreatedThread = function(threadId, userId, message){
+  return db.query(`
+    INSERT INTO user_message (thread_id, sender_id, content)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+  `, [threadId, userId, message])
+}
+exports.insertIntoCreatedThread = insertIntoCreatedThread

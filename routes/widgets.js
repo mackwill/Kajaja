@@ -76,7 +76,8 @@ module.exports = (db) => {
       templateVars.searchbar = {q:'', category:req.query.category, min:0, max:999} :
       templateVars.searchbar = req.query
 
-    database.getListings(req.query)
+    database
+      .getListings(req.query)
       .then((data) => {
         templateVars.listings = data
 
