@@ -11,4 +11,4 @@ class TemplateVars {
     this.recentlyViewed = undefined;
   }
 }
-module.exports = TemplateVars
+module.exports = TemplateVars;

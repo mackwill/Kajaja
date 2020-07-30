@@ -5,7 +5,7 @@ const queryHelpers = require("./queryHelpers");
 // ------------------------------------ Users table queries ------------------------------------
 
 // Return a user with a given email
-const getUserWithEmail = function (email) {
+const getUserWithEmail = function(email) {
   return db
     .query(
       `
@@ -20,7 +20,7 @@ const getUserWithEmail = function (email) {
 exports.getUserWithEmail = getUserWithEmail;
 
 // Return a user with a given id
-const getUserWithId = function (id) {
+const getUserWithId = function(id) {
   return db
     .query(
       `
@@ -35,7 +35,7 @@ const getUserWithId = function (id) {
 exports.getUserWithId = getUserWithId;
 
 // Add a user to the database with all of the provided information
-const addUser = function (user) {
+const addUser = function(user) {
   const { name, email, password } = user;
   return db
     .query(
@@ -51,7 +51,7 @@ const addUser = function (user) {
 exports.addUser = addUser;
 
 // Updates the database with a new password for the logged in user
-const updateUserPasswordByUserId = function (userId, newPassword) {
+const updateUserPasswordByUserId = function(userId, newPassword) {
   return db
     .query(
       `
@@ -67,7 +67,7 @@ const updateUserPasswordByUserId = function (userId, newPassword) {
 exports.updateUserPasswordByUserId = updateUserPasswordByUserId;
 
 // Get 'public' information of a user by a given id
-const getPublicInfoUserById = function (userId) {
+const getPublicInfoUserById = function(userId) {
   return db
     .query(
       `
@@ -85,7 +85,7 @@ exports.getPublicInfoUserById = getPublicInfoUserById;
 
 // Checks for changes in any of the currently logged in user data
 // and updates it in the databse
-const updateUserById = function (user, changes) {
+const updateUserById = function(user, changes) {
   const { name, phone, email } = changes;
   const { id } = user;
   const initQuery = `
@@ -111,7 +111,7 @@ const updateUserById = function (user, changes) {
 exports.updateUserById = updateUserById;
 
 // Selects the reset token from the database for a given user
-const getUserByResetToken = function (token) {
+const getUserByResetToken = function(token) {
   return db
     .query(
       `
@@ -127,7 +127,7 @@ exports.getUserByResetToken = getUserByResetToken;
 
 // Updates the user's forget password token and sets
 // it in the database
-const updateUserTokenById = function (id, token) {
+const updateUserTokenById = function(id, token) {
   return db
     .query(
       `
@@ -145,7 +145,7 @@ exports.updateUserTokenById = updateUserTokenById;
 
 // Allows the user to update their profile picture and
 // updates the database with the selected image
-const addUserPicture = function (userId, imgUrl) {
+const addUserPicture = function(userId, imgUrl) {
   return db
     .query(
       `
@@ -164,7 +164,7 @@ exports.addUserPicture = addUserPicture;
 // ------------------------------------ Listing table queries ------------------------------------
 
 // Create a new listing and insert into table
-const createNewListing = function (listing) {
+const createNewListing = function(listing) {
   const {
     title,
     category,
@@ -196,7 +196,7 @@ const createNewListing = function (listing) {
 exports.createNewListing = createNewListing;
 
 // Get all listings based on search parameters (i.e category, price etc.)
-const getListings = function (data) {
+const getListings = function(data) {
   let value = null;
   let finalQuery = null;
 
@@ -215,11 +215,11 @@ const getListings = function (data) {
       .catch((e) => null);
 
     // If there is text in the search bar
-  }else if(data.q){
-    const {min, max} = data
-    let q = data.q
-    if(q.split(' ').length > 1){
-      q = q.split(' ')[0]
+  } else if (data.q) {
+    const {min, max} = data;
+    let q = data.q;
+    if (q.split(' ').length > 1) {
+      q = q.split(' ')[0];
     }
 
     const finalQuery = queryHelpers.checkCategories(data);
@@ -231,9 +231,9 @@ const getListings = function (data) {
 
 
   // If a category is selected
-  }else if(data.category){
-    const {category, min, max} = data
-    value = data.category
+  } else if (data.category) {
+    const {category, min, max} = data;
+    value = data.category;
     finalQuery = `
       SELECT * FROM listings
       WHERE category = $1
@@ -259,7 +259,7 @@ const getListings = function (data) {
 exports.getListings = getListings;
 
 // Get the listings favourited by the currently logged in user
-const getFavouritesListings = function (userId) {
+const getFavouritesListings = function(userId) {
   return db
     .query(
       `
@@ -277,7 +277,7 @@ exports.getFavouritesListings = getFavouritesListings;
 
 // Once a user clicks on a listing link, this will return that
 // single listing from the database
-const getSingleListing = function (id) {
+const getSingleListing = function(id) {
   return db
     .query(
       `
@@ -295,7 +295,7 @@ exports.getSingleListing = getSingleListing;
 
 // Checks the listings viewed while logged in and returns
 // those listings from the database
-const getRecentlyViewedListings = function (arrayOfId) {
+const getRecentlyViewedListings = function(arrayOfId) {
   let finalArr = [...new Set(arrayOfId)].splice(0, 4);
 
   const queryStart = queryHelpers.checkHowManyRecentlyViewed(finalArr);
@@ -308,7 +308,7 @@ const getRecentlyViewedListings = function (arrayOfId) {
 exports.getRecentlyViewedListings = getRecentlyViewedListings;
 
 // Delete user with a given id from the database
-const deleteListingById = function (listingId) {
+const deleteListingById = function(listingId) {
   return db
     .query(
       `
@@ -324,7 +324,7 @@ const deleteListingById = function (listingId) {
 exports.deleteListingById = deleteListingById;
 
 // Updates a selected listing with the changed data
-const updateSingleListing = function (id, changes) {
+const updateSingleListing = function(id, changes) {
   const sold = changes.sold ? true : false;
   const { title, description, price, category } = changes;
 
@@ -342,7 +342,7 @@ exports.updateSingleListing = updateSingleListing;
 
 // Allows the user to "like" a listing and updates the database with
 // the user id and listing id
-const likeListing = function (userId, listingId) {
+const likeListing = function(userId, listingId) {
   return db
     .query(
       `
@@ -357,7 +357,7 @@ const likeListing = function (userId, listingId) {
 exports.likeListing = likeListing;
 
 // Returns a list of listings already liked by the user
-const listingsLikedByUser = function (userId) {
+const listingsLikedByUser = function(userId) {
   return db
     .query(
       `
@@ -375,7 +375,7 @@ exports.listingsLikedByUser = listingsLikedByUser;
 
 // Allows the user to add up to 4 images to their listing
 // which are then stored in the database
-const addImagesForListing = function (listingId, images) {
+const addImagesForListing = function(listingId, images) {
   // const finalQuery = checkNumberOfImages(images)
 
   let middleQuery = null;
@@ -413,7 +413,7 @@ exports.addImagesForListing = addImagesForListing;
 
 // Allows the user to add a main image to their listing
 // and stores in the database
-const addMainImageToListing = function (listingId, image) {
+const addMainImageToListing = function(listingId, image) {
   return db
     .query(
       `
@@ -430,7 +430,7 @@ exports.addMainImageToListing = addMainImageToListing;
 
 // ------------------------------------ Messages table queries ------------------------------------
 
-const getMessagesFromUser = function (userId) {
+const getMessagesFromUser = function(userId) {
   return db
     .query(
       `
@@ -447,7 +447,7 @@ const getMessagesFromUser = function (userId) {
 };
 exports.getMessagesFromUser = getMessagesFromUser;
 
-const getMessageThreadById = function (threadId) {
+const getMessageThreadById = function(threadId) {
   return db
     .query(
       `
@@ -465,7 +465,7 @@ const getMessageThreadById = function (threadId) {
 };
 exports.getMessageThreadById = getMessageThreadById;
 
-const createAMessage = function (thread_id, user_id, message) {
+const createAMessage = function(thread_id, user_id, message) {
   return db.query(
     `
     INSERT INTO user_message (thread_id, sender_id, content)
@@ -477,7 +477,7 @@ const createAMessage = function (thread_id, user_id, message) {
 };
 exports.createAMessage = createAMessage;
 
-const createNewThread = function (listingId) {
+const createNewThread = function(listingId) {
   return db
     .query(
       `
@@ -492,7 +492,7 @@ const createNewThread = function (listingId) {
 };
 exports.createNewThread = createNewThread;
 
-const insertIntoCreatedThread = function (threadId, userId, message) {
+const insertIntoCreatedThread = function(threadId, userId, message) {
   return db.query(
     `
     INSERT INTO user_message (thread_id, sender_id, content)
