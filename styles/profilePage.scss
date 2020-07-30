@@ -55,3 +55,16 @@
     }
   }
 }
+
+.input-group{
+  justify-content: center;
+}
+.profile-card{
+  width:90vw; margin:0 auto; border-radius:5px;
+}
+.profile-card .card-header{
+  height: 5rem;
+}
+.sellers-info{
+  flex-wrap:nowrap;
+}
