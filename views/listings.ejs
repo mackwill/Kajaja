@@ -49,6 +49,11 @@
 
     <!-- Page that displays all of the listings as per the search results -->
     <section id="all-listings">
+      <% if(message) {%>
+        <div class="alert alert-warning" role="alert">
+          <%= message %>
+        </div>
+      <%}%>
       <%- include("partials/_listings") %>
     </section>
   </body>
