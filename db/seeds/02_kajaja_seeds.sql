@@ -157,8 +157,47 @@ VALUES
     'H2V4A2',
     'FALSE',
     '/images/seed_09.png'
-  );
-
+  ),
+  (
+    'Coffee Table',
+    'furniture',
+    2,
+    'Black round table. Fits well in any living room',
+    'FALSE',
+    120,
+    'FALSE',
+    'TRUE',
+    'H2V2N2',
+    'FALSE',
+    '/images/seed_02.png'
+  ),
+  (
+    'Patio Table',
+    'furniture',
+    2,
+    'Great patio set. Includes 1 table and 2 chairs. IKEA set.',
+    'FALSE',
+    80,
+    'FALSE',
+    'TRUE',
+    'H2V2N2',
+    'FALSE',
+    '/images/seed_02.png'
+  ),
+  (
+    'Office Table',
+    'furniture',
+    2,
+    'Perfect to put all your paper and stuff for work. Also green. from Ikea.',
+    'FALSE',
+    60,
+    'FALSE',
+    'TRUE',
+    'H2V2N2',
+    'FALSE',
+    '/images/seed_02.png'
+  )
+  ;
 ;
 
 INSERT INTO

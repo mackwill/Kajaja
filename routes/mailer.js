@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const helper = require("../helper");
 const TemplateVars = require("./schema/TemplateVars");
+const { template } = require("lodash");
 
 module.exports = () => {
 
@@ -18,6 +19,8 @@ module.exports = () => {
 
   //Submit your email to receive reset email
   router.post('/forgot-password', (req, res) => {
+    const templateVars = new TemplateVars(undefined);
+
     database.getUserWithEmail(req.body.email)
       .then(user => {
         if (user) {
@@ -44,18 +47,22 @@ module.exports = () => {
                   return console.log('message wasnt sent:',error);
                 }
               });
-              res.render('forgot_page', {message: 'Reset email sent'});
+              templateVars.message = 'Reset email sent'
+              res.render('forgot_page', templateVars);
 
             })
             .catch(() => {
+              templateVars.message = 'Reset email was not sent'
 
-              res.render('forgot_page', {message: 'Reset email wasnt sent'});
+              res.render('forgot_page', templateVars);
 
             });
 
 
         } else {
-          res.render('forgot_page', {message: 'Reset email wasnt sent'});
+          templateVars.message = 'Reset email was not sent'
+
+          res.render('forgot_page', templateVars);
         }
       })
       .catch(() => {
