@@ -37,10 +37,17 @@ KaJaJa is a listing web app. You can browse items users are selling and contact 
 - You can add some items to your favourites and remove them.
 - Images upload with express-fileupload.
 - Search bar acting as a search enigne with the SQL full text search.
+- Refine searches by category and/or price
+- Ability to message a seller about a listing and have a conversation with the user
+
+## Future Improvements
+- Ability for user to ‘boost’ their ad to be at the top of the search
+- Adding support for accepting payment for boosting ad
+- Use of google maps API to show seller location on map
+- Adding a notification system to know when a new listing corresponding to your search is posted
 
 ## Final Product
 
-!["screenshot of the homepage - mobile"]()
 !["screenshot of the listings page - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_search_result.png)
 !["screenshot of the single listing page - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_single_listing.png)
 !["screenshot of the account settings page - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_account_settings.png)
