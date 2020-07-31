@@ -8,7 +8,7 @@ dotenv.config();
 const helper = require("../helper");
 const TemplateVars = require("./schema/TemplateVars");
 
-module.exports = (db) => {
+module.exports = () => {
 
   //Get forgot password form
   router.get('/forgot-password', (req, res) => {
@@ -24,7 +24,7 @@ module.exports = (db) => {
           const resetToken = helper.generateRandomString(7);
 
           database.updateUserTokenById(user.id, resetToken)
-            .then(user => {
+            .then(() => {
               let transporter = nodeMailer.createTransport({
                 host:'smtp.gmail.com',
                 port:465,
@@ -39,7 +39,7 @@ module.exports = (db) => {
                 subject: 'Reset your password for Kajaja',
                 html: `<p>Hi, to reset your password click on the following link: <a href="${req.protocol}://${req.get('host')}/api/mailer/reset?token=${resetToken}">Reset your password</a></p>`
               };
-              transporter.sendMail(mailOptions, (error, info) => {
+              transporter.sendMail(mailOptions, (error) => {
                 if (error) {
                   return console.log('message wasnt sent:',error);
                 }
@@ -47,7 +47,7 @@ module.exports = (db) => {
               res.render('forgot_page', {message: 'Reset email sent'});
 
             })
-            .catch((e) => {
+            .catch(() => {
 
               res.render('forgot_page', {message: 'Reset email wasnt sent'});
 
@@ -58,7 +58,7 @@ module.exports = (db) => {
           res.render('forgot_page', {message: 'Reset email wasnt sent'});
         }
       })
-      .catch((e) => {
+      .catch(() => {
         res.redirect('/');
       });
   });
@@ -76,7 +76,7 @@ module.exports = (db) => {
         req.session.reset = user.id;
         res.redirect('/api/mailer/change-password');
       })
-      .catch((e) => {
+      .catch(() => {
         res.redirect('/');
       });
   });
@@ -92,11 +92,11 @@ module.exports = (db) => {
     const cryptedPassword = bcrypt.hashSync(req.body.password, 10);
 
     database.updateUserPasswordByUserId(req.session.reset, cryptedPassword)
-      .then(user => {
+      .then(() => {
         req.session = null;
         res.redirect('/login');
       })
-      .catch((e) => {
+      .catch(() => {
         req.session = null;
         res.redirect('/login');
       });

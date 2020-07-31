@@ -6,7 +6,7 @@ const { checkIfUserHasACookie } = require("../helper");
 const TemplateVars = require('./schema/TemplateVars');
 
 
-module.exports = (db) => {
+module.exports = () => {
 
 
   //Upload an avatar to the user's profile
@@ -54,7 +54,7 @@ module.exports = (db) => {
           .then(() => {
             res.redirect(`/api/listings/${req.params.id}`);
           })
-          .catch((e) => {
+          .catch(() => {
             res.redirect(`/api/listings/${req.params.id}`);
           });
       }
@@ -122,7 +122,7 @@ module.exports = (db) => {
           templateVars.single_listing = listing;
           res.render('add_images_page', templateVars);
         })
-        .catch(e => {
+        .catch(() => {
           templateVars.single_listing.main_image = null;
           res.render('add_images_page', templateVars);
         });

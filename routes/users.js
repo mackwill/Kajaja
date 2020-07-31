@@ -6,7 +6,7 @@ const { chrono, login, checkIfUserHasACookie } = require("../helper");
 const TemplateVars = require('./schema/TemplateVars');
 
 
-module.exports = (db) => {
+module.exports = () => {
 
   // Create a new user
   router.post("/", (req, res) => {
@@ -30,7 +30,7 @@ module.exports = (db) => {
                 res.redirect("/");
               }
             })
-            .catch((e) => {
+            .catch(() => {
               req.session.message = "Sorry there was an issue";
               res.redirect("/registration");
             });
@@ -52,7 +52,7 @@ module.exports = (db) => {
         req.session.userId = user.id;
         res.redirect("/");
       })
-      .catch(e => {
+      .catch(() => {
         templateVars.message = "Sorry, those credentials do not match with our database";
         res.render('login_page', templateVars);
       });
@@ -83,7 +83,7 @@ module.exports = (db) => {
           templateVars.message = "You have updated your account information successfully";
           res.render("account_page", templateVars);
         })
-        .catch((e) => {
+        .catch(() => {
           templateVars.message = "Sorry, there was an issue with your info updating";
           res.render("account_page", templateVars);
         });
@@ -107,9 +107,9 @@ module.exports = (db) => {
         res.render("profile_page", templateVars);
         return;
       })
-      .catch((e) => {
+      .catch(() => {
         templateVars.activeProfilePage =
-          req.params.id === req.session.userId ? true : false;
+          req.params.id == req.session.userId ? true : false;
         res.render("profile_page", templateVars);
         return;
       });
