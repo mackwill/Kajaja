@@ -28,7 +28,7 @@ const checkHowManyRecentlyViewed = (viewedArr) => {
   let queryStart = `
   SELECT * FROM listings
   WHERE (id IN(
-`
+`;
   if (viewedArr.length === 1) {
     queryStart += `$1))`;
   } else if (viewedArr.length === 2) {
@@ -74,4 +74,4 @@ const checkNumberOfImages = (images) => {
   return middleQuery.concat(" RETURNING *");
 };
 
-exports.checkNumberOfImages = checkNumberOfImages
+exports.checkNumberOfImages = checkNumberOfImages;

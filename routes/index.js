@@ -33,11 +33,11 @@ module.exports = (db) => {
     let templateVars = new TemplateVars(req.user);
     !req.q
       ? (templateVars.searchbar = {
-          q: "",
-          category: req.query.category,
-          min: 0,
-          max: 999,
-        })
+        q: "",
+        category: req.query.category,
+        min: 0,
+        max: 999,
+      })
       : (templateVars.searchbar = req.query);
 
     database

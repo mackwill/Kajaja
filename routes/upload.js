@@ -3,14 +3,14 @@ const router = express.Router();
 const database = require("../database");
 const _ = require("lodash");
 const { checkIfUserHasACookie } = require("../helper");
-const TemplateVars = require('./schema/TemplateVars')
+const TemplateVars = require('./schema/TemplateVars');
 
 
 module.exports = (db) => {
 
 
   //Upload an avatar to the user's profile
-  router.post("/avatar", async (req, res) => {
+  router.post("/avatar", async(req, res) => {
     try {
       if (!req.files) {
         res.send({
@@ -37,7 +37,7 @@ module.exports = (db) => {
   });
 
   //Upload the main image of a listing
-  router.post("/main/:id", async (req, res) => {
+  router.post("/main/:id", async(req, res) => {
     try {
       if (!req.files) {
         res.send({
@@ -64,7 +64,7 @@ module.exports = (db) => {
   });
 
   //Upload the side pictures of a listing
-  router.post("/photos/:id", async (req, res) => {
+  router.post("/photos/:id", async(req, res) => {
     try {
       if (!req.files) {
         res.send({
@@ -107,27 +107,27 @@ module.exports = (db) => {
 
   //Get the 'add image' form page
   router.get('/add-images/:id', checkIfUserHasACookie, (req, res) => {
-    let templateVars = new TemplateVars(req.user)
-    templateVars.fromUser = false
+    let templateVars = new TemplateVars(req.user);
+    templateVars.fromUser = false;
 
-    if(req.params.id === 'abc'){
-      templateVars.fromUser = true
-      templateVars.single_listing = {}
-      templateVars.single_listing.main_image = null
+    if (req.params.id === 'abc') {
+      templateVars.fromUser = true;
+      templateVars.single_listing = {};
+      templateVars.single_listing.main_image = null;
 
-      res.render('add_images_page', templateVars)
-    }else{
+      res.render('add_images_page', templateVars);
+    } else {
       database.getSingleListing(req.params.id)
-      .then(listing => {
-        templateVars.single_listing = listing
-        res.render('add_images_page', templateVars)
-      })
-      .catch(e => {
-        templateVars.single_listing.main_image = null
-        res.render('add_images_page', templateVars)
-      })
+        .then(listing => {
+          templateVars.single_listing = listing;
+          res.render('add_images_page', templateVars);
+        })
+        .catch(e => {
+          templateVars.single_listing.main_image = null;
+          res.render('add_images_page', templateVars);
+        });
     }
-  })
+  });
 
-return router;
+  return router;
 };
