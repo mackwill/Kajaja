@@ -11,16 +11,16 @@ const TemplateVars = require("./schema/TemplateVars");
 module.exports = (db) => {
   router.get("/", checkIfUserHasACookie, (req, res) => {
     let templateVars = new TemplateVars(req.user);
-    if(!req.query.q){
+    if (!req.query.q) {
       templateVars.searchbar = {
-          q: "",
-          category: req.query.category,
-          min: 0,
-          max: 999,
-        }
-      }else{
-        templateVars.searchbar = req.query
-      }
+        q: "",
+        category: req.query.category,
+        min: 0,
+        max: 999,
+      };
+    } else {
+      templateVars.searchbar = req.query;
+    }
     database
       .getListings(req.query)
       .then((data) => {

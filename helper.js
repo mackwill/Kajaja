@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 // Returns the most recent message of a conversation thread
 // per listing id
-const filterMessagesByUser = function (messages) {
+const filterMessagesByUser = function(messages) {
   const messagesByListing = [];
   const passedId = [];
 
@@ -20,7 +20,7 @@ exports.filterMessagesByUser = filterMessagesByUser;
 
 // Returns amount of time since something was created
 // or since the function was called)
-const chrono = function (number) {
+const chrono = function(number) {
   let result = "";
   if (number / (60 * 60 * 24 * 356 * 1000) >= 1) {
     result = `${Math.floor(number / (60 * 60 * 24 * 365 * 1000))} years ago`;
@@ -54,7 +54,7 @@ const timeSinceSent = (messages) => {
 exports.timeSinceSent = timeSinceSent;
 
 //Check if user is logged in helper
-const checkIfUserHasACookie = function (req, res, next) {
+const checkIfUserHasACookie = function(req, res, next) {
   return database
     .getUserWithId(req.session.userId)
     .then((user) => {
@@ -69,7 +69,7 @@ const checkIfUserHasACookie = function (req, res, next) {
 exports.checkIfUserHasACookie = checkIfUserHasACookie;
 
 //Login helper
-const login = function (email, password) {
+const login = function(email, password) {
   return database.getUserWithEmail(email).then((user) => {
     if (bcrypt.compareSync(password, user.password)) {
       return user;
@@ -87,7 +87,7 @@ const filterByListingId = (listingId, array) => {
 
 exports.filterByListingId = filterByListingId;
 
-const generateRandomString = function (num) {
+const generateRandomString = function(num) {
   const chars =
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let randomStr = "";

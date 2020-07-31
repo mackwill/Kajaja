@@ -1,7 +1,7 @@
 $(document).ready(() => {
   // Post request to allow user to respond to a message thread,
   // and the message thread updates without the page refreshing
-  $(document).on("click", "#respond-to-conversation", function (e) {
+  $(document).on("click", "#respond-to-conversation", function(e) {
     const splitURL = window.location.href.split("/");
     const messageThread = splitURL[splitURL.length - 1];
     e.preventDefault();
@@ -21,7 +21,7 @@ $(document).ready(() => {
 
   // Post request to delete a listing when a user
   // is logged into their account
-  $(document).on("click", ".delete_listing", function (e) {
+  $(document).on("click", ".delete_listing", function(e) {
     const splitURL = window.location.href.split("/");
     const user = splitURL[splitURL.length - 1];
     e.preventDefault();
@@ -37,7 +37,7 @@ $(document).ready(() => {
 
   // GET request to allow the user to favourite a listing
   // and add it to their favourites page
-  $(document).on("click", ".favourite-link", function (e) {
+  $(document).on("click", ".favourite-link", function(e) {
     const $this = $(this);
     const listingId = $(this).attr("id");
     const listingBtn = $(this);
@@ -47,7 +47,7 @@ $(document).ready(() => {
     $.ajax({
       url: `/api/favourites/${listingId}`,
       type: "POST",
-      success: function (result) {
+      success: function(result) {
         // $(listingBtn).append(result.message);
         $(`#favourite-alert`).find(".modal-body").html(result.message);
         $(`#favourite-alert`).modal("show");
@@ -55,13 +55,13 @@ $(document).ready(() => {
     });
   });
 
-  $("#search_query").focus(function (e) {
+  $("#search_query").focus(function(e) {
     $("#search div").show();
   });
 
   // POST request to allow the user to respond to
   // a listing and start a new message thread
-  $(document).on("click", "#submit-message", function (e) {
+  $(document).on("click", "#submit-message", function(e) {
     e.preventDefault();
     e.stopImmediatePropagation();
     const formData = $("#contact-seller-form").serialize();

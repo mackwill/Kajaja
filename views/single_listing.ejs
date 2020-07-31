@@ -61,9 +61,8 @@
         </div>
         <div id="single-listing-favourite">
           <form
-            class="favourite-link"
+            class="favourite-link d-flex"
             id="<%= single_listing.id %>"
-            style="display: flex; flex-direction: column;"
           >
             <button class="btn bg-success text-white">
               <i class="fas fa-heart"></i> Save As Favouite
@@ -83,7 +82,6 @@
 
             <div
               class="img-container row mx-auto"
-              style="justify-content: space-evenly;"
             >
               <% if(single_listing.picture_1 !==
               'https://via.placeholder.com/100x100'){%>

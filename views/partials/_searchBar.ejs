@@ -19,24 +19,13 @@
     ></script>
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
-    <script type="text/javascript" src="/scripts/navbar_responsive.js"></script>
-    <script
-      type="text/javascript"
-      src="/scripts/category_responsive.js"
-    ></script>
-  </head>
-  <style>
-    @media only screen and (max-width: 600px) {
 
-    .hidden{
-      display:none;
-    }
-  }
-  </style>
+  </head>
+
 
   <body>
     <% if(!searchbar){%>
-    <form id="search" method="GET" action="/api/listings" class="m-3">
+    <form id="search" method="GET" action="/api/listings">
       <div class="form-row row">
         <div class="form-group col-md-4">
           <input type="text" class="form-control" id="search_query" name='q' placeholder="search for items..">
@@ -74,7 +63,7 @@
   </form>
   <%}else{%>
 
-    <form id="search" method="GET" action="/api/listings" class="m-3">
+    <form id="search" method="GET" action="/api/listings">
       <div class="form-row row">
         <div class="form-group col-md-4">
           <input type="text" class="form-control" id="search_query" name='q' placeholder="search for" value="<%= searchbar.q %>">

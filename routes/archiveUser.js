@@ -11,13 +11,13 @@ const bcrypt = require("bcrypt");
 const database = require("../database");
 const { chrono, login, checkIfUserHasACookie } = require("../helper");
 const { Template } = require("ejs");
-const TemplateVars = require('./schema/TemplateVars')
+const TemplateVars = require('./schema/TemplateVars');
 
 
 module.exports = (db) => {
   //Get login form
   router.get("/login", checkIfUserHasACookie, (req, res) => {
-    let templateVars = new TemplateVars(req.user)
+    let templateVars = new TemplateVars(req.user);
 
     if (req.session.message) {
       templateVars.message = req.session.message;
@@ -28,7 +28,7 @@ module.exports = (db) => {
 
   //Get registration form
   router.get("/registration", checkIfUserHasACookie, (req, res) => {
-    let templateVars = new TemplateVars(req.user)
+    let templateVars = new TemplateVars(req.user);
 
     if (req.session.message) {
       templateVars.message = req.session.message;
@@ -42,38 +42,38 @@ module.exports = (db) => {
     const user = req.body;
     user.password = bcrypt.hashSync(user.password, 12);
     database
-    .getUserWithEmail(user.email)
-    .then((existingUser) => {
-      if (existingUser) {
-        req.session.message = "Sorry User already exists";
-        res.redirect("/api/users/registration");
-      } else {
-        database
-          .addUser(user)
-          .then((user) => {
-            if (!user) {
+      .getUserWithEmail(user.email)
+      .then((existingUser) => {
+        if (existingUser) {
+          req.session.message = "Sorry User already exists";
+          res.redirect("/api/users/registration");
+        } else {
+          database
+            .addUser(user)
+            .then((user) => {
+              if (!user) {
+                req.session.message = "Sorry there was an issue";
+                res.redirect("/api/users/registration");
+              } else {
+                req.session.userId = user.id;
+                res.redirect("/");
+              }
+            })
+            .catch((e) => {
               req.session.message = "Sorry there was an issue";
               res.redirect("/api/users/registration");
-            }else{
-              req.session.userId = user.id;
-              res.redirect("/");
-            }
-          })
-          .catch((e) => {
-            req.session.message = "Sorry there was an issue";
-            res.redirect("/api/users/registration");
-          });
-      }
-    });
+            });
+        }
+      });
   });
 
   router.post("/login", (req, res) => {
     const { email, password } = req.body;
-    const templateVars = new TemplateVars(undefined)
+    const templateVars = new TemplateVars(undefined);
     login(email, password)
       .then((user) => {
         if (!user) {
-          templateVars.message = "Sorry, those credentials do not match with our database"
+          templateVars.message = "Sorry, those credentials do not match with our database";
           res.render('login_page', templateVars);
           return;
         }
@@ -81,7 +81,7 @@ module.exports = (db) => {
         res.redirect("/");
       })
       .catch(e => {
-        templateVars.message = "Sorry, those credentials do not match with our database"
+        templateVars.message = "Sorry, those credentials do not match with our database";
         res.render('login_page', templateVars);
       });
   });
@@ -93,12 +93,12 @@ module.exports = (db) => {
   });
 
   router.get("/my-account", checkIfUserHasACookie, (req, res) => {
-    const templateVars = new TemplateVars(req.user)
+    const templateVars = new TemplateVars(req.user);
     res.render("account_page", templateVars);
   });
 
   router.post("/my-account", checkIfUserHasACookie, (req, res) => {
-    const templateVars = new TemplateVars(req.user)
+    const templateVars = new TemplateVars(req.user);
     const changes = req.body;
 
     if (bcrypt.compareSync(req.body.password, req.user.password)) {
@@ -121,10 +121,10 @@ module.exports = (db) => {
 
   //Get a profile page for specific user
   router.get("/:id", checkIfUserHasACookie, (req, res) => {
-    const templateVars = new TemplateVars(req.user)
+    const templateVars = new TemplateVars(req.user);
 
     database
-     .getPublicInfoUserById(req.params.id)
+      .getPublicInfoUserById(req.params.id)
       .then((data) => {
         data.unix = chrono(new Date() - data[0].join_date.getTime());
         templateVars.listings = data;
