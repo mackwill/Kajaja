@@ -83,7 +83,7 @@ module.exports = () => {
         res.render("single_listing", templateVars);
       })
       .catch((err) => {
-        res.status(500).json({ error: err.message });
+        res.status(500).render('404', templateVars);
       });
   });
 

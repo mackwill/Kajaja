@@ -18,7 +18,7 @@ module.exports = () => {
         res.render("all_messages", templateVars);
       })
       .catch((err) => {
-        res.status(500).json({ error: err.message });
+        res.status(500).render('404', templateVars);
       });
   });
 
@@ -35,7 +35,7 @@ module.exports = () => {
         res.render("single_message_page", templateVars);
       })
       .catch((err) => {
-        res.status(500).json({ error: err.message });
+        res.status(500).render('404', templateVars);
       });
   });
 

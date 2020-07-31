@@ -108,10 +108,7 @@ module.exports = () => {
         return;
       })
       .catch(() => {
-        templateVars.activeProfilePage =
-          req.params.id == req.session.userId ? true : false;
-        res.render("profile_page", templateVars);
-        return;
+        res.status(500).render('404', templateVars);
       });
   });
 
