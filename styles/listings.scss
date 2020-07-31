@@ -71,6 +71,12 @@ div.container:hover {
 .modal-parent {
   background-color: #f0f0f0;
 }
+
+#failed-search {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
 @media only screen and (min-width: 600px) {
   #all-listings {
     p {
