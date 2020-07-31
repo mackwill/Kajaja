@@ -41,17 +41,17 @@ KaJaJa is a listing web app. You can browse items users are selling and contact 
 ## Final Product
 
 !["screenshot of the homepage - mobile"]()
-!["screenshot of the listings page - mobile"]()
-!["screenshot of the single listing page - mobile"]()
-!["screenshot of the account settings page - mobile"]()
-!["screenshot of the create settings page - mobile"]()
-!["screenshot of the favourties page - mobile"]()
-!["screenshot of the message thread - mobile"]()
-!["screenshot of the messages - mobile"]()
-!["screenshot of the update your listing form - mobile"]()
-!["screenshot of the user profile page - mobile"]()
-!["screenshot of the single listing page - desktop"]()
-!["screenshot of the listings page - tablette"]()
+!["screenshot of the listings page - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_search_result.png)
+!["screenshot of the single listing page - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_single_listing.png)
+!["screenshot of the account settings page - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_account_settings.png)
+!["screenshot of the user profile page - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_user_profile_page.png)
+!["screenshot of the favourties page - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_favourites.png)
+!["screenshot of the message thread - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_message_thread.png)
+!["screenshot of the messages - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_messages.png)
+!["screenshot of the update your listing form - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_create_listing.png)
+!["screenshot of the create listing page - mobile"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_update_your_listing.png)
+!["screenshot of the single listing page - desktop"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_single_listing_desktop.png)
+!["screenshot of the listings page - tablette"](https://raw.githubusercontent.com/mackwill/kajaja/master/docs/kajaja_listings_tablette.png)
 
 
 ## Authors
