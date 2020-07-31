@@ -30,6 +30,8 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="/styles/createListing.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/navbar.css" type="text/css" />
 
     <script
       defer
@@ -42,7 +44,9 @@
     <%- include("partials/_navbar") %> <%- include("partials/_searchBar") %>
     <!-- Page for user to create their new listing -->
     <div class="container col-md-10 col-sm-11" id="create-listing-container">
-      <h4 class="card-title mt-3 text-center">Create Your Ad</h4>
+      <h1 class="card-title mt-3 text-center">Create Your Ad</h1>
+      <hr />
+
       <div class="card mx-auto">
         <form method="POST" action="/api/listings/create">
           <div class="form-group col-auto">
@@ -159,7 +163,9 @@
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-success btn-block p-3">Post my ad</button>
+          <button type="submit" class="btn btn-success btn-block p-3">
+            Post my ad
+          </button>
         </form>
       </div>
     </div>
