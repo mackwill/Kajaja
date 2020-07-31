@@ -2,13 +2,11 @@ const express = require("express");
 const router = express.Router();
 const database = require("../database");
 const {
-  chrono,
-  checkIfUserHasACookie,
-  filterByListingId,
+  checkIfUserHasACookie
 } = require("../helper");
 const TemplateVars = require("./schema/TemplateVars");
 
-module.exports = (db) => {
+module.exports = () => {
   // Home page
   router.get("/", checkIfUserHasACookie, (req, res) => {
     const templateVars = new TemplateVars(req.user);
@@ -22,7 +20,7 @@ module.exports = (db) => {
           templateVars.recentlyViewed = recentlyViewed;
           res.render("index", templateVars);
         })
-        .catch((e) => {
+        .catch(() => {
           res.render("index", templateVars);
         });
     }

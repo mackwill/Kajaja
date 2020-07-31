@@ -5,7 +5,7 @@ const helpers = require("../helper");
 const { checkIfUserHasACookie, filterByListingId } = require("../helper");
 const TemplateVars = require("./schema/TemplateVars");
 
-module.exports = (db) => {
+module.exports = () => {
   //Get a message thread
   router.get("/", checkIfUserHasACookie, (req, res) => {
     const templateVars = new TemplateVars(req.user);
@@ -84,7 +84,7 @@ module.exports = (db) => {
           return data.rows;
         }
       })
-      .then((data) => {
+      .then(() => {
         return database.createNewThread(listingId);
       })
       .then((data) => {

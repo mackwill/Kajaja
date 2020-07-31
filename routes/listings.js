@@ -3,12 +3,11 @@ const router = express.Router();
 const database = require("../database");
 const {
   chrono,
-  checkIfUserHasACookie,
-  filterByListingId,
+  checkIfUserHasACookie
 } = require("../helper");
 const TemplateVars = require("./schema/TemplateVars");
 
-module.exports = (db) => {
+module.exports = () => {
   router.get("/", checkIfUserHasACookie, (req, res) => {
     let templateVars = new TemplateVars(req.user);
     if (!req.query.q) {
@@ -55,7 +54,7 @@ module.exports = (db) => {
         req.session.listingId = listing.id;
         res.redirect(`/api/listings/${listing.id}/update`);
       })
-      .catch((e) => {
+      .catch(() => {
         let templateVars = new TemplateVars(undefined);
         res.render("create_listing_page", templateVars);
       });
@@ -96,7 +95,7 @@ module.exports = (db) => {
       .then(() => {
         res.send({ message: "Item successfully deleted" });
       })
-      .catch((e) => {
+      .catch(() => {
         res.redirect(`/api/users/${activeUserId}`);
       });
   });
@@ -130,7 +129,7 @@ module.exports = (db) => {
           "You have updated your account information successfully";
         res.render("update_listing", templateVars);
       })
-      .catch((e) => {
+      .catch(() => {
         templateVars.message =
           "Sorry we were not able to update the listing information";
         res.render("update_listing", templateVars);
