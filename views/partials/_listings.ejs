@@ -22,7 +22,7 @@
   crossorigin="anonymous"
 ></script>
 
-<% listings.forEach(listing => { %>
+<% console.log('listings', listings) %> <% listings.forEach(listing => { %>
 <div class="container col-lg-10 col-sm-11 mb-3">
   <a class="listing-link" href="/api/listings/<%=listing.id%>">
     <div class="row">
@@ -35,8 +35,13 @@
             <h3><%= listing.title %></h3>
           </div>
           <div class="listing-header-right">
+            <% if (listing.istrade) { %>
+            <h3 class="text-success">Trade</h3>
+            <% } else if (listing.price === 0) { %>
+            <h3 class="text-success">Free</h3>
+            <% } else { %>
             <h3 class="text-success">$<%= listing.price %></h3>
-            <% if(user){ %>
+            <% } %> <% if(user){ %>
             <form class="favourite-link" id="<%= listing.id %>">
               <button class="btn btn-primary">
                 <i class="fas fa-heart"></i>

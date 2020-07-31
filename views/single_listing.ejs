@@ -33,9 +33,15 @@
 
       <div class="row single-listing-header">
         <div class="header-left col-lg-8 col-md-8 col-sm-8 align-middle">
-          <div class="">
+          <div>
             <h5><%= single_listing.title %></h5>
+            <% if(single_listing.istrade){%>
+            <h4 class="text-success">Trade</h4>
+            <% } else if(single_listing.price === 0) { %>
+            <h4 class="text-success">Free</h4>
+            <%}else{%>
             <h4 class="text-success">$<%= single_listing.price %></h4>
+            <%}%>
           </div>
         </div>
         <div class="header-right col-lg-4 col-md-4 col-sm-4 d-flex mx-auto">
@@ -60,10 +66,7 @@
           </div>
         </div>
         <div id="single-listing-favourite">
-          <form
-            class="favourite-link d-flex"
-            id="<%= single_listing.id %>"
-          >
+          <form class="favourite-link d-flex" id="<%= single_listing.id %>">
             <button class="btn bg-success text-white">
               <i class="fas fa-heart"></i> Save As Favouite
             </button>
@@ -80,9 +83,7 @@
               <img src="<%= single_listing.main_image %>" alt="" />
             </div>
 
-            <div
-              class="img-container row mx-auto"
-            >
+            <div class="img-container row mx-auto">
               <% if(single_listing.picture_1 !==
               'https://via.placeholder.com/100x100'){%>
               <img src="<%= single_listing.picture_1 %>" width="25%;" alt="" />

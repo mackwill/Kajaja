@@ -21,6 +21,12 @@
     margin-top: 2rem;
     margin-right: 1rem;
 
+    .listing-header-left {
+      h3 {
+        font-size: 1.3rem;
+      }
+    }
+
     .listing-header-right {
       display: flex;
       align-items: center;

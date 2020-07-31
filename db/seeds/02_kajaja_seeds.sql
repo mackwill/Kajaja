@@ -153,7 +153,7 @@ VALUES
     'TRUE',
     999,
     'FALSE',
-    'TRUE',
+    'FALSE',
     'H2V4A2',
     'FALSE',
     '/images/seed_09.png'
@@ -196,8 +196,8 @@ VALUES
     'H2V2N2',
     'FALSE',
     '/images/seed_02.png'
-  )
-  ;
+  );
+
 ;
 
 INSERT INTO
